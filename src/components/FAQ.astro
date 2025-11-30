@@ -1,0 +1,45 @@
+---
+interface FAQItem {
+    question: string;
+    answer: string;
+}
+
+interface Props {
+    items: FAQItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="scandi-section">
+    <div class="container">
+        <div class="text-center" style="margin-bottom: 4rem;">
+            <h2>FAQ</h2>
+            <p style="margin: 0 auto; font-size: 1.1rem; color: var(--color-text-light);">
+                Questions we get asked. Honest answers.
+            </p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto;">
+            {items.map((item) => (
+                    <details
+                            style="margin-bottom: 1.5rem; border: 1px solid var(--color-border-scandi); border-radius: var(--radius-soft); padding: 1.5rem; cursor: pointer; transition: var(--transition-smooth);"
+                    >
+                        <summary style="font-weight: 600; font-size: 1.1rem; color: var(--color-text-main); list-style: none; display: flex; justify-content: space-between; align-items: center;">
+                            {item.question}
+                            <span style="margin-left: 1rem; color: var(--color-accent-primary);">+</span>
+                        </summary>
+                        <p style="margin-top: 1rem; color: var(--color-text-light); line-height: 1.8;">
+                            {item.answer}
+                        </p>
+                    </details>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    details[open] summary span {
+        transform: rotate(45deg);
+    }
+</style>

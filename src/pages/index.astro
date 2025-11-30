@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Home">
+    <Navigation />
+
+    <main>
+        {/* Hero Section */}
+        <section class="container scandi-hero">
+            <div class="hero-content">
+        <span style="display: inline-block; padding: 0.5rem 1rem; background-color: rgba(178, 223, 219, 0.2); color: var(--color-accent-primary); border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem;">
+          Est. 2025
+        </span>
+                <h1>Software that doesn't <span class="text-serif">suck</span>.</h1>
+                <p class="mt-medium" style="font-size: 1.25rem; color: var(--color-text-light);">
+                    We build digital infrastructure, design interfaces that make sense, and engineer software solutions for companies that are tired of corporate BS.
+                </p>
+                <div class="flex-row mt-medium">
+                    <a href="/contact">
+                        <button class="scandi-btn scandi-btn-primary">
+                            Let's talk →
+                        </button>
+                    </a>
+                    <a href="/services">
+                        <button class="scandi-btn scandi-btn-outline">
+                            See what we do
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <img
+                    src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80"
+                    alt="Modern office workspace"
+                    class="hero-image"
+            />
+        </section>
+
+        {/* Services Preview */}
+        <section class="scandi-section" style="background-color: rgba(0,0,0,0.01 );">
+            <div class="container">
+                <div class="text-center" style="margin-bottom: 4rem;">
+                    <h2>What we do</h2>
+                    <p style="margin: 0 auto;">Or at least we think we do.</p>
+                </div>
+
+                <div class="grid">
+                    <div class="scandi-card">
+                        <div style="width: 50px; height: 50px; background-color: rgba(178, 223, 219, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; color: var(--color-accent-primary); font-size: 24px;">
+                            💻
+                        </div>
+                        <h3>Custom Software</h3>
+                        <p style="font-size: 0.95rem; color: var(--color-text-light);">
+                            Web apps, mobile apps, APIs—whatever you need. Built right, not rushed.
+                        </p>
+                    </div>
+
+                    <div class="scandi-card">
+                        <div style="width: 50px; height: 50px; background-color: rgba(200, 230, 201, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; color: var(--color-accent-secondary); font-size: 24px;">
+                            👥
+                        </div>
+                        <h3>Outsourcing</h3>
+                        <p style="font-size: 0.95rem; color: var(--color-text-light);">
+                            Need more hands on deck? We've got experienced developers, designers, and QA engineers ready to roll.
+                        </p>
+                    </div>
+
+                    <div class="scandi-card">
+                        <div style="width: 50px; height: 50px; background-color: rgba(225, 190, 231, 0.3); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; color: oklch(0.6 0.15 300); font-size: 24px;">
+                            🏗️
+                        </div>
+                        <h3>Infrastructure & Consulting</h3>
+                        <p style="font-size: 0.95rem; color: var(--color-text-light);">
+                            Cloud architecture, DevOps, security—the boring stuff that actually matters.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {/* Philosophy Section */}
+        <section class="scandi-section">
+            <div class="container">
+                <div class="grid" style="grid-template-columns: 1fr 1fr; align-items: center; gap: 6rem;">
+                    <img
+                            src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80"
+                            alt="Team Collaboration"
+                            style="width: 100%; border-radius: var(--radius-soft ); box-shadow: var(--shadow-soft);"
+                    />
+                    <div>
+                        <h2 style="margin-bottom: 1.5rem;">We're millennials who got tired of the corporate grind.</h2>
+                        <p style="font-size: 1.1rem; color: var(--color-text-light); margin-bottom: 1.5rem;">
+                            No more 6am standups. No more "synergies." No more pretending that 47-slide presentations are productive.
+                        </p>
+                        <p style="font-size: 1.1rem; color: var(--color-text-light); margin-bottom: 1.5rem;">
+                            We build software that's clean, efficient, and actually solves problems. We treat our team right. We ship quality work.
+                        </p>
+                        <p style="font-size: 1.1rem; color: var(--color-text-light);">
+                            If you're tired of corporate BS too, let's build something better. Or don't, it's your choice.
+                        </p>
+                        <a href="/about">
+                            <button class="scandi-btn scandi-btn-outline mt-medium">
+                                Read our story
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+</Layout>

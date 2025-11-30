@@ -1,0 +1,27 @@
+---
+import { getPathname } from '../utils/helpers';
+
+const pathname = getPathname(Astro.url);
+---
+
+<nav class="scandi-nav">
+  <div class="nav-content">
+    <a href="/" class="nav-logo">
+      Intre<span class="nav-logo-accent">bit</span>
+    </a>
+    <ul class="nav-links">
+      <li>
+        <a href="/" class={pathname === '/' ? 'active' : ''}>Home</a>
+      </li>
+      <li>
+        <a href="/services" class={pathname === '/services' ? 'active' : ''}>Services</a>
+      </li>
+      <li>
+        <a href="/about" class={pathname === '/about' ? 'active' : ''}>About</a>
+      </li>
+      <li>
+        <a href="/contact" class={pathname === '/contact' ? 'active' : ''}>Contact</a>
+      </li>
+    </ul>
+  </div>
+</nav>

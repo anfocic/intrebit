@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Menu">
+    <Navigation />
+
+    <main>
+        <section class="scandi-section">
+            <div class="container">
+                <div class="text-center" style="max-width: 800px; margin: 0 auto;">
+                    <h1 style="margin-bottom: 2rem;">We're not a restaurant.</h1>
+
+                    <p style="font-size: 1.25rem; color: var(--color-text-light); margin-bottom: 3rem;">
+                        But if you're looking for pricing, here's the real talk:
+                    </p>
+
+                    <div class="scandi-card" style="text-align: left; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem;">How pricing works</h3>
+                        <p style="color: var(--color-text-light); margin-bottom: 1.5rem;">
+                            We don't have a menu with fixed prices. Every project is different, and we price accordingly.
+                        </p>
+                        <p style="color: var(--color-text-light); margin-bottom: 1.5rem;">
+                            <strong>Here's what we do:</strong>
+                        </p>
+                        <ul style="list-style: none; color: var(--color-text-light);">
+                            <li style="margin-bottom: 1rem;">1. You tell us what you need</li>
+                            <li style="margin-bottom: 1rem;">2. We understand your problem and constraints</li>
+                            <li style="margin-bottom: 1rem;">3. We give you a transparent quote</li>
+                            <li style="margin-bottom: 1rem;">4. No hidden fees, no surprise invoices</li>
+                        </ul>
+                    </div>
+
+                    <div class="scandi-card" style="text-align: left; margin-bottom: 2rem;">
+                        <h3 style="margin-bottom: 1.5rem;">What affects the cost</h3>
+                        <ul style="list-style: none; color: var(--color-text-light);">
+                            <li style="margin-bottom: 1rem;"><strong>Scope:</strong> How big is the project? What features?</li>
+                            <li style="margin-bottom: 1rem;"><strong>Timeline:</strong> How fast do you need it?</li>
+                            <li style="margin-bottom: 1rem;"><strong>Complexity:</strong> How complex is the tech?</li>
+                            <li style="margin-bottom: 1rem;"><strong>Team size:</strong> How many people do you need?</li>
+                            <li style="margin-bottom: 1rem;"><strong>Maintenance:</strong> Do you need ongoing support?</li>
+                        </ul>
+                    </div>
+
+                    <div class="scandi-card" style="text-align: left; margin-bottom: 3rem;">
+                        <h3 style="margin-bottom: 1.5rem;">What we're not</h3>
+                        <p style="color: var(--color-text-light); margin-bottom: 1rem;">
+                            <strong>❌ The cheapest option</strong> — We're not racing to the bottom. You get quality work.
+                        </p>
+                        <p style="color: var(--color-text-light); margin-bottom: 1rem;">
+                            <strong>❌ Overpriced</strong> — We're fair. We don't charge for meetings about meetings.
+                        </p>
+                        <p style="color: var(--color-text-light);">
+                            <strong>❌ A fixed-price trap</strong> — We don't lock you into a price and then ask for change orders every week.
+                        </p>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <p style="font-size: 1.1rem; color: var(--color-text-light); margin-bottom: 2rem;">
+                            Ready to talk about your project?
+                        </p>
+                        <a href="/contact">
+                            <button class="scandi-btn scandi-btn-primary">
+                                Get a quote
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <Footer />
+</Layout>
