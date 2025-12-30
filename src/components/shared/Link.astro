@@ -1,0 +1,13 @@
+---
+interface Props {
+    path: string;
+    label: string;
+    className?: string;
+}
+
+const {label, path, className} = Astro.props;
+---
+
+<li>
+    <a href={path} class={className}>{label}</a>
+</li>

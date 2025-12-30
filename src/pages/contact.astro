@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Navigation from '../components/Navigation.astro';
-import Footer from '../components/Footer.astro';
+import Footer from '../components/footer/Footer.astro';
 
 const faqTeaser = [
     {
@@ -14,7 +14,7 @@ const faqTeaser = [
     },
     {
         question: "How much does it cost?",
-        answer: "Depends on scope. We don't do cheap. We do fair. We'll give you a transparent quote after we understand what you need."
+        answer: "Depends on scope. We don't do cheap. We do fair. Check out our menu for more details. (Yes, we know we're not a restaurant.)"
     }
 ];
 ---
@@ -32,49 +32,60 @@ const faqTeaser = [
                     </p>
                 </div>
 
-                <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1000px; margin: 0 auto;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1000px; margin: 0 auto;">
                     {/* Contact Form */}
                     <div>
-                        <form style="display: flex; flex-direction: column; gap: 1.5rem;">
+                        <form
+                                id="contact-form"
+                                style="display: flex; flex-direction: column; gap: 1.5rem;"
+                        >
                             <div>
-                                <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">Name</label>
+                                <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                                    Name
+                                </label>
                                 <input
                                         type="text"
                                         id="name"
                                         name="name"
                                         placeholder="Your name"
                                         required
-                                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border-scandi); border-radius: var(--radius-soft); font-family: var(--font-sans); font-size: 1rem;"
+                                        style="width: 100%; padding: 0.75rem;"
                                 />
                             </div>
 
                             <div>
-                                <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">Email</label>
+                                <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                                    Email
+                                </label>
                                 <input
                                         type="email"
                                         id="email"
                                         name="email"
                                         placeholder="your@email.com"
                                         required
-                                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border-scandi); border-radius: var(--radius-soft); font-family: var(--font-sans); font-size: 1rem;"
+                                        style="width: 100%; padding: 0.75rem;"
                                 />
                             </div>
 
                             <div>
-                                <label for="message" style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--color-text-main);">Message</label>
+                                <label for="message" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
+                                    Message
+                                </label>
                                 <textarea
                                         id="message"
                                         name="message"
-                                        placeholder="Tell us what you're thinking. No corporate speak required."
+                                        placeholder="Tell us what you're thinking."
                                         rows="5"
                                         required
-                                        style="width: 100%; padding: 0.75rem; border: 1px solid var(--color-border-scandi); border-radius: var(--radius-soft); font-family: var(--font-sans); font-size: 1rem; resize: vertical;"
+                                        style="width: 100%; padding: 0.75rem;"
                                 ></textarea>
                             </div>
 
-                            <button type="submit" class="scandi-btn scandi-btn-primary" style="align-self: flex-start;">
+                            <button type="submit" class="scandi-btn scandi-btn-primary">
                                 Send it
                             </button>
+
+                            <p id="contact-status" style="margin: 0; color: var(--color-text-light);"></p>
                         </form>
                     </div>
 
@@ -82,74 +93,64 @@ const faqTeaser = [
                     <div class="flex-col">
                         <div class="scandi-card">
                             <h3>Email</h3>
-                            <a href="mailto:hello@nordicsoft.com" style="color: var(--color-accent-primary); font-weight: 500;">
-                                hello@nordicsoft.com
-                            </a>
+                            <a href="mailto:hello@intrebit.com">hello@intrebit.com</a>
                         </div>
 
                         <div class="scandi-card">
                             <h3>Office</h3>
-                            <p style="color: var(--color-text-light);">
-                                We don't have one. We're distributed across time zones, working from wherever we're most productive. No commute, no fluorescent lights, no forced small talk in the break room. Yet.
+                            <p>
+                                We don't have one. We're distributed across time zones.
                             </p>
                         </div>
 
                         <div class="scandi-card">
                             <h3>Response Time</h3>
-                            <p style="color: var(--color-text-light);">
-                                We usually get back to you within 24 hours. Unless it's the weekend—we're millennials, we need our rest.
-                            </p>
-                        </div>
-
-                        <div class="scandi-card">
-                            <h3>Connect</h3>
-                            <div style="display: flex; gap: 1rem;">
-                                <a href="https://linkedin.com" target="_blank" style="color: var(--color-accent-primary ); font-weight: 500;">LinkedIn</a>
-                                <a href="https://github.com" target="_blank" style="color: var(--color-accent-primary ); font-weight: 500;">GitHub</a>
-                                <a href="https://twitter.com" target="_blank" style="color: var(--color-accent-primary ); font-weight: 500;">Twitter</a>
-                            </div>
+                            <p>Usually within 24 hours.</p>
                         </div>
                     </div>
-                </div>
-            </div>
-        </section>
-
-        {/* FAQ Teaser */}
-        <section class="scandi-section" style="background-color: rgba(0,0,0,0.01);">
-            <div class="container">
-                <div class="text-center" style="margin-bottom: 4rem;">
-                    <h2>Common questions</h2>
-                    <p style="margin: 0 auto; font-size: 1.1rem; color: var(--color-text-light);">
-                        Quick answers to things people usually ask.
-                    </p>
-                </div>
-
-                <div style="max-width: 800px; margin: 0 auto;">
-                    {faqTeaser.map((item) => (
-                            <details
-                                    style="margin-bottom: 1.5rem; border: 1px solid var(--color-border-scandi); border-radius: var(--radius-soft); padding: 1.5rem; cursor: pointer; transition: var(--transition-smooth);"
-                            >
-                                <summary style="font-weight: 600; font-size: 1.1rem; color: var(--color-text-main); list-style: none; display: flex; justify-content: space-between; align-items: center;">
-                                    {item.question}
-                                    <span style="margin-left: 1rem; color: var(--color-accent-primary);">+</span>
-                                </summary>
-                                <p style="margin-top: 1rem; color: var(--color-text-light); line-height: 1.8;">
-                                    {item.answer}
-                                </p>
-                            </details>
-                    ))}
-                </div>
-
-                <div class="text-center mt-large">
-                    <a href="/faq">
-                        <button class="scandi-btn scandi-btn-outline">
-                            See all FAQs
-                        </button>
-                    </a>
                 </div>
             </div>
         </section>
     </main>
 
     <Footer />
+
+    <!-- Client-side submit handler -->
+    <script>
+        const API_BASE = "https://api.intrebit.com";
+        const ENDPOINT = "/contact"; // update if needed
+
+        const form = document.getElementById("contact-form");
+        const statusEl = document.getElementById("contact-status");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            statusEl.textContent = "Sending…";
+
+            const formData = new FormData(form);
+            const payload = {
+                name: formData.get("name"),
+                email: formData.get("email"),
+                message: formData.get("message"),
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}${ENDPOINT}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!res.ok) {
+                    throw new Error(`Request failed (${res.status})`);
+                }
+
+                statusEl.textContent = "Sent. We’ll get back to you soon.";
+                form.reset();
+            } catch (err) {
+                statusEl.textContent = "Something went wrong. Please try again.";
+                console.error(err);
+            }
+        });
+    </script>
 </Layout>

@@ -1,0 +1,95 @@
+---
+import SocialIcon from "../shared/SocialIcon.astro";
+import FooterSection from "./FooterSection.astro";
+import {companyLinks, servicesLinks} from "../../config/site.ts";
+---
+
+<footer class="scandi-footer">
+    <div class="footer-content">
+        <div class="footer-grid">
+            <FooterSection links={servicesLinks} title="Services"/>
+            <FooterSection links={companyLinks} title="Company"/>
+
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <div class="social-links">
+                    <a href="mailto:hello@intrebit.com" title="Email" class="social-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                        </svg>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" title="LinkedIn" class="social-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+                        </svg>
+                    </a>
+                    <SocialIcon className="social-icon" fill="currentColor" height="24" href="https://github.com" stroke="" title="github" width="24"/>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Intrebit. We're just millennials trying to not burn out. No corporate BS here.</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+    .social-links {
+        display: flex;
+        gap: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.1 );
+        color: rgba(255, 255, 255, 0.7);
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .social-icon:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: rgba(255, 255, 255, 1);
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    @media (max-width: 768px) {
+        .social-links {
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 36px;
+            height: 36px;
+        }
+
+        .social-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .social-links {
+            gap: 0.75rem;
+        }
+
+        .social-icon {
+            width: 32px;
+            height: 32px;
+        }
+
+        .social-icon svg {
+            width: 18px;
+            height: 18px;
+        }
+    }
+</style>

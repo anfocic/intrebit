@@ -1,0 +1,19 @@
+---
+import Link from "../shared/Link.astro";
+import type {LinkProps} from "../../config/site.ts";
+
+interface Props {
+    links: any[];
+    title: string;
+}
+
+const {title, links} = Astro.props;
+---
+
+<div class="footer-section">
+    <h4>{title}</h4>
+    {links &&
+        links.map((link: LinkProps) => (
+                <Link className={link.className} path={link.href} label={link.label} />
+        ))}
+</div>

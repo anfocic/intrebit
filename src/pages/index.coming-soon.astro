@@ -1,0 +1,137 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Coming Soon">
+    <main style="min-height: 100vh; display: flex; align-items: center; justify-content: center; background-color: var(--color-bg-main);">
+        <section style="text-align: center; padding: 2rem;">
+            <div style="max-width: 600px; margin: 0 auto;">
+                {/* Logo/Brand */}
+                <div style="margin-bottom: 3rem;">
+                    <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">
+                        <span style="color: var(--color-text-main);">Intre</span><span style="color: var(--color-accent-primary);">Bit</span>
+                    </h1>
+                    <p style="color: var(--color-text-light); font-size: 1.1rem;">Software that doesn't suck</p>
+                </div>
+
+                {/* Main Message */}
+                <div style="margin-bottom: 3rem;">
+                    <h2 style="font-size: 3rem; margin-bottom: 1.5rem; color: var(--color-text-main);">
+                        Coming <span class="text-serif">Soon</span>
+                    </h2>
+                    <p style="font-size: 1.15rem; color: var(--color-text-light); line-height: 1.8; margin-bottom: 2rem;">
+                        We're building something better. No corporate BS, no bloatware—just clean, efficient software solutions.
+                    </p>
+                    <p style="font-size: 1rem; color: var(--color-text-light);">
+                        We'll be ready to help you build world-class software soon. In the meantime, get in touch.
+                    </p>
+                </div>
+
+                {/* CTA Buttons */}
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem;">
+                    <a href="mailto:andrej@intrebit.com">
+                        <button class="scandi-btn scandi-btn-primary">
+                            Get in touch
+                        </button>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank">
+                        <button class="scandi-btn scandi-btn-outline">
+                            Follow us
+                        </button>
+                    </a>
+                </div>
+
+                {/* Email Signup */}
+                <div style="background-color: rgba(178, 223, 219, 0.1 ); border: 1px solid rgba(178, 223, 219, 0.3); border-radius: var(--radius-soft); padding: 2rem; margin-bottom: 3rem;">
+                    <p style="font-size: 0.95rem; color: var(--color-text-light); margin-bottom: 1rem;">
+                        Want to know when we launch? Drop your email below.
+                    </p>
+                    <form style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                        <input
+                                type="email"
+                                placeholder="your@email.com"
+                                required
+                                style="flex: 1; min-width: 200px; padding: 0.75rem; border: 1px solid var(--color-border-scandi); border-radius: var(--radius-soft); font-family: var(--font-sans); font-size: 1rem;"
+                        />
+                        <button type="submit" class="scandi-btn scandi-btn-primary">
+                            Notify me
+                        </button>
+                    </form>
+                </div>
+
+                {/* Footer Message */}
+                <div style="color: var(--color-text-light); font-size: 0.9rem;">
+                    <p>Launching Q1 2026</p>
+                    <p style="margin-top: 1rem;">
+                        <a href="mailto:hello@intrebit.com" style="color: var(--color-accent-primary); text-decoration: underline;">
+                            hello@intrebit.com
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    {/* Floating Elements for Visual Interest */}
+    <style>
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        main {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        h2 {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            main {
+                padding: 1rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            form {
+                flex-direction: column;
+            }
+
+            input {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            p {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</Layout>

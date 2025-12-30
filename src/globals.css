@@ -326,8 +326,11 @@ a:hover {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* Responsive */
+/* ============================================
+   TABLET RESPONSIVE (768px and below)
+   ============================================ */
 @media (max-width: 768px) {
+    /* Typography */
     h1 {
         font-size: 2.5rem;
     }
@@ -336,10 +339,64 @@ a:hover {
         font-size: 2rem;
     }
 
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    h4 {
+        font-size: 1.1rem;
+    }
+
+    /* Container */
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    /* Flexbox */
+    .flex-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    /* Grid */
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    /* Button */
+    .scandi-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    /* Section */
+    .scandi-section {
+        padding: 4rem 0;
+    }
+
+    /* Navigation */
+    .nav-content {
+        padding: 0 1.5rem;
+    }
+
+    .nav-links {
+        gap: 1.5rem;
+        font-size: 0.95rem;
+    }
+
+    /* Hero */
     .scandi-hero {
         flex-direction: column;
-        padding-top: 4rem;
+        padding-top: 2rem;
         text-align: center;
+        min-height: auto;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        order: 2;
     }
 
     .hero-image {
@@ -349,23 +406,162 @@ a:hover {
         right: 0;
         top: 0;
         transform: none;
-        margin-top: 2rem;
+        margin-bottom: 2rem;
+        order: 1;
     }
 
-    .hero-content {
-        max-width: 100%;
+    /* Card */
+    .scandi-card {
+        padding: 1.75rem;
     }
 
-    .nav-links {
-        gap: 1.5rem;
-        font-size: 0.9rem;
+    .scandi-card:hover {
+        transform: translateY(-2px);
     }
 
+    /* Footer */
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .footer-content {
+        padding: 0 1.5rem;
+    }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE (480px and below)
+   ============================================ */
+@media (max-width: 480px) {
+    /* Typography */
+    h1 {
+        font-size: 1.75rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    h4 {
+        font-size: 1rem;
+    }
+
+    p {
+        font-size: 0.95rem;
+    }
+
+    /* Container */
     .container {
         padding: 0 1rem;
     }
 
+    /* Utility Margins */
+    .mt-small { margin-top: 0.75rem; }
+    .mt-medium { margin-top: 1.5rem; }
+    .mt-large { margin-top: 2rem; }
+
+    /* Button */
+    .scandi-btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.95rem;
+    }
+
+    /* Section */
     .scandi-section {
-        padding: 3rem 0;
+        padding: 2.5rem 0;
+    }
+
+    /* Navigation */
+    .nav-content {
+        padding: 0 1rem;
+        flex-wrap: wrap;
+    }
+
+    .nav-logo {
+        font-size: 1.25rem;
+    }
+
+    .nav-links {
+        gap: 1rem;
+        font-size: 0.85rem;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+    }
+
+    /* Hero */
+    .scandi-hero {
+        padding: 1.5rem 0;
+    }
+
+    .hero-image {
+        height: 250px;
+        margin-bottom: 1.5rem;
+    }
+
+    /* Card */
+    .scandi-card {
+        padding: 1.25rem;
+    }
+
+    /* Grid */
+    .grid {
+        gap: 1.5rem;
+    }
+
+    /* Footer */
+    .footer-content {
+        padding: 0 1rem;
+    }
+
+    .footer-grid {
+        gap: 1.5rem;
+    }
+
+    .footer-section h4 {
+        font-size: 1rem;
+    }
+
+    .footer-section a {
+        font-size: 0.9rem;
+    }
+
+    .footer-bottom {
+        font-size: 0.85rem;
+    }
+}
+
+/* ============================================
+   SMALL MOBILE (320px and below)
+   ============================================ */
+@media (max-width: 320px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.25rem;
+    }
+
+    .container {
+        padding: 0 0.75rem;
+    }
+
+    .nav-links {
+        gap: 0.75rem;
+    }
+
+    .scandi-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .scandi-card {
+        padding: 1rem;
     }
 }
