@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import SocialIcon from "../components/shared/SocialIcon.astro";
+import {pageSEO} from "../config/seo.pages.ts";
 ---
 
-<Layout title="Coming Soon" showHeader={false} showFooter={false}>
+<Layout seo={pageSEO.comingSoon}> showHeader={false} showFooter={false}>
     <main class="coming">
         <!-- Hero -->
         <section class="hero" aria-label="Coming soon hero">

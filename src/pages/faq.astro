@@ -3,9 +3,10 @@ import Layout from "../layouts/Layout.astro";
 import FAQ from "../components/FAQ.astro";
 import CTASection from "../components/shared/CTASection.astro";
 import { faqItems } from "../config/faq";
+import {pageSEO} from "../config/seo.pages.ts";
 ---
 
-<Layout title="FAQ">
+<Layout seo={pageSEO.faq}>
     <main>
         <FAQ items={faqItems} />
 

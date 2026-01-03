@@ -4,9 +4,10 @@ import Layout from "../layouts/Layout.astro";
 import ServicesHero from "../components/services/ServicesHero.astro";
 import ServicesList from "../components/services/ServicesList.astro";
 import ServicesCTA from "../components/services/ServicesCTA.astro";
+import {pageSEO} from "../config/seo.pages.ts";
 ---
 
-<Layout title="Services">
+<Layout seo={pageSEO.services}>
     <main>
         <ServicesHero />
         <ServicesList />

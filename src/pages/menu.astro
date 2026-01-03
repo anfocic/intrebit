@@ -1,9 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CTASection from "../components/shared/CTASection.astro";
+import {pageSEO} from "../config/seo.pages.ts";
 ---
 
-<Layout title="Menu">
+<Layout seo={pageSEO.menu}>
     <main>
         <section class="section">
             <div class="container menu">
