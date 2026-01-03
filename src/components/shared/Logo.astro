@@ -1,0 +1,47 @@
+---
+interface Props {
+    href?: string;
+    variant?: "default" | "small" | "large";
+    className?: string;
+}
+
+const {
+    href = "/",
+    variant = "default",
+    className = "",
+} = Astro.props;
+
+const Tag = href ? "a" : "div";
+---
+
+<Tag
+        href={href}
+        class={`logo logo--${variant} ${className}`}
+        aria-label="Intrebit home"
+>
+    Intrebit
+</Tag>
+
+<style>
+    .logo {
+        font-family: var(--font-display), serif;
+        font-weight: 750;
+        letter-spacing: -0.03em;
+        color: var(--text);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .logo--small {
+        font-size: 1rem;
+    }
+
+    .logo--default {
+        font-size: 1.25rem;
+    }
+
+    .logo--large {
+        font-size: 2rem;
+    }
+</style>

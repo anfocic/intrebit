@@ -1,0 +1,78 @@
+---
+const values = [
+    {
+        title: "No BS",
+        description:
+            "We say what we mean. No corporate speak, no empty promises. If something can't be done, we'll tell you straight up.",
+    },
+    {
+        title: "Craft over Clutter",
+        description:
+            "We obsess over details. Every line of code, every pixel, every interaction is intentional. We don't ship mediocrity.",
+    },
+    {
+        title: "Real Solutions",
+        description:
+            "We listen. We understand your actual problem, not the one you think you should have. Then we build something that solves it.",
+    },
+];
+---
+
+<section class="section section--soft">
+    <div class="container">
+        <header class="section__header">
+            <h2>What we actually care about</h2>
+        </header>
+
+        <div class="grid">
+            {values.map((v) => (
+                    <article class="card value-card">
+                        <h3>{v.title}</h3>
+                        <p>{v.description}</p>
+                    </article>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    .section {
+        padding: 5.5rem 0;
+    }
+
+    .section--soft {
+        background: rgba(0, 0, 0, 0.01);
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+    }
+
+    .section__header {
+        text-align: center;
+        margin-bottom: 3.5rem;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 2rem;
+    }
+
+    .value-card {
+        padding: 2rem;
+    }
+
+    .value-card p {
+        margin-top: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+    }
+</style>

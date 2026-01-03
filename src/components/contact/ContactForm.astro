@@ -1,0 +1,125 @@
+---
+
+---
+
+<form class="form" id="contact-form">
+    <div class="honeypot" aria-hidden="true">
+        <label for="company">Company</label>
+        <input
+                type="text"
+                id="company"
+                name="company"
+                autocomplete="off"
+                tabindex="-1"
+        />
+    </div>
+    <div class="form__field">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" placeholder="Your name" required />
+    </div>
+
+    <div class="form__field">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="your@email.com" required />
+    </div>
+
+    <div class="form__field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" placeholder="Tell us what you're thinking." rows="5" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn--primary form__submit">
+        Send it
+    </button>
+
+    <p id="contact-status" class="form__status" aria-live="polite"></p>
+
+    <script is:inline>
+        const API_BASE = "https://api.intrebit.com";
+        const ENDPOINT = "/contact";
+        const form = document.getElementById("contact-form");
+        const statusEl = document.getElementById("contact-status");
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            statusEl.textContent = "Sending…";
+
+            const formData = new FormData(form);
+            const payload = {
+                name: formData.get("name"),
+                email: formData.get("email"),
+                message: formData.get("message"),
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}${ENDPOINT}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+
+                if (!res.ok) throw new Error(`Request failed (${res.status})`);
+
+                statusEl.textContent = "Sent. We’ll get back to you soon.";
+                form.reset();
+            } catch (err) {
+                statusEl.textContent = "Something went wrong. Please try again.";
+                console.error(err);
+            }
+        });
+    </script>
+</form>
+
+<style>
+    .form {
+        display: grid;
+        gap: 1.5rem;
+        padding: 2.25rem;
+        border-radius: var(--radius-soft);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-soft);
+    }
+
+    .form__field label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 650;
+        color: var(--text);
+    }
+
+    .form__field input,
+    .form__field textarea {
+        width: 100%;
+        padding: 0.85rem 1rem;
+        border-radius: var(--radius-soft);
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.7);
+        color: var(--text);
+        transition: border-color 0.12s ease, box-shadow 0.12s ease, transform 0.12s ease;
+    }
+
+    :root[data-theme="dark"] .form__field input,
+    :root[data-theme="dark"] .form__field textarea {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .form__field input:focus,
+    .form__field textarea:focus {
+        outline: none;
+        border-color: rgba(178, 223, 219, 0.9);
+        box-shadow: 0 0 0 6px rgba(178, 223, 219, 0.16);
+        transform: translateY(-1px);
+    }
+
+    .form__submit {
+        width: 100%;
+    }
+
+    .form__status {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        min-height: 1.25rem;
+    }
+</style>

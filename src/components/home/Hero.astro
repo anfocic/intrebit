@@ -1,0 +1,88 @@
+---
+interface Props {
+    title?: string;
+    subtitle?: string;
+}
+
+const {
+    title = "Software that works.",
+    subtitle = "We build digital infrastructure, design interfaces that make sense, and engineer software solutions for companies that are tired of corporate BS.",
+} = Astro.props;
+---
+
+<section class="container hero">
+    <div class="hero__content">
+        <span class="hero__badge">Est. 2025</span>
+        <h1>{title.replace("works", "")}<span class="text-serif">works</span>.</h1>
+
+        <p class="hero__subtitle">
+            {subtitle}
+        </p>
+
+        <div class="hero__actions">
+            <a href="/contact">
+                <button class="btn btn--primary">Let's talk →</button>
+            </a>
+            <a href="/services">
+                <button class="btn btn--outline">See what we do</button>
+            </a>
+        </div>
+    </div>
+
+    <img
+            src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80"
+            alt="Modern office workspace"
+            class="hero__image"
+    />
+</section>
+
+<style>
+    .hero {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 4rem;
+        align-items: center;
+        padding: 4rem 0;
+    }
+
+    .hero__content {
+        max-width: 620px;
+    }
+
+    .hero__badge {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: rgba(178, 223, 219, 0.2);
+        color: var(--accent);
+        border-radius: var(--radius-round);
+        font-size: var(--text-sm);
+        font-weight: 600;
+        margin-bottom: 1.5rem;
+    }
+
+    .hero__subtitle {
+        font-size: 1.2rem;
+        color: var(--text-muted);
+        margin-top: 1.25rem;
+    }
+
+    .hero__actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1.75rem;
+        flex-wrap: wrap;
+    }
+
+    .hero__image {
+        width: 100%;
+        border-radius: var(--radius-soft);
+        box-shadow: var(--shadow-soft);
+    }
+
+    @media (max-width: 900px) {
+        .hero {
+            grid-template-columns: 1fr;
+            padding: 3rem 0;
+        }
+    }
+</style>

@@ -1,0 +1,73 @@
+---
+interface Props {
+    id: string;
+    title: string;
+    description: string;
+    bullets: string[];
+}
+
+const { id, title, description, bullets } = Astro.props;
+---
+
+<article id={id} class="card service">
+    <h2>{title}</h2>
+    <p class="service__desc">{description}</p>
+
+    <h4 class="service__subheading">What we offer</h4>
+
+    <ul class="service__bullets">
+        {bullets.map((item) => (
+                <li>✓ {item}</li>
+        ))}
+    </ul>
+
+    <a href="/contact" class="service__cta">
+        <button class="btn btn--primary">Inquire</button>
+    </a>
+</article>
+
+<style>
+    .service {
+        padding: 2.5rem;
+    }
+
+    .service__desc {
+        margin-top: 0.75rem;
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        max-width: 62ch;
+    }
+
+    .service__subheading {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-size: 1rem;
+        font-weight: 650;
+        color: var(--text);
+    }
+
+    .service__bullets {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem 1.5rem;
+        color: var(--text-muted);
+    }
+
+    .service__cta {
+        display: inline-flex;
+        margin-top: 2rem;
+    }
+
+    @media (max-width: 720px) {
+        .service {
+            padding: 2rem;
+        }
+
+        .service__bullets {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

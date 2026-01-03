@@ -1,0 +1,35 @@
+---
+interface Props {
+    title?: string;
+    subtitle?: string;
+}
+
+const {
+    title = "Our Services",
+    subtitle = "End-to-end technical solutions designed to help your business thrive in the digital age.",
+} = Astro.props;
+---
+
+<section class="section">
+    <div class="container hero">
+        <h1>{title}</h1>
+        <p class="hero__subtitle">{subtitle}</p>
+    </div>
+</section>
+
+<style>
+    .section {
+        padding: 5.5rem 0 2.5rem;
+    }
+
+    .hero {
+        text-align: center;
+        max-width: 720px;
+    }
+
+    .hero__subtitle {
+        margin-top: 1rem;
+        font-size: 1.1rem;
+        color: var(--text-muted);
+    }
+</style>

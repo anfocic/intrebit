@@ -1,76 +1,19 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/footer/Footer.astro';
-import FAQ from '../components/FAQ.astro';
-
-const faqItems = [
-    {
-        question: "How fast can you build it?",
-        answer: "Depends on what 'it' is and how fast you can make decisions. We move quick, but we're not magicians. A solid project usually takes 2-4 months. We'll give you a real timeline after we understand what you actually need."
-    },
-    {
-        question: "Do you do maintenance after launch?",
-        answer: "Yeah, we're not monsters. We stick around to make sure everything runs smoothly. We offer ongoing support, updates, and scaling as your product grows. We're invested in your success."
-    },
-    {
-        question: "What's your process?",
-        answer: "We actually listen first. We understand your problem, your users, and your constraints. Then we design, build, and test. No 47-slide presentations, no unnecessary meetings. Just solid work."
-    },
-    {
-        question: "Can you work with our existing team?",
-        answer: "Absolutely. We integrate well with in-house teams, other agencies, freelancers—whoever. We're collaborative and we don't have ego about it. Good code is good code."
-    },
-    {
-        question: "What if we don't know what we want?",
-        answer: "That's fine. Most people don't. We'll help you figure it out. We'll ask the right questions, challenge bad assumptions, and help you build something that actually solves your problem."
-    },
-    {
-        question: "Do you do retainers?",
-        answer: "Yeah. If you need ongoing work—new features, bug fixes, optimization—we can set up a retainer. Keeps things simple and you get priority access to our team."
-    },
-    {
-        question: "What tech do you use?",
-        answer: "Whatever makes sense for your project. React, Vue, Astro, Node, Python, AWS, GCP—we're not dogmatic. We pick tools based on what solves your problem best, not what we feel like using."
-    },
-    {
-        question: "How much does it cost?",
-        answer: "Depends on scope. We don't do cheap. We do fair. Check out our <a href='/menu' </a> for more details. (Yes, we know we're not a restaurant.)"
-    },
-    {
-        question: "How do you handle communication?",
-        answer: "Slack, email, calls—whatever works for you. We're distributed, so we're used to async communication. You'll hear from us regularly, and we actually respond to messages."
-    },
-    {
-        question: "Do you have case studies?",
-        answer: "We're working on it. We've built some solid projects, but we respect client confidentiality. Hit us up and we can talk through examples under NDA if needed."
-    }
-];
+import Layout from "../layouts/Layout.astro";
+import FAQ from "../components/FAQ.astro";
+import CTASection from "../components/shared/CTASection.astro";
+import { faqItems } from "../config/faq";
 ---
 
 <Layout title="FAQ">
-    <Navigation />
-
     <main>
-
-
         <FAQ items={faqItems} />
 
-        {/* CTA Section */}
-        <section class="scandi-section" style="background-color: rgba(0,0,0,0.01);">
-            <div class="container text-center">
-                <h2>Still have questions?</h2>
-                <p style="margin: 1.5rem auto 0; font-size: 1.1rem; color: var(--color-text-light); max-width: 600px;">
-                    Reach out and let's talk. We're pretty responsive.
-                </p>
-                <a href="/contact">
-                    <button class="scandi-btn scandi-btn-primary mt-large">
-                        Get in touch
-                    </button>
-                </a>
-            </div>
-        </section>
+        <CTASection
+                heading="Still have questions?"
+                subtitle="Reach out and let's talk. We're pretty responsive."
+                buttonLabel="Get in touch"
+                buttonHref="/contact"
+        />
     </main>
-
-    <Footer />
 </Layout>

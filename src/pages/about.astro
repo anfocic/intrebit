@@ -1,89 +1,15 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/footer/Footer.astro';
+import Layout from "../layouts/Layout.astro";
+
+import AboutHero from "../components/about/AboutHero.astro";
+import Values from "../components/about/Values.astro";
+import Philosophy from "../components/about/Philosophy.astro";
 ---
 
 <Layout title="About">
-    <Navigation />
-
     <main>
-        <section class="scandi-section">
-            <div class="container">
-                <div class="grid" style="grid-template-columns: 1fr 1fr; align-items: center; gap: 6rem;">
-                    <div>
-                        <h1 style="margin-bottom: 2rem;">Who are <span class="text-serif">we?</span></h1>
-                        <p style="font-size: 1.1rem; color: var(--color-text-light); margin-bottom: 2rem;">
-                            A bunch of millennials who got tired of corporate PowerPoint presentations, meaningless synergies, and "let's circle back on that." We decided to actually build something that doesn't suck.
-                        </p>
-                        <p style="font-size: 1.1rem; color: var(--color-text-light); margin-bottom: 2rem;">
-                            We're engineers, designers, and strategists who believe that good software shouldn't require a 47-slide deck to explain. No buzzwords. No BS. Just clean code, thoughtful design, and solutions that actually work.
-                        </p>
-                        <p style="font-size: 1.1rem; color: var(--color-text-light);">
-                            We're here to prove that you can build world-class tech without the corporate theater.
-                        </p>
-                    </div>
-                    <img
-                            src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&q=80"
-                            alt="Modern workspace"
-                            style="width: 100%; border-radius: var(--radius-soft ); box-shadow: var(--shadow-soft);"
-                    />
-                </div>
-            </div>
-        </section>
-
-        {/* Values Section */}
-        <section class="scandi-section" style="background-color: rgba(0,0,0,0.01);">
-            <div class="container">
-                <div class="text-center" style="margin-bottom: 4rem;">
-                    <h2>What we actually care about</h2>
-                </div>
-
-                <div class="grid">
-                    <div class="scandi-card">
-                        <h3>No BS</h3>
-                        <p style="color: var(--color-text-light);">
-                            We say what we mean. No corporate speak, no empty promises. If something can't be done, we'll tell you straight up.
-                        </p>
-                    </div>
-
-                    <div class="scandi-card">
-                        <h3>Craft over Clutter</h3>
-                        <p style="color: var(--color-text-light);">
-                            We obsess over details. Every line of code, every pixel, every interaction is intentional. We don't ship mediocrity.
-                        </p>
-                    </div>
-
-                    <div class="scandi-card">
-                        <h3>Real Solutions</h3>
-                        <p style="color: var(--color-text-light);">
-                            We listen. We understand your actual problem, not the one you think you should have. Then we build something that solves it.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        {/* Philosophy Section */}
-        <section class="scandi-section">
-            <div class="container">
-                <div class="text-center" style="margin-bottom: 4rem;">
-                    <h2>Our philosophy</h2>
-                </div>
-                <div class="scandi-card" style="max-width: 800px; margin: 0 auto;">
-                    <p style="font-size: 1.1rem; color: var(--color-text-light); margin-bottom: 1.5rem;">
-                        We grew up watching tech companies promise innovation and deliver bloatware. We watched startups chase funding instead of solving problems. We saw talented people burn out in corporate environments that didn't value their work.
-                    </p>
-                    <p style="font-size: 1.1rem; color: var(--color-text-light); margin-bottom: 1.5rem;">
-                        So we decided to do it differently. We build software that's simple, efficient, and actually solves real problems. We treat our team right. We don't pretend to be something we're not.
-                    </p>
-                    <p style="font-size: 1.1rem; color: var(--color-text-light);">
-                        If you're tired of corporate BS too, let's talk.
-                    </p>
-                </div>
-            </div>
-        </section>
+        <AboutHero />
+        <Values />
+        <Philosophy />
     </main>
-
-    <Footer />
 </Layout>

@@ -1,111 +1,15 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/footer/Footer.astro';
+import Layout from "../layouts/Layout.astro";
+
+import ServicesHero from "../components/services/ServicesHero.astro";
+import ServicesList from "../components/services/ServicesList.astro";
+import ServicesCTA from "../components/services/ServicesCTA.astro";
 ---
 
 <Layout title="Services">
-  <Navigation />
-  
-  <main>
-    <section class="scandi-section">
-      <div class="container">
-        <div class="text-center" style="margin-bottom: 4rem;">
-          <h1>Our Services</h1>
-          <p style="margin: 0 auto; font-size: 1.1rem; color: var(--color-text-light);">
-            End-to-end technical solutions designed to help your business thrive in the digital age.
-          </p>
-        </div>
-
-        <div class="flex-col" style="gap: 4rem;">
-          {/* Custom Software Development */}
-          <div id="development" class="scandi-card">
-            <h2>Custom Software Development</h2>
-            <p style="color: var(--color-text-light);">
-              We build robust, scalable, and secure applications tailored to your specific business requirements.
-            </p>
-            <h4 style="margin-top: 2rem; margin-bottom: 1rem;">What we offer:</h4>
-            <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; color: var(--color-text-light);">
-              <li>✓ Web Application Development</li>
-              <li>✓ Mobile App Development (iOS & Android)</li>
-              <li>✓ API Design & Integration</li>
-              <li>✓ Legacy System Modernization</li>
-            </ul>
-            <a href="/contact">
-              <button class="scandi-btn scandi-btn-primary mt-medium">Inquire</button>
-            </a>
-          </div>
-
-          {/* Developer Outsourcing */}
-          <div id="outsourcing" class="scandi-card">
-            <h2>Developer Outsourcing</h2>
-            <p style="color: var(--color-text-light);">
-              Augment your existing team with our skilled professionals or let us build a dedicated team for your project.
-            </p>
-            <h4 style="margin-top: 2rem; margin-bottom: 1rem;">What we offer:</h4>
-            <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; color: var(--color-text-light);">
-              <li>✓ Frontend & Backend Developers</li>
-              <li>✓ UI/UX Designers</li>
-              <li>✓ QA Engineers</li>
-              <li>✓ Project Managers</li>
-            </ul>
-            <a href="/contact">
-              <button class="scandi-btn scandi-btn-primary mt-medium">Inquire</button>
-            </a>
-          </div>
-
-          {/* Cloud Infrastructure */}
-          <div id="infrastructure" class="scandi-card">
-            <h2>Cloud Infrastructure</h2>
-            <p style="color: var(--color-text-light);">
-              Secure, scalable, and cost-effective cloud solutions to power your digital products.
-            </p>
-            <h4 style="margin-top: 2rem; margin-bottom: 1rem;">What we offer:</h4>
-            <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; color: var(--color-text-light);">
-              <li>✓ AWS / Azure / GCP Architecture</li>
-              <li>✓ DevOps & CI/CD Pipelines</li>
-              <li>✓ Serverless Computing</li>
-              <li>✓ Security Audits</li>
-            </ul>
-            <a href="/contact">
-              <button class="scandi-btn scandi-btn-primary mt-medium">Inquire</button>
-            </a>
-          </div>
-
-          {/* Strategic Consulting */}
-          <div id="consulting" class="scandi-card">
-            <h2>Strategic Consulting</h2>
-            <p style="color: var(--color-text-light);">
-              Expert guidance to help you navigate the complex technology landscape and make informed decisions.
-            </p>
-            <h4 style="margin-top: 2rem; margin-bottom: 1rem;">What we offer:</h4>
-            <ul style="list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; color: var(--color-text-light);">
-              <li>✓ Digital Transformation Strategy</li>
-              <li>✓ Technology Stack Selection</li>
-              <li>✓ Product Roadmap Planning</li>
-              <li>✓ Technical Feasibility Studies</li>
-            </ul>
-            <a href="/contact">
-              <button class="scandi-btn scandi-btn-primary mt-medium">Inquire</button>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    {/* CTA Section */}
-    <section class="scandi-section" style="background-color: rgba(0,0,0,0.01);">
-      <div class="container text-center">
-        <h2>Ready to transform your business?</h2>
-        <p style="margin: 1.5rem auto 0; font-size: 1.1rem; color: var(--color-text-light);">
-          Let's discuss how our technology solutions can drive your success.
-        </p>
-        <a href="/contact">
-          <button class="scandi-btn scandi-btn-primary mt-large">Get in Touch</button>
-        </a>
-      </div>
-    </section>
-  </main>
-
-  <Footer />
+    <main>
+        <ServicesHero />
+        <ServicesList />
+        <ServicesCTA />
+    </main>
 </Layout>

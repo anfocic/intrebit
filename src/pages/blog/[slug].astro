@@ -1,11 +1,10 @@
 ---
-import { getCollection } from 'astro:content';
-import Layout from '../../layouts/Layout.astro';
-import Navigation from '../../components/Navigation.astro';
-import Footer from "../../components/footer/Footer.astro";
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import PostLayout from "../../components/blog/PostLayout.astro";
 
 export async function getStaticPaths() {
-    const posts = await getCollection('blog');
+    const posts = await getCollection("blog");
     return posts.map((post) => ({
         params: { slug: post.slug },
         props: { post },
@@ -17,102 +16,13 @@ const { Content } = await post.render();
 ---
 
 <Layout title={post.data.title}>
-    <Navigation />
-
-    <main>
-        <article>
-            <section class="scandi-section">
-                <div class="container" style="max-width: 800px;">
-                    <div style="margin-bottom: 2rem;">
-                        <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;">
-                            {post.data.tags?.map((tag) => (
-                                    <span style="display: inline-block; padding: 0.25rem 0.75rem; background-color: rgba(178, 223, 219, 0.2); color: var(--color-accent-primary); border-radius: 20px; font-size: 0.8rem; font-weight: 500;">
-                  {tag}
-                </span>
-                            ))}
-                        </div>
-                        <h1 style="margin-bottom: 1rem;">{post.data.title}</h1>
-                        <div style="display: flex; gap: 2rem; font-size: 0.95rem; color: var(--color-text-light); margin-bottom: 2rem;">
-                            <span>{post.data.author}</span>
-                            <span>{new Date(post.data.pubDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                        </div>
-                    </div>
-
-                    {post.data.image && (
-                            <img
-                                    src={post.data.image}
-                                    alt={post.data.title}
-                                    style="width: 100%; height: 400px; object-fit: cover; border-radius: var(--radius-soft); margin-bottom: 3rem;"
-                            />
-                    )}
-
-                    <div class="blog-content">
-                        <Content />
-                    </div>
-
-                    <div style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--color-border-scandi);">
-                        <a href="/blog" style="color: var(--color-accent-primary); font-weight: 500;">
-                            ← Back to blog
-                        </a>
-                    </div>
-                </div>
-            </section>
-        </article>
-    </main>
-
-    <Footer />
+    <PostLayout
+            title={post.data.title}
+            author={post.data.author}
+            pubDate={post.data.pubDate}
+            tags={post.data.tags}
+            image={post.data.image}
+    >
+        <Content />
+    </PostLayout>
 </Layout>
-
-<style>
-    .blog-content :global(h2) {
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .blog-content :global(h3) {
-        margin-top: 1.5rem;
-        margin-bottom: 0.75rem;
-    }
-
-    .blog-content :global(p) {
-        margin-bottom: 1.5rem;
-        line-height: 1.8;
-    }
-
-    .blog-content :global(ul),
-    .blog-content :global(ol) {
-        margin-bottom: 1.5rem;
-        margin-left: 2rem;
-    }
-
-    .blog-content :global(li) {
-        margin-bottom: 0.5rem;
-        line-height: 1.8;
-    }
-
-    .blog-content :global(code) {
-        background-color: rgba(0, 0, 0, 0.05);
-        padding: 0.2rem 0.4rem;
-        border-radius: 4px;
-        font-family: 'Courier New', monospace;
-        font-size: 0.9em;
-    }
-
-    .blog-content :global(blockquote) {
-        border-left: 4px solid var(--color-accent-primary);
-        padding-left: 1.5rem;
-        margin: 2rem 0;
-        color: var(--color-text-light);
-        font-style: italic;
-    }
-
-    @media (max-width: 768px) {
-        .blog-content :global(h2) {
-            font-size: 1.5rem;
-        }
-
-        .blog-content :global(h3) {
-            font-size: 1.25rem;
-        }
-    }
-</style>

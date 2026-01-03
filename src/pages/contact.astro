@@ -1,156 +1,39 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navigation from '../components/Navigation.astro';
-import Footer from '../components/footer/Footer.astro';
+import Layout from "../layouts/Layout.astro";
 
-const faqTeaser = [
-    {
-        question: "How fast can you build it?",
-        answer: "Depends on what 'it' is and how fast you can make decisions. We move quick, but we're not magicians. A solid project usually takes 2-4 months."
-    },
-    {
-        question: "What's your process?",
-        answer: "We actually listen first. We understand your problem, your users, and your constraints. Then we design, build, and test."
-    },
-    {
-        question: "How much does it cost?",
-        answer: "Depends on scope. We don't do cheap. We do fair. Check out our menu for more details. (Yes, we know we're not a restaurant.)"
-    }
-];
+import ContactHero from "../components/contact/ContactHero.astro";
+import ContactForm from "../components/contact/ContactForm.astro";
+import ContactInfo from "../components/contact/ContactInfo.astro";
 ---
 
 <Layout title="Contact">
-    <Navigation />
-
     <main>
-        <section class="scandi-section">
-            <div class="container">
-                <div class="text-center" style="margin-bottom: 4rem;">
-                    <h1>Let's talk</h1>
-                    <p style="margin: 1.5rem auto 0; font-size: 1.1rem; color: var(--color-text-light); max-width: 600px;">
-                        Got a project? A wild idea? Or just want to complain about corporate life? We're here for it.
-                    </p>
-                </div>
+        <ContactHero />
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1000px; margin: 0 auto;">
-                    {/* Contact Form */}
-                    <div>
-                        <form
-                                id="contact-form"
-                                style="display: flex; flex-direction: column; gap: 1.5rem;"
-                        >
-                            <div>
-                                <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
-                                    Name
-                                </label>
-                                <input
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        placeholder="Your name"
-                                        required
-                                        style="width: 100%; padding: 0.75rem;"
-                                />
-                            </div>
-
-                            <div>
-                                <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
-                                    Email
-                                </label>
-                                <input
-                                        type="email"
-                                        id="email"
-                                        name="email"
-                                        placeholder="your@email.com"
-                                        required
-                                        style="width: 100%; padding: 0.75rem;"
-                                />
-                            </div>
-
-                            <div>
-                                <label for="message" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">
-                                    Message
-                                </label>
-                                <textarea
-                                        id="message"
-                                        name="message"
-                                        placeholder="Tell us what you're thinking."
-                                        rows="5"
-                                        required
-                                        style="width: 100%; padding: 0.75rem;"
-                                ></textarea>
-                            </div>
-
-                            <button type="submit" class="scandi-btn scandi-btn-primary">
-                                Send it
-                            </button>
-
-                            <p id="contact-status" style="margin: 0; color: var(--color-text-light);"></p>
-                        </form>
-                    </div>
-
-                    {/* Contact Info */}
-                    <div class="flex-col">
-                        <div class="scandi-card">
-                            <h3>Email</h3>
-                            <a href="mailto:hello@intrebit.com">hello@intrebit.com</a>
-                        </div>
-
-                        <div class="scandi-card">
-                            <h3>Office</h3>
-                            <p>
-                                We don't have one. We're distributed across time zones.
-                            </p>
-                        </div>
-
-                        <div class="scandi-card">
-                            <h3>Response Time</h3>
-                            <p>Usually within 24 hours.</p>
-                        </div>
-                    </div>
-                </div>
+        <section class="section">
+            <div class="container contact-grid">
+                <ContactForm />
+                <ContactInfo />
             </div>
         </section>
     </main>
 
-    <Footer />
+    <style>
+        .section {
+            padding: 0 0 6rem;
+        }
 
-    <!-- Client-side submit handler -->
-    <script>
-        const API_BASE = "https://api.intrebit.com";
-        const ENDPOINT = "/contact"; // update if needed
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 0.9fr;
+            gap: 3rem;
+            max-width: 1000px;
+        }
 
-        const form = document.getElementById("contact-form");
-        const statusEl = document.getElementById("contact-status");
-
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            statusEl.textContent = "Sending…";
-
-            const formData = new FormData(form);
-            const payload = {
-                name: formData.get("name"),
-                email: formData.get("email"),
-                message: formData.get("message"),
-            };
-
-            try {
-                const res = await fetch(`${API_BASE}${ENDPOINT}`, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(payload),
-                });
-
-                if (!res.ok) {
-                    throw new Error(`Request failed (${res.status})`);
-                }
-
-                statusEl.textContent = "Sent. We’ll get back to you soon.";
-                form.reset();
-            } catch (err) {
-                statusEl.textContent = "Something went wrong. Please try again.";
-                console.error(err);
+        @media (max-width: 900px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
             }
-        });
-    </script>
+        }
+    </style>
 </Layout>

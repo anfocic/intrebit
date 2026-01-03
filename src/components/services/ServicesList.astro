@@ -1,0 +1,29 @@
+---
+import ServiceCard from "./ServiceCard.astro";
+import { services } from "../../config/services";
+---
+
+<section class="section">
+    <div class="container stack">
+        {services.map((s) => (
+                <ServiceCard
+                        id={s.id}
+                        title={s.title}
+                        description={s.description}
+                        bullets={s.bullets}
+                />
+        ))}
+    </div>
+</section>
+
+<style>
+    .section {
+        padding: 0 0 5.5rem;
+    }
+
+    .stack {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+    }
+</style>
