@@ -16,3 +16,8 @@ export const companyLinks: LinkProps[] = [
     {label: 'Contact', href: '/contact'},
     {label: 'Home', href: '/home'},
 ]
+
+export const site = {
+    mode: "coming-soon" as "coming-soon" | "full",
+    // mode: "full" as "coming-soon" | "full",
+};

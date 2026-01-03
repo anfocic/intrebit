@@ -1,15 +1,450 @@
 ---
 import Layout from "../layouts/Layout.astro";
-
-import Hero from "../components/home/Hero.astro";
-import ServicesPreview from "../components/home/ServicesPreview.astro";
-import Philosophy from "../components/home/Philosophy.astro";
+import SocialIcon from "../components/shared/SocialIcon.astro";
 ---
 
-<Layout title="Home">
-    <main>
-        <Hero/>
-        <ServicesPreview/>
-        <Philosophy/>
+<Layout title="Coming Soon" showHeader={false} showFooter={false}>
+    <main class="coming">
+        <!-- Hero -->
+        <section class="hero" aria-label="Coming soon hero">
+            <!-- Background blobs -->
+            <div class="blob blob--1"></div>
+            <div class="blob blob--2"></div>
+            <div class="blob blob--3"></div>
+
+            <div class="hero__inner">
+                <header class="hero__header">
+                    <h1 class="hero__title">Intrebit</h1>
+                    <p class="hero__subtitle">
+                        No buzzwords. No junk. Just solid tools that work.
+                    </p>
+                </header>
+
+                <div class="hero__actions">
+                    <a class="btn btn--primary" href="mailto:hello@intrebit.com">
+                        Get in touch
+                    </a>
+                    <a
+                            class="btn btn--ghost"
+                            href="https://www.linkedin.com/company/intrebit"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                    >
+                        Follow us
+                    </a>
+                </div>
+
+                <div class="badge" aria-label="Launch badge">
+                    <span class="badge__dot"></span>
+                    <span class="badge__text">Launching in Q1 2026</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter" aria-label="Newsletter signup">
+            <div class="container newsletter__inner">
+                <div class="card">
+                    <div class="card__header">
+                        <h2 class="card__title">Stay in the loop</h2>
+                        <p class="card__subtitle">
+                            Get notified when we launch. No spam, no corporate emails. Just real updates.
+                        </p>
+                    </div>
+
+                    <form class="form" id="newsletter-form">
+                        <!-- Honeypot (spam trap) -->
+                        <label class="honeypot" aria-hidden="true">
+                            Do not fill
+                            <input type="text" name="company" tabindex="-1" autocomplete="off" />
+                        </label>
+
+                        <input
+                                class="input"
+                                type="email"
+                                name="email"
+                                placeholder="your@email.com"
+                                required
+                                autocomplete="email"
+                        />
+                        <button class="btn btn--primary" type="submit">
+                            Notify me
+                        </button>
+                    </form>
+
+                    <p class="note">One email when we launch. That’s it.</p>
+                    <p class="status" id="newsletter-status" aria-live="polite"></p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer__text">
+                © 2026 Intrebit. We're just millennials trying to not burn out.
+            </p>
+
+            <div class="footer__social">
+                <SocialIcon
+                        icon="mastodon"
+                        href="https://mastodon.social/@intrebit"
+                        title="Mastodon"
+                        rel="me noopener noreferrer"
+                        className="footer__social-icon"
+                />
+            </div>
+        </footer>
     </main>
+
+    <script is:inline>
+        (() => {
+            const form = document.getElementById("newsletter-form");
+            const status = document.getElementById("newsletter-status");
+
+            if (!form || !status) return;
+
+            form.addEventListener("submit", async (e) => {
+                e.preventDefault();
+                status.textContent = "Sending…";
+
+                const data = new FormData(form);
+                if (data.get("company")) {
+                    // Honeypot hit → pretend it worked
+                    status.textContent = "Thanks — you're on the list.";
+                    form.reset();
+                    return;
+                }
+
+                const email = data.get("email");
+
+                try {
+                    // Replace with real endpoint later
+                    // await fetch("/api/newsletter", { method: "POST", body: JSON.stringify({ email }) })
+
+                    await new Promise((r) => setTimeout(r, 700)); // fake delay
+                    status.textContent = "Thanks — you're on the list.";
+                    form.reset();
+                } catch (err) {
+                    console.error(err);
+                    status.textContent = "Something went wrong. Try again.";
+                }
+            });
+        })();
+    </script>
+
+    <style>
+        /* Layout */
+        .coming {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero */
+        .hero {
+            position: relative;
+            flex: 1;
+            display: grid;
+            place-items: center;
+            padding: 5rem 2rem 4rem;
+            overflow: hidden;
+        }
+
+        .hero__inner {
+            text-align: center;
+            max-width: 650px;
+            position: relative;
+            z-index: 2;
+            animation: fadeUp 0.8s ease-out both;
+        }
+
+        .hero__title {
+            font-size: clamp(2.5rem, 7vw, 4rem);
+            font-weight: 750;
+            letter-spacing: -0.04em;
+            margin: 0 0 0.6rem;
+        }
+
+        .hero__subtitle {
+            margin: 0 auto 2.4rem;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 560px;
+            line-height: 1.6;
+        }
+
+        .hero__actions {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            height: 48px;
+            padding: 0 1.25rem;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 650;
+            text-decoration: none;
+            border: 1px solid transparent;
+            transition: transform 0.16s var(--ease), background 0.16s var(--ease);
+        }
+
+        .btn--primary {
+            background: var(--accent);
+            color: var(--bg);
+        }
+
+        .btn--primary:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.05);
+        }
+
+        .btn--ghost {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: var(--text);
+        }
+
+        .btn--ghost:hover {
+            transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.75rem 1.1rem;
+            border-radius: 999px;
+            border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+            background: color-mix(in srgb, var(--accent) 14%, transparent);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .badge__dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: var(--accent);
+            box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+            animation: pulse 1.6s ease-in-out infinite;
+        }
+
+        .badge__text {
+            font-size: 0.82rem;
+            font-weight: 750;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--text);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            padding: 4rem 0;
+            border-top: 1px solid var(--border);
+            background: color-mix(in srgb, var(--accent) 8%, transparent);
+        }
+
+        .card {
+            border-radius: 18px;
+            border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+            background: color-mix(in srgb, var(--bg) 75%, white);
+            padding: 2.25rem;
+            text-align: center;
+            box-shadow: 0 18px 55px rgba(0,0,0,0.06);
+            backdrop-filter: blur(10px);
+        }
+
+        .card__title {
+            margin: 0 0 0.6rem;
+            font-size: 1.8rem;
+            letter-spacing: -0.03em;
+        }
+
+        .card__subtitle {
+            margin: 0 auto 1.8rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .form {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .input {
+            flex: 1;
+            min-width: 240px;
+            height: 48px;
+            padding: 0 1rem;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.9);
+            font-size: 1rem;
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+            box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+        }
+
+        .note {
+            margin: 1.1rem 0 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            opacity: 0.9;
+        }
+
+        .status {
+            margin-top: 1rem;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            min-height: 1.2em;
+        }
+
+        /* Honeypot */
+        .honeypot {
+            position: absolute;
+            left: -9999px;
+            width: 1px;
+            height: 1px;
+            overflow: hidden;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer__text {
+            margin: 0;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .footer__social {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .footer__social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.75);
+        }
+
+        /* Background blobs */
+        .blob {
+            position: absolute;
+            border-radius: 999px;
+            opacity: 0.06;
+            pointer-events: none;
+            filter: blur(0px);
+        }
+
+        .blob--1 {
+            width: 320px;
+            height: 320px;
+            top: -110px;
+            right: -90px;
+            background: var(--accent);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .blob--2 {
+            width: 220px;
+            height: 220px;
+            bottom: -70px;
+            left: -70px;
+            background: color-mix(in srgb, var(--accent) 40%, white);
+            animation: drift 8s ease-in-out infinite;
+        }
+
+        .blob--3 {
+            width: 160px;
+            height: 160px;
+            top: 55%;
+            left: 10%;
+            background: var(--accent);
+            animation: float 7s ease-in-out infinite;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(18px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0%,100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: .85; }
+        }
+
+        @keyframes float {
+            0%,100% { transform: translateY(0px); }
+            50% { transform: translateY(-18px); }
+        }
+
+        @keyframes drift {
+            0%,100% { transform: translateX(0px) translateY(0px); }
+            50% { transform: translateX(18px) translateY(-18px); }
+        }
+
+        /* Mobile */
+        @media (max-width: 520px) {
+            .hero {
+                padding: 4rem 1.25rem 3.25rem;
+            }
+
+            .container {
+                padding: 0 1.25rem;
+            }
+
+            .card {
+                padding: 1.75rem;
+            }
+
+            .form {
+                flex-direction: column;
+            }
+
+            .btn, .input {
+                width: 100%;
+            }
+        }
+    </style>
 </Layout>

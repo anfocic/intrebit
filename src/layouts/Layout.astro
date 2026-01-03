@@ -1,6 +1,8 @@
 ---
 import "../styles/fonts.css";
-import "../styles/globals.css";
+import "../styles/tokens.css";
+import "../styles/theme.css";
+import "../styles/base.css";
 import "../styles/prose.css";
 
 import Footer from "../components/footer/Footer.astro";
@@ -12,17 +14,19 @@ interface Props {
     showFooter?: boolean;
 }
 
-const {title, showHeader = true, showFooter = true} = Astro.props;
+const { title, showHeader = true, showFooter = true } = Astro.props;
 ---
 
+<!doctype html>
 <html lang="en">
 <head>
     <script is:inline>
         (() => {
             const stored = localStorage.getItem("theme");
-            const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            const theme = stored ?? (systemDark ? "dark" : "light");
-            document.documentElement.dataset.theme = theme;
+            if (!stored) return; // ✅ if no manual choice, let CSS handle it
+
+            // only apply if user explicitly chose a theme before
+            document.documentElement.dataset.theme = stored;
         })();
     </script>
 
@@ -44,13 +48,13 @@ const {title, showHeader = true, showFooter = true} = Astro.props;
 </head>
 
 <body>
-{showHeader &&
-        <Header/>}
+{showHeader && <Header />}
 
-<slot/>
+<main>
+    <slot />
+</main>
 
-{showFooter &&
-        <Footer/>}
+{showFooter && <Footer />}
 
 <script is:inline>
     function setTheme(theme) {
@@ -59,7 +63,10 @@ const {title, showHeader = true, showFooter = true} = Astro.props;
     }
 
     function toggleTheme() {
-        const current = document.documentElement.dataset.theme || "light";
+        const current =
+            document.documentElement.dataset.theme ||
+            (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+
         setTheme(current === "dark" ? "light" : "dark");
     }
 
