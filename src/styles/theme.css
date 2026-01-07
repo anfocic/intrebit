@@ -1,9 +1,4 @@
-/* =========================================================
-   THEME — Intrebit
-   Maps tokens → theme variables.
-   Light is default. Dark via data-theme="dark".
-   Includes OS fallback if no data-theme is set.
-   ========================================================= */
+
 
 :root {
     /* Default theme = light */
@@ -21,8 +16,6 @@
     --border: rgba(14, 42, 71, 0.12);
 
     /* Accent */
-    --accent: var(--brand-mint);
-    --accent-soft: var(--brand-mint-soft);
 
     /* Browser UI hint */
     color-scheme: light;
@@ -39,7 +32,6 @@
 
     --border: rgba(246, 244, 239, 0.12);
 
-    --accent: var(--brand-mint);
     --accent-soft: rgba(178, 223, 219, 0.25);
 
     color-scheme: dark;
@@ -58,7 +50,6 @@
 
         --border: rgba(246, 244, 239, 0.12);
 
-        --accent: var(--brand-mint);
         --accent-soft: rgba(178, 223, 219, 0.25);
 
         color-scheme: dark;

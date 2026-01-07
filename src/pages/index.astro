@@ -9,20 +9,25 @@ import {pageSEO} from "../config/seo.pages.ts";
         <!-- Hero -->
         <section class="hero" aria-label="Coming soon hero">
             <!-- Background blobs -->
-            <div class="blob blob--1"></div>
-            <div class="blob blob--2"></div>
-            <div class="blob blob--3"></div>
+            <div class="blob blob--1" data-blob></div>
+            <div class="blob blob--2" data-blob></div>
+            <div class="blob blob--3" data-blob></div>
 
             <div class="hero__inner">
                 <header class="hero__header">
-                    <h1 class="hero__title">Intrebit</h1>
+                    <h1 class="hero__title">intrebit</h1>
                     <p class="hero__subtitle">
-                        No buzzwords. No junk. Just solid tools that work.
+                        <strong>Software, built properly.</strong><br/>
+                        <span class="hero__subtitle--soft">No buzzwords. No nonsense.</span>
                     </p>
                 </header>
 
+                <p class="hero__availability">
+                    Open for new work.
+                </p>
+
                 <div class="hero__actions">
-                    <a class="btn btn--primary" href="mailto:hello@intrebit.com">
+                    <a class="btn btn--primary" href="#contact">
                         Get in touch
                     </a>
                     <a
@@ -35,42 +40,41 @@ import {pageSEO} from "../config/seo.pages.ts";
                     </a>
                 </div>
 
-                <div class="badge" aria-label="Launch badge">
-                    <span class="badge__dot"></span>
-                    <span class="badge__text">Launching in Q1 2026</span>
-                </div>
             </div>
         </section>
-
+        <div class="scroll-cue" aria-hidden="true">
+            <span></span>
+        </div>
+        <div class="section-divider"></div>
         <!-- About -->
         <section class="about" aria-label="About Intrebit">
             <div class="container about__inner">
                 <header class="about__header">
                     <h2 class="about__title">What we do</h2>
                     <p class="about__subtitle">
-                         Design and build simple products that remove busywork and make operations smoother.
+                        Build it right. Keep it running.
                     </p>
                 </header>
 
                 <div class="about__grid" role="list">
-                    <article class="about-card" role="article">
-                        <h3 class="about-card__title">Simple by default</h3>
+                    <article class="about-card" role="listitem">
+                        <h3 class="about-card__title">Development</h3>
                         <p class="about-card__text">
-                            Clean screens, clear flow. You shouldn’t need a manual to use your own tools.
+                            We ship it, deploy it, and keep it stable. You shouldn’t have to care about the rest.
                         </p>
                     </article>
 
                     <article class="about-card" role="listitem">
-                        <h3 class="about-card__title">Reliable systems</h3>
+                        <h3 class="about-card__title">Consulting</h3>
                         <p class="about-card__text">
-                            Stable, maintainable, and built to grow with you.
+                            We look at what you’ve got, spot what’s broken, and give you a clear plan forward.
                         </p>
                     </article>
 
                     <article class="about-card" role="listitem">
-                        <h3 class="about-card__title">Fast and clear</h3>
+                        <h3 class="about-card__title">Automation</h3>
                         <p class="about-card__text">
-                            Fast delivery. Clear updates. No drama.
+                            Less admin. More time. Happy days.
                         </p>
                     </article>
                 </div>
@@ -78,50 +82,81 @@ import {pageSEO} from "../config/seo.pages.ts";
             </div>
         </section>
 
-        <!-- Newsletter -->
-        <section class="newsletter" aria-label="Newsletter signup">
-            <div class="container newsletter__inner">
+        <!-- Contact -->
+        <div class="section-divider"></div>
+
+        <section id="contact" class="contact" aria-label="Contact form">
+            <div class="container contact__inner">
                 <div class="card">
                     <div class="card__header">
-                        <h2 class="card__title">Stay in the loop</h2>
+                        <h2 class="card__title">Let’s talk</h2>
                         <p class="card__subtitle">
-                            Get notified when we launch. No spam, no corporate emails. Just real updates.
+                            The site’s still cooking, but we’re available.
                         </p>
                     </div>
 
-                    <form class="form" id="newsletter-form">
+                    <form class="form form--contact" id="contact-form">
                         <!-- Honeypot (spam trap) -->
                         <label class="honeypot" aria-hidden="true">
                             Do not fill
                             <input type="text" name="company" tabindex="-1" autocomplete="off"/>
                         </label>
 
-                        <input
-                                class="input"
-                                type="email"
-                                name="email"
-                                id="newsletter-email"
-                                placeholder="your@email.com"
+                        <div class="form__row">
+                            <input
+                                    class="input"
+                                    type="text"
+                                    name="name"
+                                    id="contact-name"
+                                    placeholder="Your name (optional)"
+                                    autocomplete="name"
+                            />
+
+                            <input
+                                    class="input"
+                                    type="email"
+                                    name="email"
+                                    id="contact-email"
+                                    placeholder="your@email.com"
+                                    required
+                                    autocomplete="email"
+                            />
+                        </div>
+
+                        <textarea
+                                class="textarea"
+                                name="message"
+                                id="contact-message"
+                                placeholder="What do you need help with?"
+                                rows="4"
                                 required
-                                autocomplete="email"
-                        />
+                        ></textarea>
+
                         <button class="btn btn--primary" type="submit">
-                            Notify me
+                            Send
                         </button>
                     </form>
 
-                    <p class="note">One email when we launch. That’s it.</p>
-                    <p class="status" id="newsletter-status" aria-live="polite"></p>
+                    <p class="note">
+                        Or email <span id="email-slot"></span>
+                    </p>
+
+                    <p class="note">
+                        We’ll only use this to reply. No spam.
+                    </p>
+
+                    <p class="status" id="contact-status" aria-live="polite"></p>
                 </div>
             </div>
         </section>
-
         <!-- Footer -->
         <footer class="footer">
             <p class="footer__text">
                 © 2026 Intrebit. We're just millennials trying to not burn out.
             </p>
-
+            <button class="theme-toggle" type="button" aria-label="Toggle theme">
+                🌗
+            </button>
             <div class="footer__social">
                 <SocialIcon
                         icon="mastodon"
@@ -142,7 +177,7 @@ import {pageSEO} from "../config/seo.pages.ts";
         </footer>
     </main>
 
-    <script is:inline src="/scripts/newsletter.js" defer/>
+    <script is:inline src="/scripts/contact.js" defer/>
     <style>
         .coming {
             min-height: 100vh;
@@ -164,8 +199,8 @@ import {pageSEO} from "../config/seo.pages.ts";
             flex: 1;
             display: grid;
             place-items: center;
-            padding: 5rem 2rem 4rem;
             overflow: hidden;
+            padding: 8rem 2rem 6rem;
         }
 
         .hero__inner {
@@ -177,11 +212,12 @@ import {pageSEO} from "../config/seo.pages.ts";
         }
 
         .hero__title {
+            font-family: var(--font-brand), serif;
+            letter-spacing: 0.05em;
             font-size: clamp(2.5rem, 7vw, 4rem);
             font-weight: 750;
-            letter-spacing: -0.04em;
             margin: 0 0 0.6rem;
-            color: var(--text);
+            color: var(--brand-navy);
         }
 
         .hero__subtitle {
@@ -202,43 +238,59 @@ import {pageSEO} from "../config/seo.pages.ts";
 
         /* ---------- Buttons (base) ---------- */
         .btn {
-            height: 50px;
+            height: 56px;                 /* match inputs */
             padding: 0 1.35rem;
             border-radius: 999px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+
             font-weight: 650;
+            font-size: 1rem;
+            letter-spacing: -0.01em;
+
+            cursor: pointer;
+            user-select: none;
             text-decoration: none;
-            border: 1px solid transparent;
-            transition: transform 0.16s var(--ease),
-            background 0.16s var(--ease),
-            border-color 0.16s var(--ease),
-            color 0.16s var(--ease),
-            box-shadow 0.16s var(--ease),
-            filter 0.16s var(--ease);
+
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: rgba(255, 255, 255, 0.92);
+
+            transition:
+                    transform 0.16s var(--ease),
+                    background 0.16s var(--ease),
+                    border-color 0.16s var(--ease),
+                    box-shadow 0.16s var(--ease),
+                    filter 0.16s var(--ease);
         }
 
         .btn:hover {
             transform: translateY(-1px);
+            background: rgba(255, 255, 255, 0.10);
+            border-color: rgba(255, 255, 255, 0.22);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            filter: brightness(0.98);
+        }
+
+        /* keyboard accessibility */
+        .btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 5px rgba(178, 223, 219, 0.18);
         }
 
         .btn--primary {
-            background: linear-gradient(
-                    180deg,
-                    rgba(255, 255, 255, 0.06),
-                    rgba(255, 255, 255, 0.02)
-            );
-            color: var(--text);
-            border-color: rgba(255, 255, 255, 0.12);
-            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22),
-            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            background: rgba(255,255,255,0.10);
+            border-color: rgba(255,255,255,0.22);
         }
 
         .btn--primary:hover {
-            border-color: rgba(255, 255, 255, 0.18);
-            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28),
-            inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            background: rgba(255,255,255,0.14);
+            border-color: rgba(255,255,255,0.28);
         }
 
         .btn--ghost {
@@ -267,48 +319,94 @@ import {pageSEO} from "../config/seo.pages.ts";
             color: var(--text);
         }
 
-        /* ---------- Badge ---------- */
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.65rem;
-            padding: 0.75rem 1.25rem;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.10);
-            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22),
-            inset 0 1px 0 rgba(255, 255, 255, 0.06);
-            backdrop-filter: blur(12px);
+        .section--glow {
+            background: radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.05), transparent 55%);
         }
 
-        .badge__dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 999px;
-            background: var(--accent);
-            box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent),
-            0 0 24px color-mix(in srgb, var(--accent) 30%, transparent);
-            animation: pulse 1.6s ease-in-out infinite;
+        /* ---------- Contact section ---------- */
+        .contact {
+            position: relative;
+            padding: 5rem 0;
+            background: transparent;
         }
 
-        .badge__text {
-            font-size: 0.82rem;
-            font-weight: 750;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--text);
+        .section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 60%);
+            pointer-events: none;
         }
 
-        /* ---------- Newsletter ---------- */
-        .newsletter {
-            padding: 3.75rem 0;
-            border-top: 1px solid var(--border);
-            background: color-mix(in srgb, var(--text) 3%, transparent);
-        }
-
-        .newsletter__inner {
+        .contact__inner {
             display: flex;
             justify-content: center;
+        }
+
+        .hero__availability {
+            margin: 0 0 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 650;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            opacity: 0.9;
+            padding: 2rem 0;
+        }
+
+        .hero__availability {
+            color: var(--brand-ivory);
+        }
+        :root[data-theme="light"] .hero__availability {
+            color: var(--brand-navy);
+        }
+
+        /* Contact form layout */
+        .form--contact {
+            display: grid;
+            gap: 0.95rem;
+            margin-top: 1.4rem;
+        }
+
+        .form__row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            width: 100%;
+        }
+
+
+        .textarea::placeholder {
+            color: rgba(255, 255, 255, 0.45);
+            font-weight: 500;
+        }
+
+        .input:focus,
+        textarea:focus {
+            border-color: rgba(178, 223, 219, 0.6);
+            box-shadow: 0 0 0 6px rgba(178, 223, 219, 0.12);
+        }
+
+        /* Dark mode textarea */
+        :root[data-theme="dark"] .textarea {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(255, 255, 255, 0.14);
+            color: rgba(246, 244, 239, 0.92);
+        }
+
+        /* Make the button full width */
+        .form--contact .btn {
+            width: 100%;
+            height: 52px;
+        }
+
+
+
+        /* Mobile: stack inputs */
+        @media (max-width: 520px) {
+            .form__row {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Card */
@@ -326,7 +424,9 @@ import {pageSEO} from "../config/seo.pages.ts";
         }
 
         :root[data-theme="dark"] .card {
-            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 18px 55px rgba(0, 0, 0, 0.06);
         }
 
         .card__title {
@@ -337,10 +437,18 @@ import {pageSEO} from "../config/seo.pages.ts";
         }
 
         .card__subtitle {
-            margin: 0 auto 1.8rem;
+            margin: 0 auto 3rem;
             max-width: 560px;
             line-height: 1.6;
             color: var(--text-muted);
+        }
+
+        .section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top, rgba(255,255,255,0.04), transparent 60%);
+            pointer-events: none;
         }
 
         /* ---------- Form (BIGGER input, SMALLER button) ---------- */
@@ -353,24 +461,45 @@ import {pageSEO} from "../config/seo.pages.ts";
             margin-top: 1.2rem;
         }
 
-        /* Input gets bigger + visually stronger */
-        .input {
-            min-width: 320px; /* ⬅️ bigger */
-            max-width: 520px; /* prevents it becoming massive on desktop */
-            height: 60px; /* ⬅️ bigger */
-            padding: 0 1.35rem;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-            font-size: 1.08rem;
-            letter-spacing: -0.01em;
-            transition: border-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
+        .input,
+        .textarea {
+            width: 100%;
+            border-radius: 16px;
+            padding: 18px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.92);
+            font-size: 1.05rem;
+            line-height: 1.5;
         }
 
-        .input::placeholder {
-            color: var(--text-muted);
-            opacity: 0.8;
+        /* input-specific height */
+        .input {
+            height: 58px;
+        }
+
+        .scroll-cue {
+            margin-top: 3.2rem;
+            display: flex;
+            justify-content: center;
+            opacity: 0.55;
+        }
+        .scroll-cue span {
+            width: 52px;
+            height: 1px;
+            background: rgba(255,255,255,0.14);
+            border-radius: 999px;
+        }
+
+        /* textarea-specific height */
+        .textarea {
+            min-height: 180px;
+            resize: none;
+        }
+        .input::placeholder,
+        .textarea::placeholder {
+            color: rgba(255,255,255,0.45);
+            font-weight: 500;
         }
 
         /* Dark mode input: deep glass */
@@ -384,10 +513,31 @@ import {pageSEO} from "../config/seo.pages.ts";
             color: rgba(246, 244, 239, 0.55);
         }
 
+        /* ---------------------------------------
+   Light theme: form fields should be visible
+---------------------------------------- */
+        :root[data-theme="light"] .input,
+        :root[data-theme="light"] .textarea {
+            background: rgba(255, 255, 255, 0.9);
+            border-color: rgba(14, 42, 71, 0.16);
+            color: rgba(14, 42, 71, 0.95);
+        }
+
+        :root[data-theme="light"] .input::placeholder,
+        :root[data-theme="light"] .textarea::placeholder {
+            color: rgba(14, 42, 71, 0.45);
+        }
+
+        :root[data-theme="light"] .input:focus,
+        :root[data-theme="light"] .textarea:focus {
+            border-color: rgba(14, 42, 71, 0.35);
+            box-shadow: 0 0 0 6px rgba(14, 42, 71, 0.08);
+        }
+
         .input:focus {
             outline: none;
-            border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-            box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+            border-color: color-mix(in srgb, var(--text-muted) 55%, transparent);
+            box-shadow: 0 0 0 6px color-mix(in srgb, var(--text-muted) 18%, transparent);
         }
 
         /* Newsletter submit button: smaller + tighter */
@@ -407,6 +557,7 @@ import {pageSEO} from "../config/seo.pages.ts";
         }
 
         .status {
+            display: none;
             margin-top: 1.2rem;
             padding: 0.9rem 1.2rem;
             border-radius: 14px;
@@ -537,11 +688,11 @@ import {pageSEO} from "../config/seo.pages.ts";
 
         .blob--1,
         .blob--3 {
-            background: var(--accent);
+            background: var(--text-muted);
         }
 
         .blob--2 {
-            background: color-mix(in srgb, var(--accent) 45%, white);
+            background: color-mix(in srgb, var(--text-muted) 45%, white);
             opacity: 0.05;
         }
 
@@ -686,9 +837,8 @@ import {pageSEO} from "../config/seo.pages.ts";
 
         /* ---------- About ---------- */
         .about {
-            padding: 4.25rem 0;
-            border-top: 1px solid var(--border);
-            background: color-mix(in srgb, var(--text) 2.5%, transparent);
+            padding: 6rem 0 5rem;
+            position: relative;
         }
 
         .about__inner {
@@ -723,6 +873,8 @@ import {pageSEO} from "../config/seo.pages.ts";
             gap: 1.25rem;
             max-width: 920px;
             margin: 0 auto;
+            justify-content: center;
+
         }
 
         .about-card {
@@ -732,7 +884,28 @@ import {pageSEO} from "../config/seo.pages.ts";
             border: 1px solid var(--border);
             box-shadow: 0 18px 55px rgba(0, 0, 0, 0.06);
             text-align: left;
-            transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), border-color 0.18s var(--ease);
+            transition: transform 0.18s var(--ease),
+            box-shadow 0.18s var(--ease),
+            border-color 0.18s var(--ease);
+        }
+
+        .about-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 26px 80px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Desktop upgrade only */
+        @media (min-width: 1024px) {
+            .about__grid {
+                grid-template-columns: repeat(3, minmax(280px, 1fr));
+                gap: 1.6rem;
+                max-width: 1080px;
+            }
+
+            .about-card {
+                padding: 1.8rem 2rem;
+                border-radius: 20px;
+            }
         }
 
         :root[data-theme="dark"] .about-card {
@@ -743,7 +916,7 @@ import {pageSEO} from "../config/seo.pages.ts";
 
         .about-card:hover {
             transform: translateY(-2px);
-            border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
+            border-color: color-mix(in srgb, var(--text-muted) 28%, var(--border));
             box-shadow: 0 24px 70px rgba(0, 0, 0, 0.09);
         }
 
@@ -752,6 +925,7 @@ import {pageSEO} from "../config/seo.pages.ts";
         }
 
         .about-card__title {
+            text-align: center;
             margin: 0 0 0.6rem;
             font-size: 1.1rem;
             letter-spacing: -0.02em;
@@ -760,6 +934,7 @@ import {pageSEO} from "../config/seo.pages.ts";
         }
 
         .about-card__text {
+            text-align: center;
             margin: 0;
             color: var(--text-muted);
             line-height: 1.6;
@@ -777,5 +952,273 @@ import {pageSEO} from "../config/seo.pages.ts";
                 text-align: left;
             }
         }
+
+        :root[data-theme="light"] .btn {
+            background: rgba(14, 42, 71, 0.06);
+            border-color: rgba(14, 42, 71, 0.16);
+            color: rgba(14, 42, 71, 0.92);
+        }
+
+        :root[data-theme="light"] .btn:hover {
+            background: rgba(14, 42, 71, 0.10);
+            border-color: rgba(14, 42, 71, 0.22);
+        }
+
+        :root[data-theme="light"] .about-card,
+        :root[data-theme="light"] .card {
+            background: rgba(255, 255, 255, 0.72);
+            border-color: rgba(14, 42, 71, 0.10);
+            box-shadow: 0 18px 55px rgba(14, 42, 71, 0.06);
+        }
+        .section-divider {
+            width: 80px;
+            height: 1px;
+            margin: 0 auto;
+            border-radius: 999px;
+            background: var(--brand-navy); /* dark default */
+        }
+
+        :root[data-theme="light"] .section-divider {
+            background: rgba(14, 42, 71, 0.18);
+        }
+
+        @media (max-height: 800px) {
+            .hero { padding-bottom: 5rem; }
+            .about { padding-top: 4.5rem; }
+        }
+
+        .about-card:hover,
+        .card:hover {
+            border-color: var(--brand-ivory); /* your mint accent */
+        }
+
+        :root[data-theme="light"] .about-card:hover,
+        :root[data-theme="light"] .card:hover {
+            border-color: var(--brand-navy);
+        }
+
+        .contact .card {
+            border-color: rgba(178, 223, 219, 0.32);
+        }
+
+        .contact .card:hover {
+            border-color: rgba(178, 223, 219, 0.32);
+        }
+
+        /* =========================================================
+   QUICK FIX PACK — light/dark form + buttons + divider
+   Drop into this page <style>.
+   Remove duplicates tomorrow.
+   ========================================================= */
+
+        /* ---- Accent fallback (so focus rings work even if not defined) ---- */
+        :root {
+            --accent: var(--text);
+            --accent-soft: rgba(14, 42, 71, 0.14);
+        }
+        :root[data-theme="dark"] {
+            --accent: rgba(178, 223, 219, 1);
+            --accent-soft: rgba(178, 223, 219, 0.22);
+        }
+
+        /* =========================================================
+           Divider (works on both themes)
+           ========================================================= */
+        .section-divider {
+            width: 80px;
+            height: 1px;
+            margin: 0 auto;
+            background: color-mix(in srgb, var(--border) 90%, transparent);
+            border-radius: 999px;
+            opacity: 0.9;
+        }
+
+        /* =========================================================
+           Buttons (theme-aware)
+           ========================================================= */
+        .btn {
+            height: 56px;
+            padding: 0 1.35rem;
+            border-radius: 999px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            font-weight: 650;
+            font-size: 1rem;
+            letter-spacing: -0.01em;
+
+            cursor: pointer;
+            user-select: none;
+            text-decoration: none;
+
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+
+            transition:
+                    transform 0.16s var(--ease),
+                    background 0.16s var(--ease),
+                    border-color 0.16s var(--ease),
+                    box-shadow 0.16s var(--ease),
+                    filter 0.16s var(--ease);
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            background: var(--surface-strong);
+            border-color: color-mix(in srgb, var(--border) 70%, var(--text) 18%);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            filter: brightness(0.98);
+        }
+
+        .btn:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 6px var(--accent-soft);
+        }
+
+        /* Primary button = solid ink */
+        .btn--primary {
+            background: var(--text);
+            color: var(--bg);
+            border-color: transparent;
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+        }
+
+        :root[data-theme="dark"] .btn--primary {
+            box-shadow: 0 18px 45px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn--primary:hover {
+            filter: brightness(1.05);
+        }
+
+        /* Ghost button = subtle surface */
+        .btn--ghost {
+            background: var(--surface);
+            color: var(--text);
+            border-color: var(--border);
+            box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text) 6%, transparent);
+        }
+
+        .btn--ghost:hover {
+            background: var(--surface-strong);
+            border-color: color-mix(in srgb, var(--border) 70%, var(--text) 18%);
+        }
+
+        /* =========================================================
+           Forms (inputs + textarea visible in light & dark)
+           ========================================================= */
+        .input,
+        .textarea {
+            width: 100%;
+            border-radius: 16px;
+            padding: 18px 20px;
+
+            border: 1px solid var(--border);
+            background: var(--surface-strong);
+            color: var(--text);
+
+            font-size: 1.05rem;
+            line-height: 1.5;
+
+            transition:
+                    border-color 0.16s var(--ease),
+                    box-shadow 0.16s var(--ease),
+                    background 0.16s var(--ease);
+        }
+
+        /* input height so it matches your buttons */
+        .input {
+            height: 58px;
+        }
+
+        /* textarea height */
+        .textarea {
+            min-height: 180px;
+            resize: none;
+        }
+
+        .input::placeholder,
+        .textarea::placeholder {
+            color: color-mix(in srgb, var(--text-muted) 85%, transparent);
+            font-weight: 500;
+        }
+
+        /* focus ring */
+        .input:focus,
+        .textarea:focus {
+            outline: none;
+            border-color: color-mix(in srgb, var(--accent) 55%, var(--border));
+            box-shadow: 0 0 0 6px var(--accent-soft);
+        }
+
+        /* =========================================================
+           Contact form layout only (keeps your structure)
+           ========================================================= */
+        .form--contact {
+            display: grid;
+            gap: 0.95rem;
+            margin-top: 1.4rem;
+        }
+
+        .form__row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form--contact .btn {
+            width: 100%;
+            height: 56px;
+        }
+
+        /* mobile: stack inputs */
+        @media (max-width: 520px) {
+            .form__row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* =========================================================
+           Cards (make sure both cards match in both themes)
+           ========================================================= */
+        .card,
+        .about-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .card {
+            box-shadow: 0 18px 55px rgba(0, 0, 0, 0.06);
+        }
+
+        :root[data-theme="dark"] .card {
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+        }
+
+        .about-card:hover {
+            border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
+        }
+
+        .hero__title {
+            color: var(--text) !important;
+        }
+
+        .hero__subtitle,
+        .hero__subtitle strong,
+        .hero__subtitle--soft {
+            color: var(--text-muted) !important;
+        }
     </style>
+    <script is:inline>
+        const slot = document.getElementById("email-slot");
+        if (slot) slot.innerHTML = `<a href="mailto:hello@intrebit.com">hello@intrebit.com</a>`;
+    </script>
 </Layout>

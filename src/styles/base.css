@@ -1,15 +1,6 @@
-/* =========================================================
-   BASE — Intrebit
-   Reset + typography + helpers + UI primitives
-   Uses theme variables from theme.css
-   ========================================================= */
-
-/* ---------------------------
-   Reset / base
-   --------------------------- */
-
 :root {
     --header-height: 72px;
+    --radius-input: 16px;
 }
 
 *,
@@ -25,7 +16,7 @@ html {
 
 body {
     margin: 0;
-    font-family: var(--font-sans);
+    font-family: var(--font-sans), serif;
     font-size: var(--text-base);
     line-height: 1.6;
     color: var(--text);
@@ -51,7 +42,7 @@ h2,
 h3,
 h4,
 h5 {
-    margin: 0 0 0.6em 0;
+    font-family: var(--font-brand), serif;
     line-height: 1.15;
     letter-spacing: -0.02em;
     color: var(--text);
@@ -140,7 +131,6 @@ button {
 
 /* Optional CTA variant (mint) */
 .btn--accent {
-    background: var(--accent);
     color: var(--brand-navy);
     box-shadow: var(--shadow-soft);
 }
@@ -338,4 +328,39 @@ body > *:not(.site-bg) {
 @keyframes auroraShift {
     0%, 100% { transform: translate3d(0,0,0) scale(1.05); }
     50% { transform: translate3d(3%, -2%, 0) scale(1.08); }
+}
+
+/* =========================================================
+   Page background gradients (theme-specific)
+   Apply to body or .coming
+   ========================================================= */
+
+.coming {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: var(--text);
+    background: var(--bg); /* fallback */
+}
+
+/* ---------------------------
+   DARK MODE BACKGROUND
+   --------------------------- */
+:root[data-theme="dark"] .coming {
+    background:
+            radial-gradient(circle at 15% 20%, rgba(178, 223, 219, 0.10), transparent 55%),
+            radial-gradient(circle at 80% 10%, rgba(120, 170, 255, 0.08), transparent 60%),
+            radial-gradient(circle at 60% 85%, rgba(210, 170, 255, 0.05), transparent 55%),
+            linear-gradient(180deg, #071826 0%, #06131f 100%);
+}
+
+/* ---------------------------
+   LIGHT MODE BACKGROUND
+   --------------------------- */
+:root[data-theme="light"] .coming {
+    background:
+            radial-gradient(circle at 25% 15%, rgba(14, 42, 71, 0.06), transparent 55%),
+            radial-gradient(circle at 85% 20%, rgba(178, 223, 219, 0.10), transparent 60%),
+            radial-gradient(circle at 40% 90%, rgba(14, 42, 71, 0.04), transparent 65%),
+            linear-gradient(180deg, #f6f4ef 0%, #f1eee6 100%);
 }

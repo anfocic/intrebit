@@ -2,8 +2,8 @@
     const API_BASE = "https://api.intrebit.com";
     const ENDPOINT = "/contact";
 
-    const form = document.getElementById("newsletter-form");
-    const status = document.getElementById("newsletter-status");
+    const form = document.getElementById("contact-form");
+    const status = document.getElementById("contact-status");
 
     if (!form || !status) return;
 
@@ -19,24 +19,26 @@
 
         const data = new FormData(form);
 
-        // Honeypot → silent success
+        // Honeypot
         if (data.get("company")) {
-            setStatus("Thanks — you're on the list.", "success");
+            setStatus("Thanks — got it.", "success");
             form.reset();
             return;
         }
 
+        const name = data.get("name")?.toString().trim();
         const email = data.get("email")?.toString().trim();
+        const message = data.get("message")?.toString().trim();
 
-        if (!email) {
-            setStatus("Please enter a valid email.", "error");
+        if (!email || !message) {
+            setStatus("Please enter your email and a short message.", "error");
             return;
         }
 
         const payload = {
-            name: "Newsletter signup",
+            name: name || "Website form",
             email,
-            message: `Newsletter signup: ${email}`,
+            message,
         };
 
         try {
@@ -48,7 +50,7 @@
 
             if (!res.ok) throw new Error(`Request failed (${res.status})`);
 
-            setStatus("Thanks — you're on the list.", "success");
+            setStatus("Sent — I’ll reply soon.", "success");
             form.reset();
         } catch (err) {
             console.error(err);
