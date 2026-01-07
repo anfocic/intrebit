@@ -53,7 +53,7 @@ import {pageSEO} from "../config/seo.pages.ts";
                 </header>
 
                 <div class="about__grid" role="list">
-                    <article class="about-card" role="listitem">
+                    <article class="about-card" role="article">
                         <h3 class="about-card__title">Simple by default</h3>
                         <p class="about-card__text">
                             Clean screens, clear flow. You shouldn’t need a manual to use your own tools.
@@ -142,76 +142,8 @@ import {pageSEO} from "../config/seo.pages.ts";
         </footer>
     </main>
 
-    <script is:inline>
-        (() => {
-            const API_BASE = "https://api.intrebit.com";
-            const ENDPOINT = "/contact"; // ✅ same route as contact form
-
-            const form = document.getElementById("newsletter-form");
-            const status = document.getElementById("newsletter-status");
-
-            if (!form || !status) return;
-
-            // ✅ Status helper (adds green success + red error)
-            const setStatus = (msg, type = "info") => {
-                status.textContent = msg;
-                status.classList.remove("status--success", "status--error", "status--info");
-                status.classList.add(`status--${type}`);
-            };
-
-            form.addEventListener("submit", async (e) => {
-                e.preventDefault();
-                setStatus("Sending…", "info");
-
-                const data = new FormData(form);
-
-                // Honeypot → silent success
-                if (data.get("company")) {
-                    setStatus("Thanks — you're on the list.", "success");
-                    form.reset();
-                    return;
-                }
-
-                const email = data.get("email")?.toString().trim();
-
-                if (!email) {
-                    setStatus("Please enter a valid email.", "error");
-                    return;
-                }
-
-                // ✅ Send to same endpoint as contact form
-                const payload = {
-                    name: "Newsletter signup",
-                    email,
-                    message: `Newsletter signup: ${email}`,
-                };
-
-                try {
-                    const res = await fetch(`${API_BASE}${ENDPOINT}`, {
-                        method: "POST",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify(payload),
-                    });
-
-                    if (!res.ok) throw new Error(`Request failed (${res.status})`);
-
-                    setStatus("Thanks — you're on the list.", "success");
-                    form.reset();
-                } catch (err) {
-                    console.error(err);
-                    setStatus("Something went wrong. Try again.", "error");
-                }
-            });
-        })();
-    </script>
+    <script is:inline src="/scripts/newsletter.js" defer/>
     <style>
-        /* =========================================================
-           Coming Soon — Intrebit (DRY + theme-aware)
-           Drop-in replacement for the page <style>.
-           Focus: bigger input, smaller button in newsletter form.
-           ========================================================= */
-
-        /* ---------- Layout ---------- */
         .coming {
             min-height: 100vh;
             display: flex;
