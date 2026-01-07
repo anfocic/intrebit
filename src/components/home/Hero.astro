@@ -1,88 +1,228 @@
 ---
-interface Props {
-    title?: string;
-    subtitle?: string;
-}
-
-const {
-    title = "Software that works.",
-    subtitle = "We build digital infrastructure, design interfaces that make sense, and engineer software solutions for companies that are tired of corporate BS.",
-} = Astro.props;
+/**
+    * Home Hero — Gradient-only (no floating animations)
+    * Drop-in replacement for your Hero section.
+    */
 ---
 
-<section class="container hero">
-    <div class="hero__content">
-        <span class="hero__badge">Est. 2025</span>
-        <h1>{title.replace("works", "")}<span class="text-serif">works</span>.</h1>
+<section class="hero" aria-label="Hero">
+    <div class="container hero__inner">
+        <div class="hero__copy">
+            <div class="hero__badge">
+                <span class="hero__badge-dot"></span>
+                <span>Est. 2025</span>
+            </div>
 
-        <p class="hero__subtitle">
-            {subtitle}
-        </p>
+            <h1 class="hero__title">
+                Software that <span class="hero__title-accent">works</span>.
+            </h1>
 
-        <div class="hero__actions">
-            <a href="/contact">
-                <button class="btn btn--primary">Let's talk →</button>
-            </a>
-            <a href="/services">
-                <button class="btn btn--outline">See what we do</button>
-            </a>
+            <p class="hero__subtitle">
+                We build digital infrastructure, design interfaces that make sense, and engineer software solutions
+                for companies that are tired of corporate BS.
+            </p>
+
+            <div class="hero__actions">
+                <a href="/contact" class="btn btn--primary">
+                    Let’s talk <span aria-hidden="true">→</span>
+                </a>
+                <a href="/services" class="btn btn--ghost">
+                    See what we do
+                </a>
+            </div>
         </div>
+        
     </div>
-
-    <img
-            src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80"
-            alt="Modern office workspace"
-            class="hero__image"
-    />
 </section>
 
 <style>
+    /* =========================================================
+       Home Hero — Gradient-only (no animations)
+       ========================================================= */
     .hero {
+        min-height: calc(100vh - var(--header-height, 72px));
         display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
-        gap: 4rem;
         align-items: center;
-        padding: 4rem 0;
+        padding: 0;
+        border-bottom: none;
     }
 
-    .hero__content {
+    /* inner spacing */
+    .hero__inner {
+        padding: 6rem 0 4rem;
+    }
+
+    /* if you have a bg wrapper, make sure it fills */
+    .hero__bg {
+        position: absolute;
+        inset: 0;
+    }
+    /* --- Copy --- */
+    .hero__copy {
         max-width: 620px;
     }
 
     .hero__badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.55rem;
+        padding: 0.55rem 0.9rem;
+        border-radius: 999px;
+        border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+        background: color-mix(in srgb, var(--accent) 10%, transparent);
+        color: var(--text);
+        font-weight: 650;
+        font-size: 0.9rem;
+        margin-bottom: 1.3rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .hero__badge-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--accent);
+        box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+    }
+
+    .hero__title {
+        margin: 0 0 1rem;
+        font-size: clamp(2.6rem, 4.8vw, 4.25rem);
+        letter-spacing: -0.05em;
+        line-height: 1.03;
+        font-weight: 850;
+        color: var(--text);
+    }
+
+    .hero__title-accent {
+        position: relative;
         display: inline-block;
-        padding: 0.5rem 1rem;
-        background: rgba(178, 223, 219, 0.2);
-        color: var(--accent);
-        border-radius: var(--radius-round);
-        font-size: var(--text-sm);
-        font-weight: 600;
-        margin-bottom: 1.5rem;
+    }
+
+    .hero__title-accent::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0.12em;
+        width: 100%;
+        height: 0.22em;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--accent) 75%, transparent);
+        z-index: -1;
+        opacity: 0.38;
     }
 
     .hero__subtitle {
-        font-size: 1.2rem;
+        margin: 0 0 2rem;
+        font-size: 1.15rem;
+        line-height: 1.7;
         color: var(--text-muted);
-        margin-top: 1.25rem;
+        max-width: 560px;
     }
 
     .hero__actions {
         display: flex;
         gap: 1rem;
-        margin-top: 1.75rem;
         flex-wrap: wrap;
     }
 
-    .hero__image {
-        width: 100%;
-        border-radius: var(--radius-soft);
-        box-shadow: var(--shadow-soft);
+    /* --- Buttons --- */
+    .btn {
+        height: 52px;
+        padding: 0 1.35rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.55rem;
+        font-weight: 700;
+        text-decoration: none;
+        border: 1px solid transparent;
+        transition: transform 0.16s var(--ease), background 0.16s var(--ease),
+        border-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
     }
 
-    @media (max-width: 900px) {
-        .hero {
+    .btn:active {
+        transform: translateY(1px);
+    }
+
+    .btn--primary {
+        background: var(--text);
+        color: var(--bg);
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.18);
+    }
+
+    .btn--primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+    }
+
+    .btn--ghost {
+        background: color-mix(in srgb, var(--text) 3%, transparent);
+        border-color: var(--border);
+        color: var(--text);
+    }
+
+    .btn--ghost:hover {
+        transform: translateY(-1px);
+        background: color-mix(in srgb, var(--text) 5%, transparent);
+        border-color: color-mix(in srgb, var(--text) 12%, transparent);
+    }
+
+    /* --- Right panel (replaces cards) --- */
+    .hero__panel {
+        position: relative;
+        width: 100%;
+        height: 360px;
+        border-radius: 26px;
+        border: 1px solid var(--border);
+        background: color-mix(in srgb, var(--bg) 70%, white);
+        box-shadow: 0 26px 80px rgba(0,0,0,0.14);
+        overflow: hidden;
+    }
+
+    :root[data-theme="dark"] .hero__panel {
+        background: rgba(255,255,255,0.04);
+        border-color: rgba(246, 244, 239, 0.12);
+        box-shadow: 0 30px 90px rgba(0,0,0,0.35);
+    }
+
+    .hero__panel-inner {
+        position: absolute;
+        inset: -40%;
+        background:
+                radial-gradient(circle at 20% 20%, rgba(178,223,219,0.28), transparent 55%),
+                radial-gradient(circle at 80% 30%, rgba(109,158,255,0.22), transparent 60%),
+                radial-gradient(circle at 55% 85%, rgba(255,153,221,0.18), transparent 55%),
+                radial-gradient(circle at 15% 80%, rgba(255,200,120,0.16), transparent 55%);
+        filter: blur(50px);
+        opacity: 0.85;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 980px) {
+        .hero__inner {
             grid-template-columns: 1fr;
-            padding: 3rem 0;
+            gap: 3rem;
+        }
+
+        .hero__panel {
+            height: 300px;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .hero {
+            padding: 5.5rem 0 3.5rem;
+        }
+
+        .hero__subtitle {
+            font-size: 1.05rem;
+        }
+
+        .btn {
+            width: 100%;
+            justify-content: center;
         }
     }
 </style>

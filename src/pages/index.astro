@@ -4,7 +4,7 @@ import SocialIcon from "../components/shared/SocialIcon.astro";
 import {pageSEO} from "../config/seo.pages.ts";
 ---
 
-<Layout seo={pageSEO.comingSoon}> showHeader={false} showFooter={false}>
+<Layout seo={pageSEO.comingSoon} showHeader={false} showFooter={false}>
     <main class="coming">
         <!-- Hero -->
         <section class="hero" aria-label="Coming soon hero">
@@ -39,6 +39,42 @@ import {pageSEO} from "../config/seo.pages.ts";
                     <span class="badge__dot"></span>
                     <span class="badge__text">Launching in Q1 2026</span>
                 </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="about" aria-label="About Intrebit">
+            <div class="container about__inner">
+                <header class="about__header">
+                    <h2 class="about__title">What we do</h2>
+                    <p class="about__subtitle">
+                         Design and build simple products that remove busywork and make operations smoother.
+                    </p>
+                </header>
+
+                <div class="about__grid" role="list">
+                    <article class="about-card" role="listitem">
+                        <h3 class="about-card__title">Simple by default</h3>
+                        <p class="about-card__text">
+                            Clean screens, clear flow. You shouldn’t need a manual to use your own tools.
+                        </p>
+                    </article>
+
+                    <article class="about-card" role="listitem">
+                        <h3 class="about-card__title">Reliable systems</h3>
+                        <p class="about-card__text">
+                            Stable, maintainable, and built to grow with you.
+                        </p>
+                    </article>
+
+                    <article class="about-card" role="listitem">
+                        <h3 class="about-card__title">Fast and clear</h3>
+                        <p class="about-card__text">
+                            Fast delivery. Clear updates. No drama.
+                        </p>
+                    </article>
+                </div>
+
             </div>
         </section>
 
@@ -92,6 +128,14 @@ import {pageSEO} from "../config/seo.pages.ts";
                         href="https://mastodon.social/@intrebit"
                         title="Mastodon"
                         rel="me noopener noreferrer"
+                        className="footer__social-icon"
+                />
+                <SocialIcon
+                        icon="linkedin"
+                        href="https://www.linkedin.com/company/intrebit"
+                        title="LinkedIn"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="footer__social-icon"
                 />
             </div>
@@ -235,13 +279,12 @@ import {pageSEO} from "../config/seo.pages.ts";
             font-weight: 650;
             text-decoration: none;
             border: 1px solid transparent;
-            transition:
-                    transform 0.16s var(--ease),
-                    background 0.16s var(--ease),
-                    border-color 0.16s var(--ease),
-                    color 0.16s var(--ease),
-                    box-shadow 0.16s var(--ease),
-                    filter 0.16s var(--ease);
+            transition: transform 0.16s var(--ease),
+            background 0.16s var(--ease),
+            border-color 0.16s var(--ease),
+            color 0.16s var(--ease),
+            box-shadow 0.16s var(--ease),
+            filter 0.16s var(--ease);
         }
 
         .btn:hover {
@@ -256,16 +299,14 @@ import {pageSEO} from "../config/seo.pages.ts";
             );
             color: var(--text);
             border-color: rgba(255, 255, 255, 0.12);
-            box-shadow:
-                    0 10px 28px rgba(0, 0, 0, 0.22),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         .btn--primary:hover {
             border-color: rgba(255, 255, 255, 0.18);
-            box-shadow:
-                    0 14px 34px rgba(0, 0, 0, 0.28),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28),
+            inset 0 1px 0 rgba(255, 255, 255, 0.12);
         }
 
         .btn--ghost {
@@ -303,9 +344,8 @@ import {pageSEO} from "../config/seo.pages.ts";
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(255, 255, 255, 0.10);
-            box-shadow:
-                    0 14px 40px rgba(0, 0, 0, 0.22),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            box-shadow: 0 14px 40px rgba(0, 0, 0, 0.22),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
             backdrop-filter: blur(12px);
         }
 
@@ -314,9 +354,8 @@ import {pageSEO} from "../config/seo.pages.ts";
             height: 10px;
             border-radius: 999px;
             background: var(--accent);
-            box-shadow:
-                    0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent),
-                    0 0 24px color-mix(in srgb, var(--accent) 30%, transparent);
+            box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent),
+            0 0 24px color-mix(in srgb, var(--accent) 30%, transparent);
             animation: pulse 1.6s ease-in-out infinite;
         }
 
@@ -384,9 +423,9 @@ import {pageSEO} from "../config/seo.pages.ts";
 
         /* Input gets bigger + visually stronger */
         .input {
-            min-width: 320px;         /* ⬅️ bigger */
-            max-width: 520px;         /* prevents it becoming massive on desktop */
-            height: 60px;             /* ⬅️ bigger */
+            min-width: 320px; /* ⬅️ bigger */
+            max-width: 520px; /* prevents it becoming massive on desktop */
+            height: 60px; /* ⬅️ bigger */
             padding: 0 1.35rem;
             border-radius: 999px;
             border: 1px solid var(--border);
@@ -421,8 +460,8 @@ import {pageSEO} from "../config/seo.pages.ts";
 
         /* Newsletter submit button: smaller + tighter */
         .form .btn {
-            height: 48px;             /* ⬅️ smaller */
-            padding: 0 1.1rem;        /* ⬅️ smaller */
+            height: 48px; /* ⬅️ smaller */
+            padding: 0 1.1rem; /* ⬅️ smaller */
             font-size: 1rem;
             min-width: 140px;
         }
@@ -504,7 +543,7 @@ import {pageSEO} from "../config/seo.pages.ts";
             border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between; /* ✅ spread text + icons */
             gap: 1rem;
             flex-wrap: wrap;
             background: transparent;
@@ -514,7 +553,7 @@ import {pageSEO} from "../config/seo.pages.ts";
             margin: 0;
             font-size: 0.9rem;
             color: var(--text-muted);
-            text-align: center;
+            text-align: left; /* ✅ left on desktop */
         }
 
         .footer__social {
@@ -600,23 +639,43 @@ import {pageSEO} from "../config/seo.pages.ts";
 
         /* ---------- Animations ---------- */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(18px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(18px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.15); opacity: 0.85; }
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 0.85;
+            }
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-18px); }
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-18px);
+            }
         }
 
         @keyframes drift {
-            0%, 100% { transform: translateX(0px) translateY(0px); }
-            50% { transform: translateX(18px) translateY(-18px); }
+            0%, 100% {
+                transform: translateX(0px) translateY(0px);
+            }
+            50% {
+                transform: translateX(18px) translateY(-18px);
+            }
         }
 
         /* ---------- Mobile ---------- */
@@ -637,6 +696,18 @@ import {pageSEO} from "../config/seo.pages.ts";
             .hero__actions {
                 margin-bottom: 1.75rem;
                 gap: 0.75rem;
+            }
+
+            .footer {
+                padding: 1.5rem 1.25rem;
+                flex-direction: column;
+                gap: 0.75rem;
+                justify-content: center;
+                align-items: center;
+            }
+
+            .footer__text {
+                text-align: center; /* ✅ center on mobile */
             }
 
             .newsletter {
@@ -666,18 +737,112 @@ import {pageSEO} from "../config/seo.pages.ts";
                 width: 100%;
                 min-width: 0;
                 max-width: none;
-                height: 62px;           /* still big on mobile */
+                height: 62px; /* still big on mobile */
             }
 
             .form .btn {
                 width: 100%;
-                height: 52px;           /* slightly larger tap target */
+                height: 52px; /* slightly larger tap target */
             }
 
             .footer {
                 padding: 1.5rem 1.25rem;
                 flex-direction: column;
                 gap: 0.75rem;
+            }
+        }
+
+        /* ---------- About ---------- */
+        .about {
+            padding: 4.25rem 0;
+            border-top: 1px solid var(--border);
+            background: color-mix(in srgb, var(--text) 2.5%, transparent);
+        }
+
+        .about__inner {
+            text-align: center;
+        }
+
+        .about__header {
+            max-width: 720px;
+            margin: 0 auto 2.5rem;
+            animation: fadeUp 0.8s ease-out both;
+        }
+
+        .about__title {
+            margin: 0 0 0.8rem;
+            font-size: clamp(1.85rem, 4vw, 2.4rem);
+            letter-spacing: -0.03em;
+            color: var(--text);
+            font-weight: 750;
+        }
+
+        .about__subtitle {
+            margin: 0 auto;
+            max-width: 640px;
+            line-height: 1.65;
+            color: var(--text-muted);
+            font-size: 1.08rem;
+        }
+
+        .about__grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1.25rem;
+            max-width: 920px;
+            margin: 0 auto;
+        }
+
+        .about-card {
+            border-radius: 18px;
+            padding: 1.5rem 1.6rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            box-shadow: 0 18px 55px rgba(0, 0, 0, 0.06);
+            text-align: left;
+            transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease), border-color 0.18s var(--ease);
+        }
+
+        :root[data-theme="dark"] .about-card {
+            box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .about-card:hover {
+            transform: translateY(-2px);
+            border-color: color-mix(in srgb, var(--accent) 28%, var(--border));
+            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.09);
+        }
+
+        :root[data-theme="dark"] .about-card:hover {
+            box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+        }
+
+        .about-card__title {
+            margin: 0 0 0.6rem;
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            font-weight: 750;
+        }
+
+        .about-card__text {
+            margin: 0;
+            color: var(--text-muted);
+            line-height: 1.6;
+            font-size: 0.98rem;
+        }
+
+        /* ---------- About (mobile) ---------- */
+        @media (max-width: 840px) {
+            .about__grid {
+                grid-template-columns: 1fr;
+                max-width: 620px;
+            }
+
+            .about-card {
+                text-align: left;
             }
         }
     </style>

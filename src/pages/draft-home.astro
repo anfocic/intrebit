@@ -2,15 +2,15 @@
 import Layout from "../layouts/Layout.astro";
 
 import Hero from "../components/home/Hero.astro";
-import ServicesPreview from "../components/home/ServicesPreview.astro";
 import Philosophy from "../components/home/Philosophy.astro";
 import {pageSEO} from "../config/seo.pages.ts";
+import ServicesList from "../components/services/ServicesList.astro";
 ---
 
 <Layout seo={pageSEO.home}>
     <main>
         <Hero/>
-        <ServicesPreview/>
+        <ServicesList/>
         <Philosophy/>
     </main>
 </Layout>

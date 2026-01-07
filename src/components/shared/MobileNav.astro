@@ -57,7 +57,8 @@ import Logo from "../shared/Logo.astro";
         const openBtn = document.querySelector("[data-mobile-open]");
         const closeBtn = document.querySelector(".mobile-nav__close");
 
-        if (!overlay || !sidebar || !openBtn || !closeBtn) return;
+        // ✅ Don’t require openBtn — it may not exist on some pages (e.g. showHeader=false)
+        if (!overlay || !sidebar || !closeBtn) return;
 
         const open = () => {
             document.body.classList.add("menu-open");
@@ -71,7 +72,14 @@ import Logo from "../shared/Logo.astro";
             overlay.classList.remove("is-open");
         };
 
-        openBtn.addEventListener("click", open);
+        // ✅ ALWAYS start closed (fixes sidebar loading open)
+        close();
+
+        // ✅ Only bind open if the button exists
+        if (openBtn) {
+            openBtn.addEventListener("click", open);
+        }
+
         closeBtn.addEventListener("click", close);
         overlay.addEventListener("click", close);
 
@@ -82,6 +90,9 @@ import Logo from "../shared/Logo.astro";
         document.addEventListener("keydown", (e) => {
             if (e.key === "Escape") close();
         });
+
+        // ✅ If using Astro View Transitions / SPA navigation
+        document.addEventListener("astro:after-swap", close);
     })();
 </script>
 

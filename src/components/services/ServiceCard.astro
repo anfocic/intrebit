@@ -1,73 +1,110 @@
 ---
+// src/components/services/ServiceCard.astro
 interface Props {
-    id: string;
     title: string;
     description: string;
-    bullets: string[];
+    chip: string;
 }
 
-const { id, title, description, bullets } = Astro.props;
+const { title, description, chip } = Astro.props;
 ---
 
-<article id={id} class="card service">
-    <h2>{title}</h2>
-    <p class="service__desc">{description}</p>
+<article class="service-card">
+    <header class="service-card__header">
+        <span class="service-card__chip">{chip}</span>
+    </header>
 
-    <h4 class="service__subheading">What we offer</h4>
-
-    <ul class="service__bullets">
-        {bullets.map((item) => (
-                <li>✓ {item}</li>
-        ))}
-    </ul>
-
-    <a href="/contact" class="service__cta">
-        <button class="btn btn--primary">Inquire</button>
-    </a>
+    <h3 class="service-card__title">{title}</h3>
+    <p class="service-card__desc">{description}</p>
 </article>
 
 <style>
-    .service {
-        padding: 2.5rem;
+    .service-card {
+        position: relative;
+        border-radius: 18px;
+        padding: 2.2rem 2rem 2rem;
+        background: color-mix(in srgb, var(--bg) 92%, white);
+        border: 1px solid color-mix(in srgb, var(--text) 10%, transparent);
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.14);
+        transition:
+                transform 0.18s var(--ease),
+                box-shadow 0.18s var(--ease),
+                border-color 0.18s var(--ease),
+                background 0.18s var(--ease);
+        overflow: hidden;
     }
 
-    .service__desc {
-        margin-top: 0.75rem;
-        color: var(--text-muted);
-        font-size: 1.05rem;
-        max-width: 62ch;
+    :root[data-theme="dark"] .service-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(246, 244, 239, 0.10);
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.36);
     }
 
-    .service__subheading {
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        font-size: 1rem;
-        font-weight: 650;
-        color: var(--text);
+    .service-card:hover {
+        transform: translateY(-4px);
+        border-color: color-mix(in srgb, var(--accent) 42%, transparent);
+        box-shadow: 0 28px 90px rgba(0, 0, 0, 0.20);
     }
 
-    .service__bullets {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.75rem 1.5rem;
-        color: var(--text-muted);
+    :root[data-theme="dark"] .service-card:hover {
+        border-color: rgba(178, 223, 219, 0.25);
+        box-shadow: 0 34px 110px rgba(0, 0, 0, 0.48);
     }
 
-    .service__cta {
+    .service-card__header {
+        margin-bottom: 1.3rem;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    .service-card__chip {
         display: inline-flex;
-        margin-top: 2rem;
+        align-items: center;
+        height: 30px;
+        padding: 0 0.85rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+
+        color: color-mix(in srgb, var(--text) 85%, transparent);
+        background: color-mix(in srgb, var(--text) 6%, transparent);
+        border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
     }
 
-    @media (max-width: 720px) {
-        .service {
-            padding: 2rem;
+    :root[data-theme="dark"] .service-card__chip {
+        color: rgba(246, 244, 239, 0.85);
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(246, 244, 239, 0.12);
+    }
+
+    .service-card__title {
+        margin: 0 0 0.85rem;
+        font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.8rem);
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: var(--text);
+        line-height: 1.12;
+    }
+
+    .service-card__desc {
+        margin: 0;
+        font-size: 1.02rem;
+        line-height: 1.75;
+        color: var(--text-muted);
+        max-width: 44ch;
+    }
+
+    /* Better spacing on smaller cards */
+    @media (max-width: 768px) {
+        .service-card {
+            padding: 1.9rem 1.6rem 1.7rem;
         }
 
-        .service__bullets {
-            grid-template-columns: 1fr;
+        .service-card__desc {
+            max-width: none;
         }
     }
 </style>
