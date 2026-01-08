@@ -9,44 +9,49 @@ import Logo from "../shared/Logo.astro";
 
 <!-- Sidebar -->
 <aside class="mobile-nav" data-mobile-sidebar aria-label="Mobile navigation">
-    <!-- Top -->
-    <div class="mobile-nav__top">
+    <!-- Header -->
+    <div class="mobile-nav__header">
         <a href="/" class="mobile-nav__brand" aria-label="Home">
             <Logo size={28} />
-            <span>Intrebit</span>
         </a>
 
         <button class="mobile-nav__close" type="button" aria-label="Close menu">
-            ✕
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
         </button>
     </div>
 
-    <!-- Links -->
-    <nav class="mobile-nav__menu" aria-label="Mobile menu">
-        <ul class="mobile-nav__links">
-            {navLinks.map(({ path, label }) => (
-                    <li>
-                        <a href={path} class="mobile-nav__link">{label}</a>
-                    </li>
-            ))}
-        </ul>
-    </nav>
+    <!-- Content -->
+    <div class="mobile-nav__content">
+        <!-- Links -->
+        <nav class="mobile-nav__menu" aria-label="Mobile menu">
+            <ul class="mobile-nav__links">
+                {navLinks.map(({ path, label }) => (
+                        <li>
+                            <a href={path} class="mobile-nav__link">{label}</a>
+                        </li>
+                ))}
+            </ul>
+        </nav>
 
-    <!-- Bottom -->
-    <div class="mobile-nav__bottom">
-        <div class="mobile-nav__social">
-            <SocialIcon icon="mail" href="mailto:hello@intrebit.com" title="Email" className="mobile-nav__social-icon" />
-            <SocialIcon icon="linkedin" href="https://www.linkedin.com/company/intrebit" title="LinkedIn" className="mobile-nav__social-icon" />
-            <SocialIcon icon="mastodon" href="https://mastodon.social/@intrebit" title="Mastodon" rel="me noopener noreferrer" className="mobile-nav__social-icon" />
+        <!-- Bottom -->
+        <div class="mobile-nav__bottom">
+            <div class="mobile-nav__social">
+                <SocialIcon icon="mail" href="mailto:hello@intrebit.com" title="Email" className="mobile-nav__social-icon" />
+                <SocialIcon icon="linkedin" href="https://www.linkedin.com/company/intrebit" title="LinkedIn" className="mobile-nav__social-icon" />
+                <SocialIcon icon="mastodon" href="https://mastodon.social/@intrebit" title="Mastodon" rel="me noopener noreferrer" className="mobile-nav__social-icon" />
+            </div>
+
+            <a class="mobile-nav__cta" href="/contact">
+                Get in touch →
+            </a>
+
+            <button class="mobile-nav__theme theme-toggle" type="button">
+                Toggle theme
+            </button>
         </div>
-
-        <a class="mobile-nav__cta" href="/contact">
-            Get in touch →
-        </a>
-
-        <button class="mobile-nav__theme theme-toggle" type="button">
-            Toggle theme
-        </button>
     </div>
 </aside>
 
@@ -57,7 +62,6 @@ import Logo from "../shared/Logo.astro";
         const openBtn = document.querySelector("[data-mobile-open]");
         const closeBtn = document.querySelector(".mobile-nav__close");
 
-        // ✅ Don’t require openBtn — it may not exist on some pages (e.g. showHeader=false)
         if (!overlay || !sidebar || !closeBtn) return;
 
         const open = () => {
@@ -72,10 +76,8 @@ import Logo from "../shared/Logo.astro";
             overlay.classList.remove("is-open");
         };
 
-        // ✅ ALWAYS start closed (fixes sidebar loading open)
         close();
 
-        // ✅ Only bind open if the button exists
         if (openBtn) {
             openBtn.addEventListener("click", open);
         }
@@ -91,7 +93,6 @@ import Logo from "../shared/Logo.astro";
             if (e.key === "Escape") close();
         });
 
-        // ✅ If using Astro View Transitions / SPA navigation
         document.addEventListener("astro:after-swap", close);
     })();
 </script>
@@ -101,11 +102,11 @@ import Logo from "../shared/Logo.astro";
     .mobile-nav__overlay {
         position: fixed;
         inset: 0;
-        background: rgba(0, 0, 0, 0.45);
-        backdrop-filter: blur(14px);
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
         opacity: 0;
         pointer-events: none;
-        transition: opacity 0.22s ease;
+        transition: opacity 0.25s ease;
         z-index: 200;
     }
 
@@ -120,17 +121,12 @@ import Logo from "../shared/Logo.astro";
         top: 0;
         right: 0;
         height: 100vh;
-        width: min(420px, 92vw);
-        background: linear-gradient(
-                180deg,
-                color-mix(in srgb, var(--bg) 90%, black),
-                color-mix(in srgb, var(--bg) 75%, black)
-        );
-        border-left: 1px solid var(--border);
+        width: 100%;
+        max-width: 420px;
+        background: var(--bg);
         transform: translateX(100%);
-        transition: transform 0.28s var(--ease);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 250;
-
         display: flex;
         flex-direction: column;
     }
@@ -139,41 +135,51 @@ import Logo from "../shared/Logo.astro";
         transform: translateX(0);
     }
 
-    /* Top bar */
-    .mobile-nav__top {
+    /* Header */
+    .mobile-nav__header {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 1.4rem 1.4rem;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
     }
 
     .mobile-nav__brand {
         display: flex;
         align-items: center;
-        gap: 0.7rem;
-        text-decoration: none;
-        color: var(--text);
-        font-weight: 700;
-        font-size: 1.1rem;
-        letter-spacing: -0.02em;
     }
 
     .mobile-nav__close {
-        width: 46px;
-        height: 46px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.12);
-        background: rgba(255,255,255,0.05);
+        width: 44px;
+        height: 44px;
+        border-radius: 8px;
+        border: none;
+        background: transparent;
         color: var(--text);
         cursor: pointer;
-        font-size: 1.2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background 0.2s ease;
+    }
+
+    .mobile-nav__close:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Content */
+    .mobile-nav__content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
     }
 
     /* Menu */
     .mobile-nav__menu {
         flex: 1;
-        padding: 0;
+        padding: 2rem 0;
     }
 
     .mobile-nav__links {
@@ -183,60 +189,71 @@ import Logo from "../shared/Logo.astro";
     }
 
     .mobile-nav__link {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 1.4rem 1.4rem;
-        font-size: 1.35rem;
-        font-weight: 650;
+        display: block;
+        padding: 1.25rem 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 500;
         color: var(--text);
         text-decoration: none;
-        border-bottom: 1px solid rgba(255,255,255,0.08);
+        border-bottom: 1px solid var(--border);
         transition: background 0.15s ease;
+        letter-spacing: -0.01em;
     }
 
     .mobile-nav__link:hover {
-        background: rgba(255,255,255,0.05);
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    .mobile-nav__links li:last-child .mobile-nav__link {
+        border-bottom: none;
     }
 
     /* Bottom */
     .mobile-nav__bottom {
-        padding: 1.6rem 1.4rem 2rem;
-        border-top: 1px solid rgba(255,255,255,0.08);
-        display: grid;
-        gap: 1.4rem;
+        padding: 2rem 1.5rem 2.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        flex-shrink: 0;
     }
 
     .mobile-nav__social {
         display: flex;
-        gap: 1rem;
+        gap: 0.75rem;
         align-items: center;
     }
 
-    .mobile-nav__social-icon {
+    :global(.mobile-nav__social-icon) {
         width: 44px;
         height: 44px;
-        border-radius: 999px;
+        border-radius: 8px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.12);
-        color: rgba(255,255,255,0.75);
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        color: var(--text-muted);
+        transition: all 0.2s ease;
+    }
+
+    :global(.mobile-nav__social-icon:hover) {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--accent);
+        color: var(--text);
     }
 
     .mobile-nav__cta {
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 54px;
+        height: 52px;
         border-radius: 999px;
-        background: var(--accent);
-        color: var(--bg);
-        font-weight: 700;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        font-weight: 600;
         text-decoration: none;
         font-size: 1rem;
-        letter-spacing: 0.01em;
         transition: transform 0.2s ease;
     }
 
@@ -245,17 +262,56 @@ import Logo from "../shared/Logo.astro";
     }
 
     .mobile-nav__theme {
-        height: 44px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.12);
-        background: rgba(255,255,255,0.06);
-        color: rgba(255,255,255,0.75);
-        font-weight: 600;
+        height: 48px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text-muted);
+        font-weight: 500;
+        font-size: 0.9rem;
         cursor: pointer;
+        transition: all 0.2s ease;
     }
 
-    /* Prevent background scroll */
-    body.menu-open {
+    .mobile-nav__theme:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--text);
+    }
+
+    /* Prevent scroll */
+    :global(body.menu-open) {
         overflow: hidden;
+    }
+
+    /* Dark mode */
+    :global(:root[data-theme="dark"]) .mobile-nav__header,
+    :global(:root[data-theme="dark"]) .mobile-nav__link,
+    :global(:root[data-theme="dark"]) .mobile-nav__bottom {
+        border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    /* Light mode */
+    :global(:root[data-theme="light"]) .mobile-nav__close:hover {
+        background: rgba(0, 0, 0, 0.04);
+    }
+
+    :global(:root[data-theme="light"]) .mobile-nav__link:hover {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    :global(:root[data-theme="light"]) :global(.mobile-nav__social-icon) {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    :global(:root[data-theme="light"]) :global(.mobile-nav__social-icon:hover) {
+        background: rgba(0, 0, 0, 0.04);
+    }
+
+    :global(:root[data-theme="light"]) .mobile-nav__theme {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+    :global(:root[data-theme="light"]) .mobile-nav__theme:hover {
+        background: rgba(0, 0, 0, 0.04);
     }
 </style>

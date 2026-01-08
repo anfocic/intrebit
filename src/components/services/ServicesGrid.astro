@@ -1,0 +1,479 @@
+---
+const services = [
+    {
+        title: "Systems that work for you",
+        description:
+        "You still do the hard part — we just remove the stupid part.",
+        story:
+            "Your website and systems behave: fast, reliable, and doing what they’re supposed to." +
+            "So you’re not losing customers while you’re busy doing the actual work.",
+    },
+    {
+        title: "Cleanup the mess",
+        description:
+        "We make it work like it was supposed to all along.",
+        story:
+        "Example: everything worked fine until one day it didn’t — we find what broke and make it behave again.",
+    },
+    {
+        title: "Automate the Busywork",
+        description:
+            "We automate repetitive tasks and connect the tools you already use.",
+        story:
+            "Customers book, reschedule, and get reminders automatically. Deposits get collected. You stop wasting time replying to ‘are you open tomorrow?",
+    },
+];
+---
+
+<section class="services reveal" id="services" data-services-section>
+    <div class="container services__layout">
+        <!-- LEFT -->
+        <div class="services__intro">
+            <h2 class="services__title" data-letters>
+                What we do
+            </h2>
+
+            <p class="services__punchline">
+                Or at least what we tell ourselves to sleep easier at night.
+            </p>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="services__list" data-services>
+            {services.map((service, i) => (
+                    <article class="service" data-service data-step={i + 1}>
+                        <button class="service__trigger" type="button" data-trigger aria-expanded="false">
+                            <div class="service__meta">
+                                <h3>{service.title}</h3>
+                                <p>{service.description}</p>
+                            </div>
+
+                            <span class="service__chevron" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                    <path
+                                            d="M6 9l6 6 6-6"
+                                            stroke="currentColor"
+                                            stroke-width="2"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </span>
+                        </button>
+
+                        <div class="service__panel" data-panel>
+                            <div class="service__content">
+                                <p class="service__story">{service.story}</p>
+                            </div>
+                        </div>
+                    </article>
+            ))}
+        </div>
+    </div>
+</section>
+
+<script>
+    // Letter animation split
+    const splitLetters = () => {
+        const titles = document.querySelectorAll("[data-letters]");
+        titles.forEach((title) => {
+            const text = title.textContent || "";
+            title.innerHTML = text
+                .split("")
+                .map((char) => {
+                    if (char === " ") return `<span class="char">&nbsp;</span>`;
+                    return `<span class="char">${char}</span>`;
+                })
+                .join("");
+        });
+    };
+
+    // Progressive reveal of service items
+    const setupServiceReveal = () => {
+        const section = document.querySelector("#services");
+        if (!section) return;
+
+        const first = section.querySelector('.service[data-step="1"]');
+        const second = section.querySelector('.service[data-step="2"]');
+        const third = section.querySelector('.service[data-step="3"]');
+
+        let hasRevealed = { first: false, second: false, third: false };
+        let sectionRevealed = false;
+
+        const onScroll = () => {
+            const rect = section.getBoundingClientRect();
+            const vh = window.innerHeight;
+
+            // Wait until section is roughly centered in viewport before starting
+            const sectionCenter = rect.top + rect.height / 2;
+            const viewportCenter = vh / 2;
+            const distanceFromCenter = Math.abs(sectionCenter - viewportCenter);
+
+            // Only start revealing when section is getting close to center
+            if (distanceFromCenter > vh * 0.3) return;
+
+            // Mark that we've started the reveal sequence
+            if (!sectionRevealed) {
+                sectionRevealed = true;
+            }
+
+            // Calculate scroll progress through the section
+            const scrolled = Math.max(0, vh - rect.top);
+            const progress = Math.max(0, Math.min(1, scrolled / rect.height));
+
+            // Reveal items progressively with bigger gaps
+            if (!hasRevealed.first && progress > 0.2 && first) {
+                first.classList.add("is-revealed");
+                hasRevealed.first = true;
+            }
+
+            if (!hasRevealed.second && progress > 0.5 && second) {
+                second.classList.add("is-revealed");
+                hasRevealed.second = true;
+            }
+
+            if (!hasRevealed.third && progress > 0.75 && third) {
+                third.classList.add("is-revealed");
+                hasRevealed.third = true;
+            }
+
+            // Stop listening once all revealed
+            if (hasRevealed.first && hasRevealed.second && hasRevealed.third) {
+                window.removeEventListener("scroll", onScroll);
+            }
+        };
+
+        window.addEventListener("scroll", onScroll, { passive: true });
+        onScroll(); // Check immediately
+    };
+
+    // Accordion functionality
+    const setupAccordions = () => {
+        const services = document.querySelectorAll("[data-service]");
+
+        services.forEach((service) => {
+            const trigger = service.querySelector("[data-trigger]");
+            if (!trigger) return;
+
+            trigger.addEventListener("click", () => {
+                const isOpen = service.getAttribute("data-open") === "true";
+
+                // Close all others
+                services.forEach((s) => {
+                    s.setAttribute("data-open", "false");
+                    const btn = s.querySelector("[data-trigger]");
+                    if (btn) btn.setAttribute("aria-expanded", "false");
+                });
+
+                // Toggle current
+                if (!isOpen) {
+                    service.setAttribute("data-open", "true");
+                    trigger.setAttribute("aria-expanded", "true");
+                }
+            });
+        });
+    };
+
+    // Initialize everything
+    const init = () => {
+        splitLetters();
+        setupServiceReveal();
+        setupAccordions();
+    };
+
+    // Run on Astro navigation
+    document.addEventListener("astro:page-load", init);
+    // Fallback for hard refresh
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
+    }
+</script>
+
+<style>
+    /* Base reveal animation */
+    .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 420ms ease-out, transform 420ms ease-out;
+    }
+
+    .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    /* =========================================================
+       Layout
+       ========================================================= */
+    .services {
+        padding: 8rem 0;
+    }
+
+    .container {
+        max-width: var(--container-width);
+        margin: 0 auto;
+    }
+
+    .services__layout {
+        display: grid;
+        grid-template-columns: 1fr 1.4fr;
+        gap: 4rem;
+        align-items: start;
+    }
+
+    .services__intro {
+        position: sticky;
+        top: 7rem;
+        align-self: start;
+        max-width: 34ch; /* keeps it elegant */
+    }
+
+    /* Big premium heading */
+    .services__intro h2 {
+        margin: 0 0 1.25rem;
+        font-size: clamp(2.8rem, 5vw, 4rem);
+        line-height: 1;
+        letter-spacing: -0.04em;
+        font-weight: 750;
+        color: var(--text);
+    }
+
+    /* Strong subtitle */
+    .services__intro p {
+        margin: 0;
+        font-size: clamp(1.15rem, 1.4vw, 1.35rem);
+        line-height: 1.6;
+        color: var(--text-muted);
+        max-width: 30ch;
+    }
+    .services__title {
+        margin: 0 0 1rem;
+        font-size: clamp(2.2rem, 3.8vw, 3rem);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+    }
+
+    .services__punchline {
+        margin: 1.25rem 0 0.85rem;
+        font-size: clamp(1.15rem, 1.4vw, 1.35rem);
+        font-weight: 650;
+        letter-spacing: -0.02em;
+        line-height: 1.35;
+
+        color: var(--text);
+        opacity: 0.92;
+    }
+
+    .services__list {
+        display: grid;
+        gap: 2rem;
+    }
+
+    /* =========================================================
+       Letter animation
+       ========================================================= */
+    .services__title .char {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(14px);
+    }
+
+    .services.is-visible .services__title .char {
+        animation: charIn 520ms ease-out forwards;
+    }
+
+    .services.is-visible .services__title .char:nth-child(1) { animation-delay: 0ms; }
+    .services.is-visible .services__title .char:nth-child(2) { animation-delay: 30ms; }
+    .services.is-visible .services__title .char:nth-child(3) { animation-delay: 60ms; }
+    .services.is-visible .services__title .char:nth-child(4) { animation-delay: 90ms; }
+    .services.is-visible .services__title .char:nth-child(5) { animation-delay: 120ms; }
+    .services.is-visible .services__title .char:nth-child(6) { animation-delay: 150ms; }
+    .services.is-visible .services__title .char:nth-child(7) { animation-delay: 180ms; }
+    .services.is-visible .services__title .char:nth-child(8) { animation-delay: 210ms; }
+    .services.is-visible .services__title .char:nth-child(9) { animation-delay: 240ms; }
+    .services.is-visible .services__title .char:nth-child(10) { animation-delay: 270ms; }
+    .services.is-visible .services__title .char:nth-child(11) { animation-delay: 300ms; }
+
+    @keyframes charIn {
+        from {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* =========================================================
+       Service items (cascade reveal on scroll)
+       ========================================================= */
+    .service {
+        padding: 1.6rem 0;
+        border-top: 1px solid var(--border);
+        opacity: 0;
+        transform: translateY(24px);
+        filter: blur(3px);
+        transition:
+                opacity 520ms ease-out,
+                transform 520ms ease-out,
+                filter 520ms ease-out;
+    }
+
+    .service.is-revealed {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+
+    /* Add staggered delays */
+    .service[data-step="1"] {
+        transition-delay: 0ms;
+    }
+
+    .service[data-step="2"] {
+        transition-delay: 100ms;
+    }
+
+    .service[data-step="3"] {
+        transition-delay: 200ms;
+    }
+
+    /* =========================================================
+       Trigger button
+       ========================================================= */
+    .service__trigger {
+        width: 100%;
+        background: transparent;
+        border: 0;
+        padding: 0;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 1.25rem;
+        align-items: start;
+        text-align: left;
+        color: inherit;
+    }
+
+    .service__meta h3 {
+        font-size: clamp(1.35rem, 2vw, 1.6rem);
+        margin: 0 0 0.55rem;
+        font-weight: 750;
+        letter-spacing: -0.02em;
+        color: var(--text);
+    }
+
+    .service__meta p {
+        margin: 0;
+        font-size: 1.05rem;
+        color: var(--text-muted);
+        max-width: 68ch;
+        line-height: 1.6;
+    }
+
+    /* Chevron */
+    .service__chevron {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: grid;
+        place-items: center;
+        color: var(--text-muted);
+        transition: transform 300ms ease, background 300ms ease, color 300ms ease;
+    }
+
+    .service__trigger:hover .service__chevron {
+        transform: translateY(-1px);
+        color: var(--text);
+    }
+
+    .service[data-open="true"] .service__chevron {
+        transform: rotate(180deg);
+        color: var(--text);
+        background: color-mix(in srgb, var(--text) 6%, transparent);
+    }
+
+    /* =========================================================
+       Panel (accordion)
+       ========================================================= */
+    .service__panel {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-6px);
+        transition:
+                max-height 320ms ease,
+                opacity 320ms ease,
+                transform 320ms ease;
+    }
+
+    .service[data-open="true"] .service__panel {
+        max-height: 400px;
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .service__content {
+        padding-top: 1.25rem;
+    }
+
+    .service__story {
+        margin: 0 0 1.1rem;
+        color: var(--text-muted);
+        font-size: 1.02rem;
+        line-height: 1.65;
+        max-width: 72ch;
+    }
+
+    /* Tags */
+    .service__tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+    }
+
+    .tag {
+        font-size: 0.92rem;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--surface) 88%, var(--text) 4%);
+        border: 1px solid var(--border);
+        color: var(--text);
+        line-height: 1;
+    }
+
+    /* =========================================================
+       Responsive
+       ========================================================= */
+    @media (max-width: 900px) {
+        .services__layout {
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+
+        .services__intro {
+            position: relative;
+            top: 0;
+            padding: 0;
+        }
+    }
+
+    /* =========================================================
+       Reduced motion
+       ========================================================= */
+    @media (prefers-reduced-motion: reduce) {
+        .reveal,
+        .service,
+        .service__panel,
+        .services__title .char {
+            transition: none !important;
+            animation: none !important;
+            transform: none !important;
+            opacity: 1 !important;
+            filter: none !important;
+        }
+    }
+</style>

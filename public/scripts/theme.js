@@ -1,23 +1,48 @@
+document.documentElement.classList.add("js");
 (() => {
-    // ✅ Set theme ASAP (before paint)
-    const stored = localStorage.getItem("theme");
-    const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    document.documentElement.dataset.theme = stored ?? (systemDark ? "dark" : "light");
+    const storageKey = "theme";
+    const doc = document.documentElement;
 
-    // ✅ Theme toggle click handler (runs after DOM ready)
-    const setTheme = (t) => {
-        document.documentElement.dataset.theme = t;
-        localStorage.setItem("theme", t);
+    const getInitialTheme = () => {
+        const stored = localStorage.getItem(storageKey);
+        if (stored === "light" || stored === "dark") return stored;
+
+        return window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+    };
+
+    const setTheme = (theme) => {
+        doc.dataset.theme = theme;
+        localStorage.setItem(storageKey, theme);
+
+        // keep toggles accessible + in sync
+        document.querySelectorAll(".theme-toggle").forEach((btn) => {
+            btn.setAttribute("aria-label", theme);
+            btn.setAttribute("data-theme", theme); // optional if you ever want styling
+        });
     };
 
     const toggleTheme = () => {
-        const current = document.documentElement.dataset.theme || "light";
+        const current = doc.dataset.theme || "light";
         setTheme(current === "dark" ? "light" : "dark");
     };
 
+    // ✅ Set ASAP before paint
+    doc.dataset.theme = getInitialTheme();
+
+    // ✅ Bind click handlers once DOM is ready
     document.addEventListener("DOMContentLoaded", () => {
-        const btn = document.querySelector(".theme-toggle");
-        if (!btn) return;
-        btn.addEventListener("click", toggleTheme);
+        document.querySelectorAll(".theme-toggle").forEach((btn) => {
+            btn.addEventListener("click", toggleTheme);
+            btn.setAttribute("aria-label", doc.dataset.theme);
+        });
+    });
+
+    // ✅ Sync with OS changes only if user hasn't picked manually
+    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+        if (!localStorage.getItem(storageKey)) {
+            setTheme(e.matches ? "dark" : "light");
+        }
     });
 })();

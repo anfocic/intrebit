@@ -1,0 +1,128 @@
+---
+type Variant = "primary" | "ghost";
+
+interface Props {
+    href?: string;
+    variant?: Variant;
+    type?: "button" | "submit" | "reset";
+    target?: string;
+    rel?: string;
+    disabled?: boolean;
+    class?: string;
+    ariaLabel?: string;
+}
+
+const {
+    href,
+    variant = "primary",
+    type = "button",
+    target,
+    rel,
+    disabled = false,
+    class: className = "",
+    ariaLabel,
+} = Astro.props;
+
+const classes = `btn btn--${variant} ${className}`.trim();
+---
+
+{href ? (
+<a
+        class={classes}
+        href={href}
+        target={target}
+        rel={rel}
+        aria-label={ariaLabel}
+>
+    <slot />
+</a>
+    ) : (
+<button
+        class={classes}
+        type={type}
+        disabled={disabled}
+        aria-label={ariaLabel}
+>
+    <slot />
+</button>
+    )}
+
+<style>
+    .btn {
+        height: 56px; /* match inputs */
+        padding: 0 1.35rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        font-weight: 650;
+        font-size: 1rem;
+        letter-spacing: -0.01em;
+
+        cursor: pointer;
+        user-select: none;
+        text-decoration: none;
+
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: rgba(255, 255, 255, 0.92);
+
+        transition:
+                transform 0.16s var(--ease),
+                background 0.16s var(--ease),
+                border-color 0.16s var(--ease),
+                box-shadow 0.16s var(--ease),
+                filter 0.16s var(--ease);
+    }
+
+    .btn:hover {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.10);
+        border-color: rgba(255, 255, 255, 0.22);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+    }
+
+    .btn:active {
+        transform: translateY(0);
+        filter: brightness(0.98);
+    }
+
+    /* keyboard accessibility */
+    .btn:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 5px rgba(178, 223, 219, 0.18);
+    }
+
+    .btn--primary {
+        background: rgba(255, 255, 255, 0.10);
+        border-color: rgba(255, 255, 255, 0.22);
+    }
+
+    .btn--primary:hover {
+        background: rgba(255, 255, 255, 0.14);
+        border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .btn--ghost {
+        background: rgba(255, 255, 255, 0.03);
+        color: var(--text);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .btn--ghost:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.16);
+    }
+
+
+
+    /* Optional: disabled styling */
+    .btn:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+</style>

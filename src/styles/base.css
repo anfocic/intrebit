@@ -1,3 +1,6 @@
+/* =========================================================
+   CSS VARIABLES & RESET
+   ========================================================= */
 :root {
     --header-height: 72px;
     --radius-input: 16px;
@@ -25,7 +28,14 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
-/* Media defaults */
+body > *:not(.site-bg) {
+    position: relative;
+    z-index: 1;
+}
+
+/* =========================================================
+   MEDIA DEFAULTS
+   ========================================================= */
 img,
 svg,
 video {
@@ -34,9 +44,9 @@ video {
     display: block;
 }
 
-/* ---------------------------
-   Typography
-   --------------------------- */
+/* =========================================================
+   TYPOGRAPHY
+   ========================================================= */
 h1,
 h2,
 h3,
@@ -71,168 +81,52 @@ a:hover {
     text-decoration: underline;
 }
 
-/* ---------------------------
-   Layout helpers
-   --------------------------- */
-.container {
-    max-width: var(--container-width);
-    margin: 0 auto;
-    padding: 0 2rem;
-}
+/* =========================================================
+   SITE BACKGROUND (Global Aurora Effect)
+   ========================================================= */
 
-.card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-soft);
-    box-shadow: var(--shadow-card);
-}
-
-
-
-/* ---------------------------
-   Buttons
-   --------------------------- */
-button {
-    font: inherit;
-}
-
-.btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.85rem 1.15rem;
-    border-radius: var(--radius-soft);
-    font-weight: 650;
-    border: 1px solid transparent;
-    cursor: pointer;
-    transition:
-            transform 0.12s ease,
-            box-shadow 0.12s ease,
-            background 0.12s ease,
-            border-color 0.12s ease,
-            color 0.12s ease;
-}
-
-.btn:active {
-    transform: translateY(1px);
-}
-
-.btn--primary {
-    background: var(--text);
-    color: var(--bg);
-    box-shadow: var(--shadow-soft);
-}
-
-.btn--primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
-}
-
-/* Optional CTA variant (mint) */
-.btn--accent {
-    color: var(--brand-navy);
-    box-shadow: var(--shadow-soft);
-}
-
-.btn--accent:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.02);
-}
-
-.btn--outline {
-    background: transparent;
-    border-color: var(--border);
-    color: var(--text);
-}
-
-.btn--outline:hover {
-    background: color-mix(in srgb, var(--text) 6%, transparent);
-}
-
-/* ---------------------------
-   Forms + focus
-   --------------------------- */
-input,
-textarea {
-    font: inherit;
-}
-
-input,
-textarea {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-soft);
-    background: var(--surface-strong);
-    color: var(--text);
-}
-
-input::placeholder,
-textarea::placeholder {
-    color: color-mix(in srgb, var(--text-muted) 85%, transparent);
-}
-
-input:focus,
-textarea:focus,
-button:focus {
-    outline: none;
-}
-
-:focus-visible {
-    outline: 3px solid rgba(178, 223, 219, 0.55);
-    outline-offset: 3px;
-}
-
-/* ---------------------------
-   Theme toggle button
-   --------------------------- */
-.theme-toggle {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    background: transparent;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: background 0.15s var(--ease), color 0.15s var(--ease);
-    position: relative;
-}
-
-.theme-toggle:hover {
-    background: color-mix(in srgb, var(--text) 6%, transparent);
-    color: var(--text);
-}
-
-.theme-toggle__icon {
-    width: 18px;
-    height: 18px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+.site-bg__aurora {
     position: absolute;
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 0.15s var(--ease), transform 0.15s var(--ease);
-}
-
-/* Show only the correct icon */
-:root[data-theme="dark"] .theme-toggle__icon--sun {
+    inset: -35%;
+    background:
+            radial-gradient(circle at 35% 20%, rgba(14, 42, 71, 0.85), transparent 58%),
+            radial-gradient(circle at 80% 10%, rgba(7, 24, 38, 0.92), transparent 60%),
+            radial-gradient(circle at 20% 75%, rgba(178, 223, 219, 0.14), transparent 55%),
+            radial-gradient(circle at 85% 70%, rgba(120, 170, 255, 0.10), transparent 56%),
+            radial-gradient(circle at 55% 95%, rgba(210, 170, 255, 0.06), transparent 55%);
+    filter: blur(90px);
     opacity: 1;
-    transform: scale(1);
+    transform: scale(1.05);
+    animation: auroraShift 18s ease-in-out infinite;
 }
 
-:root[data-theme="light"] .theme-toggle__icon--moon {
-    opacity: 1;
-    transform: scale(1);
+.site-bg__noise {
+    position: absolute;
+    inset: 0;
+    opacity: 0.045;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
 }
 
-/* ---------------------------
-   Honeypot (spam trap)
-   --------------------------- */
+@keyframes auroraShift {
+    0%, 100% { transform: translate3d(0,0,0) scale(1.05); }
+    50% { transform: translate3d(3%, -2%, 0) scale(1.08); }
+}
+
+/* =========================================================
+   PAGE BACKGROUND
+   ========================================================= */
+.coming {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: var(--text);
+    background: var(--bg);
+}
+
+/* =========================================================
+   UTILITY CLASSES
+   ========================================================= */
 .honeypot {
     position: absolute !important;
     left: -9999px !important;
@@ -244,108 +138,14 @@ button:focus {
     pointer-events: none !important;
 }
 
-/* ---------------------------
-   Reduced motion
-   --------------------------- */
-@media (prefers-reduced-motion: reduce) {
-    * {
-        animation: none !important;
-        transition: none !important;
-        scroll-behavior: auto !important;
-    }
-}
-
-/* ---------------------------
-   Mobile spacing
-   --------------------------- */
-@media (max-width: 520px) {
-    .container {
-        padding: 0 1.25rem;
-    }
-}
-
 /* =========================================================
-   Site Background — Astro-style navy gradient wash (global)
+   DARK THEME OVERRIDES
    ========================================================= */
-
-.site-bg {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
-    background: var(--bg);
-}
-
-/* Navy-first aurora wash */
-.site-bg__aurora {
-    position: absolute;
-    inset: -35%;
-    background:
-        /* Deep navy base glow (dominant) */
-            radial-gradient(circle at 35% 20%, rgba(14, 42, 71, 0.85), transparent 58%),
-            radial-gradient(circle at 80% 10%, rgba(7, 24, 38, 0.92), transparent 60%),
-
-                /* Mint highlight (very subtle) */
-            radial-gradient(circle at 20% 75%, rgba(178, 223, 219, 0.14), transparent 55%),
-
-                /* Cool blue highlight */
-            radial-gradient(circle at 85% 70%, rgba(120, 170, 255, 0.10), transparent 56%),
-
-                /* Soft lilac edge — barely there */
-            radial-gradient(circle at 55% 95%, rgba(210, 170, 255, 0.06), transparent 55%);
-
-    filter: blur(90px);
-    opacity: 1;
-    transform: scale(1.05);
-}
-
-/* Dark mode: even more navy, cleaner + less “color” */
 :root[data-theme="dark"] .site-bg__aurora {
     opacity: 0.95;
     filter: blur(110px);
 }
 
-/* Noise stays subtle */
-.site-bg__noise {
-    position: absolute;
-    inset: 0;
-    opacity: 0.045;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
-    mix-blend-mode: overlay;
-}
-
-/* ensure content above bg */
-body > *:not(.site-bg) {
-    position: relative;
-    z-index: 1;
-}
-
-.site-bg__aurora {
-    animation: auroraShift 18s ease-in-out infinite;
-}
-
-@keyframes auroraShift {
-    0%, 100% { transform: translate3d(0,0,0) scale(1.05); }
-    50% { transform: translate3d(3%, -2%, 0) scale(1.08); }
-}
-
-/* =========================================================
-   Page background gradients (theme-specific)
-   Apply to body or .coming
-   ========================================================= */
-
-.coming {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    color: var(--text);
-    background: var(--bg); /* fallback */
-}
-
-/* ---------------------------
-   DARK MODE BACKGROUND
-   --------------------------- */
 :root[data-theme="dark"] .coming {
     background:
             radial-gradient(circle at 15% 20%, rgba(178, 223, 219, 0.10), transparent 55%),
@@ -354,13 +154,113 @@ body > *:not(.site-bg) {
             linear-gradient(180deg, #071826 0%, #06131f 100%);
 }
 
-/* ---------------------------
-   LIGHT MODE BACKGROUND
-   --------------------------- */
+:root[data-theme="dark"] .form__field input,
+:root[data-theme="dark"] .form__field textarea {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme="dark"] .about-card {
+    box-shadow: 0 22px 60px rgba(0, 0, 0, 0.25);
+    background: rgba(255, 255, 255, 0.04);
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+:root[data-theme="dark"] .about-card:hover {
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.32);
+}
+
+:root[data-theme="dark"] .service-card__chip {
+    color: rgba(246, 244, 239, 0.85);
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(246, 244, 239, 0.12);
+}
+
+/* =========================================================
+   LIGHT THEME OVERRIDES
+   ========================================================= */
 :root[data-theme="light"] .coming {
     background:
             radial-gradient(circle at 25% 15%, rgba(14, 42, 71, 0.06), transparent 55%),
             radial-gradient(circle at 85% 20%, rgba(178, 223, 219, 0.10), transparent 60%),
             radial-gradient(circle at 40% 90%, rgba(14, 42, 71, 0.04), transparent 65%),
             linear-gradient(180deg, #f6f4ef 0%, #f1eee6 100%);
+}
+
+:root[data-theme="light"] .btn {
+    background: rgba(14, 42, 71, 0.06);
+    border-color: rgba(14, 42, 71, 0.16);
+    color: rgba(14, 42, 71, 0.92);
+}
+
+:root[data-theme="light"] .btn:hover {
+    background: rgba(14, 42, 71, 0.10);
+    border-color: rgba(14, 42, 71, 0.22);
+}
+
+:root[data-theme="light"] .btn--primary {
+    background: var(--text);
+    color: var(--bg);
+    border-color: rgba(14, 42, 71, 0.22);
+    box-shadow: 0 16px 44px rgba(14, 42, 71, 0.18);
+}
+
+:root[data-theme="light"] .btn--ghost {
+    background: rgba(14, 42, 71, 0.04);
+    border-color: rgba(14, 42, 71, 0.14);
+    color: var(--text);
+}
+
+:root[data-theme="light"] .section-divider {
+    background: rgba(14, 42, 71, 0.18);
+}
+
+:root[data-theme="light"] .about-card,
+:root[data-theme="light"] .card {
+    background: rgba(255, 255, 255, 0.72);
+    border-color: rgba(14, 42, 71, 0.10);
+    box-shadow: 0 18px 55px rgba(14, 42, 71, 0.06);
+}
+
+:root[data-theme="light"] .about-card:hover,
+:root[data-theme="light"] .card:hover {
+    border-color: var(--brand-navy);
+}
+
+:root[data-theme="light"] .hero__availability {
+    color: var(--brand-navy);
+}
+
+:root[data-theme="light"] .contact .status {
+    color: rgba(14, 42, 71, 0.82);
+}
+
+/* Light theme input fix */
+:root[data-theme="light"] .input,
+:root[data-theme="light"] .textarea {
+    background: rgba(255,255,255,0.85);
+    border-color: rgba(14,42,71,0.18);
+    color: rgba(14,42,71,0.88);
+}
+
+:root[data-theme="light"] .input::placeholder,
+:root[data-theme="light"] .textarea::placeholder {
+    color: rgba(14,42,71,0.45);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 520px) {
+    .container {
+        padding: 0 1.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
 }

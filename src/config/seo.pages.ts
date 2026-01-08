@@ -20,8 +20,8 @@ const prelaunch = (seo: SEOOverrides): SEOOverrides => ({
 export const pageSEO: Record<string, SEOOverrides> = {
     // ✅ Coming soon should be indexable even during prelaunch
     comingSoon: {
-        title: "Coming Soon",
-        description: "Intrebit is launching soon. Get notified when we go live.",
+        title: "Intrebit",
+        description: "Software that works",
         noindex: false,
     },
 

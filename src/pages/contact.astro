@@ -2,39 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 
 import ContactHero from "../components/contact/ContactHero.astro";
-import ContactForm from "../components/contact/ContactForm.astro";
-import ContactInfo from "../components/contact/ContactInfo.astro";
 import {pageSEO} from "../config/seo.pages.ts";
 ---
 
 <Layout seo={pageSEO.contact}>
-    <main>
-        <ContactHero />
-
-        <section class="section">
-            <div class="container contact-grid">
-                <ContactForm />
-                <ContactInfo />
-            </div>
-        </section>
-    </main>
-
-    <style>
-        .section {
-            padding: 0 0 6rem;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 0.9fr;
-            gap: 3rem;
-            max-width: 1000px;
-        }
-
-        @media (max-width: 900px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    <ContactHero/>
 </Layout>

@@ -1,0 +1,207 @@
+---
+const steps = [
+    {
+        title: "The Call",
+        description: "You complain. We nod.",
+        detail:
+            "We talk through what’s broken, what’s annoying you daily, and what “working properly” looks like — so we’re solving the right problem.",
+    },
+    {
+        title: "The Plan",
+        description: "We hand you the plan. You’re mildly impressed.",
+        detail:
+            "You get a clear scope, timeline, and fixed cost — so you know what’s being built, what it will do, and what it won’t.",
+    },
+    {
+        title: "The Build",
+        description: "This is the part where magic happens.",
+        detail:
+            "We build in small releases, keep you updated weekly, and show progress early — so nothing disappears into a black hole.",
+    },
+    {
+        title: "The Launch",
+        description: "No drama here. Carry on.",
+        detail:
+            "We handle the deployment, set up monitoring, and make sure everything works in the real world — not just on our laptops.",
+    },
+    {
+        title: "The Aftermath",
+        description: "We are here for you — just don't call before 10AM.",
+        detail:
+            "Maintenance, fixes, and improvements when things break or need adjusting — so you’re not stuck dealing with the tech alone.",
+    },
+];
+---
+
+<section class="process" id="process">
+    <div class="container">
+        <header class="process__header">
+            <h2>The Process</h2>
+            <p>Simple steps. Clear costs. You own the code.</p>
+        </header>
+
+        <div class="process__list" role="list">
+            {steps.map((step, i) => (
+                    <article class="process__step" role="listitem">
+                        <div class="process__index">
+                            <span>{String(i + 1).padStart(2, "0")}</span>
+                        </div>
+
+                        <div class="how-card">
+                            <h3 class="how-card__title">{step.title}</h3>
+                            <p class="how-card__desc">{step.description}</p>
+                            <p class="how-card__detail">{step.detail}</p>
+                        </div>
+                    </article>
+            ))}
+        </div>
+    </div>
+</section>
+
+<style>
+    .process {
+        padding: 6rem 0 7rem;
+    }
+
+    .container {
+        max-width: var(--container-width, 1200px);
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    /* Header */
+    .process__header {
+        text-align: center;
+        max-width: 740px;
+        margin: 0 auto 3.75rem;
+    }
+
+    .process__header h2 {
+        margin: 0 0 1rem;
+        font-size: clamp(2rem, 3vw, 2.5rem);
+        color: var(--text);
+        letter-spacing: -0.03em;
+    }
+
+    .process__header p {
+        margin: 0;
+        font-size: 1.1rem;
+        line-height: 1.65;
+        color: var(--text-muted);
+    }
+
+    /* List */
+    .process__list {
+        max-width: 920px;
+        margin: 0 auto;
+        display: grid;
+        gap: 0;
+    }
+
+    /* Step row */
+    .process__step {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        gap: 1.75rem;
+        padding: 2.25rem 0;
+        border-top: 0.1px solid var(--text);
+        align-items: start;
+    }
+
+    .process__index span {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 16px;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        font-size: 0.95rem;
+        color: var(--text);
+        background: color-mix(in srgb, var(--surface) 84%, var(--text) 4%);
+        border: 1px solid var(--border);
+    }
+
+    /* Body */
+    .process__body h3 {
+        margin: 0 0 0.75rem;
+        font-size: clamp(1.35rem, 2vw, 1.6rem);
+        font-weight: 750;
+        letter-spacing: -0.02em;
+        color: var(--text);
+    }
+
+    .process__body p {
+        margin: 0;
+        max-width: 70ch;
+        font-size: 1.05rem;
+        line-height: 1.65;
+        color: var(--text-muted);
+    }
+
+    /* Hover feel */
+    .process__step {
+        transition: transform 240ms ease, background 240ms ease;
+    }
+
+    .process__step:hover {
+        transform: translateY(-2px);
+        background: color-mix(in srgb, var(--surface) 58%, transparent);
+    }
+
+    .how-card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* default: detail hidden */
+    .how-card__detail {
+        margin: 0.85rem 0 0;
+        color: var(--text-muted);
+        font-size: 0.98rem;
+        line-height: 1.65;
+        max-width: 62ch;
+
+        opacity: 0;
+        transform: translateY(6px);
+        max-height: 0;
+
+        transition:
+                opacity 300ms ease-in-out,
+                transform 300ms ease-in-out,
+                max-height 300ms ease-in-out;
+    }
+
+    /* reveal on hover */
+    .how-card:hover .how-card__detail,
+    .how-card:focus-within .how-card__detail {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 220px; /* enough room for 2-3 lines */
+    }
+
+    /* bonus: slightly lift card */
+    .how-card:hover {
+        transform: translateY(-4px);
+    }
+
+    @media (max-width: 720px) {
+        .process__step {
+            grid-template-columns: 52px 1fr;
+            gap: 1.25rem;
+            padding: 1.75rem 0;
+        }
+
+        .process__index span {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+        }
+
+        .process__body p {
+            font-size: 1rem;
+        }
+    }
+</style>

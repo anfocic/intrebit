@@ -1,228 +1,127 @@
 ---
-/**
-    * Home Hero — Gradient-only (no floating animations)
-    * Drop-in replacement for your Hero section.
-    */
+import Button from "../shared/Button.astro";
 ---
+<section class="hero" aria-label="Coming soon hero">
+    <div class="blob blob--1"></div>
+    <div class="blob blob--2"></div>
+    <div class="blob blob--3"></div>
 
-<section class="hero" aria-label="Hero">
-    <div class="container hero__inner">
-        <div class="hero__copy">
-            <div class="hero__badge">
-                <span class="hero__badge-dot"></span>
-                <span>Est. 2025</span>
-            </div>
-
-            <h1 class="hero__title">
-                Software that <span class="hero__title-accent">works</span>.
-            </h1>
-
+    <div class="hero__inner">
+        <header class="hero__header">
+            <h1 class="hero__title">intrebit</h1>
             <p class="hero__subtitle">
-                We build digital infrastructure, design interfaces that make sense, and engineer software solutions
-                for companies that are tired of corporate BS.
+                <strong>Software, built properly.</strong><br/>
+                <span class="hero__subtitle--soft">No buzzwords. No nonsense.</span>
             </p>
+        </header>
 
-            <div class="hero__actions">
-                <a href="/contact" class="btn btn--primary">
-                    Let’s talk <span aria-hidden="true">→</span>
-                </a>
-                <a href="/services" class="btn btn--ghost">
-                    See what we do
-                </a>
-            </div>
+        <p class="hero__availability">
+            Open for new work.
+        </p>
+
+        <div class="hero__actions">
+            <Button href="#contact" variant="primary">
+                Get in touch
+            </Button>
+            <Button
+                    href="https://www.linkedin.com/company/intrebit"
+                    variant="ghost"
+                    target="_blank"
+                    rel="noopener noreferrer"
+            >
+                Follow us
+            </Button>
         </div>
-        
+
     </div>
 </section>
 
 <style>
-    /* =========================================================
-       Home Hero — Gradient-only (no animations)
-       ========================================================= */
+    /* ---------- Hero ---------- */
     .hero {
-        min-height: calc(100vh - var(--header-height, 72px));
+        position: relative;
+        flex: 1;
         display: grid;
-        align-items: center;
-        padding: 0;
-        border-bottom: none;
+        place-items: center;
+        overflow: hidden;
+        padding: 8rem 2rem 6rem;
     }
 
-    /* inner spacing */
     .hero__inner {
-        padding: 6rem 0 4rem;
-    }
-
-    /* if you have a bg wrapper, make sure it fills */
-    .hero__bg {
-        position: absolute;
-        inset: 0;
-    }
-    /* --- Copy --- */
-    .hero__copy {
-        max-width: 620px;
-    }
-
-    .hero__badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.55rem;
-        padding: 0.55rem 0.9rem;
-        border-radius: 999px;
-        border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
-        background: color-mix(in srgb, var(--accent) 10%, transparent);
-        color: var(--text);
-        font-weight: 650;
-        font-size: 0.9rem;
-        margin-bottom: 1.3rem;
-        backdrop-filter: blur(10px);
-    }
-
-    .hero__badge-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        background: var(--accent);
-        box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 18%, transparent);
+        text-align: center;
+        max-width: 650px;
+        position: relative;
+        z-index: 2;
+        animation: fadeUp 0.8s ease-out both;
     }
 
     .hero__title {
-        margin: 0 0 1rem;
-        font-size: clamp(2.6rem, 4.8vw, 4.25rem);
-        letter-spacing: -0.05em;
-        line-height: 1.03;
-        font-weight: 850;
-        color: var(--text);
-    }
-
-    .hero__title-accent {
-        position: relative;
-        display: inline-block;
-    }
-
-    .hero__title-accent::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0.12em;
-        width: 100%;
-        height: 0.22em;
-        border-radius: 999px;
-        background: color-mix(in srgb, var(--accent) 75%, transparent);
-        z-index: -1;
-        opacity: 0.38;
+        font-family: var(--font-brand), serif;
+        letter-spacing: 0.05em;
+        font-size: clamp(2.5rem, 7vw, 4rem);
+        font-weight: 750;
+        margin: 0 0 0.6rem;
+        color: var(--brand-navy);
     }
 
     .hero__subtitle {
-        margin: 0 0 2rem;
+        margin: 0 auto 2.25rem;
         font-size: 1.15rem;
-        line-height: 1.7;
         color: var(--text-muted);
         max-width: 560px;
+        line-height: 1.6;
     }
 
     .hero__actions {
         display: flex;
+        justify-content: center;
         gap: 1rem;
         flex-wrap: wrap;
+        margin-bottom: 2rem;
     }
 
-    /* --- Buttons --- */
-    .btn {
-        height: 52px;
-        padding: 0 1.35rem;
-        border-radius: 999px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.55rem;
-        font-weight: 700;
-        text-decoration: none;
-        border: 1px solid transparent;
-        transition: transform 0.16s var(--ease), background 0.16s var(--ease),
-        border-color 0.16s var(--ease), box-shadow 0.16s var(--ease);
+    .hero__availability {
+        margin: 0 0 1.2rem;
+        font-size: 0.95rem;
+        font-weight: 650;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        opacity: 0.9;
+        padding: 2rem 0;
     }
 
-    .btn:active {
-        transform: translateY(1px);
+    .hero__availability {
+        color: var(--brand-ivory);
     }
 
-    .btn--primary {
-        background: var(--text);
-        color: var(--bg);
-        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.18);
+    .hero__title {
+        color: var(--text) !important;
     }
 
-    .btn--primary:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+    .hero__subtitle,
+    .hero__subtitle strong,
+    .hero__subtitle--soft {
+        color: var(--text-muted) !important;
     }
 
-    .btn--ghost {
-        background: color-mix(in srgb, var(--text) 3%, transparent);
-        border-color: var(--border);
-        color: var(--text);
-    }
-
-    .btn--ghost:hover {
-        transform: translateY(-1px);
-        background: color-mix(in srgb, var(--text) 5%, transparent);
-        border-color: color-mix(in srgb, var(--text) 12%, transparent);
-    }
-
-    /* --- Right panel (replaces cards) --- */
-    .hero__panel {
-        position: relative;
-        width: 100%;
-        height: 360px;
-        border-radius: 26px;
-        border: 1px solid var(--border);
-        background: color-mix(in srgb, var(--bg) 70%, white);
-        box-shadow: 0 26px 80px rgba(0,0,0,0.14);
-        overflow: hidden;
-    }
-
-    :root[data-theme="dark"] .hero__panel {
-        background: rgba(255,255,255,0.04);
-        border-color: rgba(246, 244, 239, 0.12);
-        box-shadow: 0 30px 90px rgba(0,0,0,0.35);
-    }
-
-    .hero__panel-inner {
-        position: absolute;
-        inset: -40%;
-        background:
-                radial-gradient(circle at 20% 20%, rgba(178,223,219,0.28), transparent 55%),
-                radial-gradient(circle at 80% 30%, rgba(109,158,255,0.22), transparent 60%),
-                radial-gradient(circle at 55% 85%, rgba(255,153,221,0.18), transparent 55%),
-                radial-gradient(circle at 15% 80%, rgba(255,200,120,0.16), transparent 55%);
-        filter: blur(50px);
-        opacity: 0.85;
-    }
-
-    /* --- Responsive --- */
-    @media (max-width: 980px) {
-        .hero__inner {
-            grid-template-columns: 1fr;
-            gap: 3rem;
-        }
-
-        .hero__panel {
-            height: 300px;
-        }
+    @media (max-height: 800px) {
+        .hero { padding-bottom: 5rem; }
     }
 
     @media (max-width: 520px) {
         .hero {
-            padding: 5.5rem 0 3.5rem;
+            padding: 3.25rem 1.25rem 2.5rem;
         }
 
         .hero__subtitle {
             font-size: 1.05rem;
+            margin-bottom: 1.75rem;
         }
 
-        .btn {
-            width: 100%;
-            justify-content: center;
+        .hero__actions {
+            margin-bottom: 1.75rem;
+            gap: 0.75rem;
         }
     }
 </style>

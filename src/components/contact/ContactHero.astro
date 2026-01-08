@@ -1,38 +1,228 @@
----
-interface Props {
-    title?: string;
-    subtitle?: string;
-}
+<section id="contact" class="contact" aria-label="Contact form">
+    <div class="container contact__inner">
+        <div class="card">
+            <div class="card__header">
+                <h2 class="card__title">Let’s talk</h2>
+                <p class="card__subtitle">
+                    The site’s still cooking, but we’re available.
+                </p>
+            </div>
 
-const {
-    title = "Let's talk",
-    subtitle = "Got a project? A wild idea? Or just want to complain about corporate life? We're here for it.",
-} = Astro.props;
----
+            <form class="form form--contact" id="contact-form">
+                <!-- Honeypot (spam trap) -->
+                <label class="honeypot" aria-hidden="true">
+                    Do not fill
+                    <input type="text" name="company" tabindex="-1" autocomplete="off"/>
+                </label>
 
-<section class="section">
-    <div class="container hero">
-        <h1>{title}</h1>
-        <p class="hero__subtitle">{subtitle}</p>
+                <div class="form__row">
+                    <input
+                            class="input"
+                            type="text"
+                            name="name"
+                            id="contact-name"
+                            placeholder="Your name (optional)"
+                            autocomplete="name"
+                    />
+
+                    <input
+                            class="input"
+                            type="email"
+                            name="email"
+                            id="contact-email"
+                            placeholder="your@email.com"
+                            required
+                            autocomplete="email"
+                    />
+                </div>
+
+                <textarea
+                        class="textarea"
+                        name="message"
+                        id="contact-message"
+                        placeholder="What do you need help with?"
+                        rows="4"
+                        required
+                ></textarea>
+
+                <button class="btn btn--primary" type="submit">
+                    Send
+                </button>
+            </form>
+
+            <p class="note">
+                Or email <span id="email-slot"></span>
+            </p>
+
+            <p class="note">
+                We’ll only use this to reply. No spam.
+            </p>
+
+            <p class="status" id="contact-status" aria-live="polite"></p>
+        </div>
     </div>
 </section>
 
 <style>
-    .section {
-        padding: 5.5rem 0 2.5rem;
+    /* =========================
+   Contact section
+   ========================= */
+
+    .contact {
+        position: relative;
+        padding: 5rem 0;
+        background: transparent;
     }
 
-    .hero {
+    .contact__inner {
+        display: flex;
+        justify-content: center;
+    }
+
+    /* Card wrapper (if your global .card isn't loading here) */
+    .contact .card {
+        width: 100%;
+        max-width: 760px;
+        border-radius: 18px;
+        padding: 2.25rem;
         text-align: center;
-        max-width: 720px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.06);
+        backdrop-filter: blur(10px);
+        color: var(--text);
     }
 
-    .hero__subtitle {
-        margin-top: 1.25rem;
-        font-size: 1.1rem;
+    /* Header */
+    .contact .card__title {
+        margin: 0 0 0.6rem;
+        font-size: 1.85rem;
+        letter-spacing: -0.03em;
+        color: var(--text);
+    }
+
+    .contact .card__subtitle {
+        margin: 0 auto 1.8rem;
+        max-width: 560px;
+        line-height: 1.6;
         color: var(--text-muted);
-        max-width: 600px;
-        margin-left: auto;
-        margin-right: auto;
+    }
+
+    /* Form layout */
+    .form--contact {
+        display: grid;
+        gap: 0.95rem;
+        margin-top: 1.4rem;
+    }
+
+    .form__row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    /* Inputs + textarea */
+    .input,
+    .textarea {
+        width: 100%;
+        border-radius: 16px;
+        padding: 18px 20px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.04);
+        color: rgba(255, 255, 255, 0.92);
+        font-size: 1.05rem;
+        line-height: 1.5;
+    }
+
+    .input {
+        height: 58px;
+    }
+
+    .textarea {
+        min-height: 180px;
+        resize: none;
+    }
+
+    /* Placeholders */
+    .input::placeholder,
+    .textarea::placeholder {
+        color: rgba(255, 255, 255, 0.45);
+        font-weight: 500;
+    }
+
+    /* Focus */
+    .input:focus,
+    .textarea:focus {
+        outline: none;
+        border-color: rgba(178, 223, 219, 0.6);
+        box-shadow: 0 0 0 6px rgba(178, 223, 219, 0.12);
+    }
+
+    /* Button full width */
+    .form--contact .btn {
+        width: 100%;
+        height: 52px;
+    }
+
+    /* Notes */
+    .contact .note {
+        margin: 1.1rem 0 0;
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        opacity: 0.92;
+    }
+
+    /* Status message */
+    .contact .status {
+        margin-top: 1.2rem;
+        padding: 0.9rem 1.2rem;
+        border-radius: 14px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        line-height: 1.4;
+        text-align: center;
+        border: 1px solid transparent;
+        background: transparent;
+        color: rgba(255, 255, 255, 0.86);
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
+    }
+
+    .contact .status:not(:empty) {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .status--success {
+        background: rgba(34, 197, 94, 0.14);
+        border-color: rgba(34, 197, 94, 0.35);
+        color: rgba(220, 252, 231, 0.95);
+    }
+
+    .status--error {
+        background: rgba(239, 68, 68, 0.14);
+        border-color: rgba(239, 68, 68, 0.35);
+        color: rgba(254, 226, 226, 0.95);
+    }
+
+    .status--info {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.12);
+        color: rgba(255, 255, 255, 0.82);
+    }
+
+    /* Mobile */
+    @media (max-width: 520px) {
+        .form__row {
+            grid-template-columns: 1fr;
+        }
     }
 </style>
+
+<script is:inline src="/scripts/contact.js" defer/>
+<script is:inline>
+    const slot = document.getElementById("email-slot");
+    if (slot) slot.innerHTML = `<a href="mailto:hello@intrebit.com">hello@intrebit.com</a>`;
+</script>

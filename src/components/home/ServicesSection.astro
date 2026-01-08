@@ -1,0 +1,156 @@
+<section class="about" aria-label="About Intrebit">
+    <div class="container about__inner">
+        <header class="about__header">
+            <h2 class="about__title">What we do</h2>
+            <p class="about__subtitle">
+                Build it right. Keep it running.
+            </p>
+        </header>
+
+        <div class="about__grid" role="list">
+            <article class="about-card" role="listitem">
+                <h3 class="about-card__title">Development</h3>
+                <p class="about-card__text">
+                    We ship it, deploy it, and keep it stable. You shouldn’t have to care about the rest.
+                </p>
+            </article>
+
+            <article class="about-card" role="listitem">
+                <h3 class="about-card__title">Consulting</h3>
+                <p class="about-card__text">
+                    We look at what you’ve got, spot what’s broken, and give you a clear plan forward.
+                </p>
+            </article>
+
+            <article class="about-card" role="listitem">
+                <h3 class="about-card__title">Automation</h3>
+                <p class="about-card__text">
+                    Less admin. More time. Happy days.
+                </p>
+            </article>
+        </div>
+
+    </div>
+</section>
+
+<style>
+    /* ---------- About ---------- */
+    .about {
+        padding: 6rem 0 5rem;
+        position: relative;
+    }
+
+    .about__inner {
+        text-align: center;
+    }
+
+    .about__header {
+        max-width: 720px;
+        margin: 0 auto 2.5rem;
+        animation: fadeUp 0.8s ease-out both;
+    }
+
+    .about__title {
+        margin: 0 0 0.8rem;
+        font-size: clamp(1.85rem, 4vw, 2.4rem);
+        letter-spacing: -0.03em;
+        color: var(--text);
+        font-weight: 750;
+    }
+
+    .about__subtitle {
+        margin: 0 auto;
+        max-width: 640px;
+        line-height: 1.65;
+        color: var(--text-muted);
+        font-size: 1.08rem;
+    }
+
+    .about__grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.25rem;
+        max-width: 920px;
+        margin: 0 auto;
+        justify-content: center;
+
+    }
+
+    .about-card {
+        border-radius: 18px;
+        padding: 1.5rem 1.6rem;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.06);
+        text-align: left;
+        transition: transform 0.18s var(--ease),
+        box-shadow 0.18s var(--ease),
+        border-color 0.18s var(--ease);
+    }
+
+    .about-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 26px 80px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Desktop upgrade only */
+    @media (min-width: 1024px) {
+        .about__grid {
+            grid-template-columns: repeat(3, minmax(280px, 1fr));
+            gap: 1.6rem;
+            max-width: 1080px;
+        }
+
+        .about-card {
+            padding: 1.8rem 2rem;
+            border-radius: 20px;
+        }
+    }
+
+
+    .about-card__title {
+        text-align: center;
+        margin: 0 0 0.6rem;
+        font-size: 1.1rem;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        font-weight: 750;
+    }
+
+    .about-card__text {
+        text-align: center;
+        margin: 0;
+        color: var(--text-muted);
+        line-height: 1.6;
+        font-size: 0.98rem;
+    }
+
+    /* ---------- About (mobile) ---------- */
+    @media (max-width: 840px) {
+        .about__grid {
+            grid-template-columns: 1fr;
+            max-width: 620px;
+        }
+
+        .about-card {
+            text-align: left;
+        }
+    }
+
+    .about-card:hover {
+        transform: translateY(-2px);
+        border-color: color-mix(in srgb, var(--text-muted) 28%, var(--border));
+        box-shadow: 0 24px 70px rgba(0, 0, 0, 0.09);
+    }
+
+
+    @media (max-height: 800px) {
+        .about { padding-top: 4.5rem; }
+    }
+
+    .about-card:hover,
+    .card:hover {
+        border-color: var(--brand-ivory); /* your mint accent */
+    }
+
+</style>

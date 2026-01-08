@@ -37,6 +37,51 @@
     color-scheme: dark;
 }
 
+.theme-toggle {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    background: transparent;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    transition: background 0.15s var(--ease), color 0.15s var(--ease);
+    position: relative;
+}
+
+.theme-toggle:hover {
+    background: color-mix(in srgb, var(--text) 6%, transparent);
+    color: var(--text);
+}
+
+.theme-toggle__icon {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.9);
+    transition: opacity 0.15s var(--ease), transform 0.15s var(--ease);
+}
+
+/* Show only the correct icon */
+:root[data-theme="dark"] .theme-toggle__icon--sun {
+    opacity: 1;
+    transform: scale(1);
+}
+
+:root[data-theme="light"] .theme-toggle__icon--moon {
+    opacity: 1;
+    transform: scale(1);
+}
+
 /* OS preference if user has NOT chosen manually */
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {

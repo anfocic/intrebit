@@ -1,60 +1,69 @@
 ---
-import FooterSection from "./FooterSection.astro";
-import { companyLinks, servicesLinks } from "../../config/site";
+import SocialIcon from "../shared/SocialIcon.astro";
+import ThemeToggle from "../shared/ThemeToggle.astro";
 
 const year = new Date().getFullYear();
 ---
 
-<footer class="footer" aria-label="Site footer">
-    <div class="container footer__inner">
-        <div class="footer__grid">
-            <FooterSection title="Services" links={servicesLinks} />
-            <FooterSection title="Company" links={companyLinks} />
-            <FooterSection title="Connect" variant="connect" />
-        </div>
+<footer class="footer">
+    <p class="footer__text">
+        © {year} Intrebit. Software built properly.
+    </p>
+    <ThemeToggle />
 
-        <div class="footer__bottom">
-            <p>© {year} Intrebit. We're just millennials trying to not burn out. No corporate BS here.</p>
-        </div>
+    <div class="footer__social">
+        <SocialIcon
+                icon="mastodon"
+                href="https://mastodon.social/@intrebit"
+                title="Mastodon"
+                rel="me noopener noreferrer"
+                className="footer__social-icon footer__social-icon--mastodon"
+        />
+        <SocialIcon
+                icon="linkedin"
+                href="https://www.linkedin.com/company/intrebit"
+                title="LinkedIn"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer__social-icon footer__social-icon--linkedin"
+        />
     </div>
 </footer>
 
 <style>
     .footer {
-        background: var(--bg);
+        padding: 2rem;
         border-top: 1px solid var(--border);
-        padding: 4.5rem 0 2.5rem;
-        margin-top: 6rem;
-    }
-
-    .footer__inner {
         display: grid;
-        gap: 3rem;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 1.25rem;
     }
 
-    .footer__grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 3rem;
-        align-items: start;
+    .footer__text {
+        margin: 0;
+        font-size: 0.92rem;
+        color: var(--text-muted);
     }
 
-    .footer__bottom {
-        border-top: 1px solid color-mix(in srgb, var(--text) 8%, transparent);
-        padding-top: 2.2rem;
-        text-align: center;
-        color: color-mix(in srgb, var(--text) 60%, transparent);
-        font-size: 0.95rem;
+    .footer__social {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     }
 
-    @media (max-width: 900px) {
-        .footer__grid {
+
+
+    /* Mobile: stack + center */
+    @media (max-width: 720px) {
+        .footer {
             grid-template-columns: 1fr;
-            gap: 2.5rem;
+            justify-items: center;
+            text-align: center;
         }
 
-        .footer__bottom {
-            text-align: left;
+        .footer__social {
+            justify-content: center;
         }
     }
 </style>

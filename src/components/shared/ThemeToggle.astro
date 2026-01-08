@@ -1,0 +1,107 @@
+---
+interface Props {
+    className?: string;
+}
+
+const { className = "" } = Astro.props;
+const maskId = `moon-mask-${Math.random().toString(36).slice(2)}`;
+---
+
+<button
+        class={`theme-toggle ${className}`}
+        title="Toggle theme"
+        aria-label="auto"
+        aria-live="polite"
+        type="button"
+>
+    <svg class="sun-and-moon" aria-hidden="true" width="24" height="24" viewBox="0 0 24 24">
+        <mask class="moon" id={maskId}>
+            <rect x="0" y="0" width="100%" height="100%" fill="white" />
+            <circle cx="24" cy="10" r="6" fill="black" />
+        </mask>
+
+        <circle class="sun" cx="12" cy="12" r="6" mask={`url(#${maskId})`} fill="currentColor" />
+
+        <g class="sun-beams" stroke="currentColor">
+            <line x1="12" y1="1" x2="12" y2="3" />
+            <line x1="12" y1="21" x2="12" y2="23" />
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+            <line x1="1" y1="12" x2="3" y2="12" />
+            <line x1="21" y1="12" x2="23" y2="12" />
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+        </g>
+    </svg>
+</button>
+
+<style>
+    .theme-toggle {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        color: var(--text);
+        cursor: pointer;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        transition:
+                transform 0.16s var(--ease),
+                background 0.16s var(--ease),
+                border-color 0.16s var(--ease);
+    }
+
+    .theme-toggle:hover {
+        transform: translateY(-1px);
+        background: color-mix(in srgb, var(--surface) 88%, var(--text) 6%);
+        border-color: color-mix(in srgb, var(--text) 18%, var(--border));
+    }
+
+    :root {
+        --icon-fill: var(--text-muted);
+        --icon-fill-hover: var(--text);
+    }
+
+    .sun-and-moon > :is(.moon, .sun, .sun-beams) {
+        transform-origin: center;
+    }
+
+    .sun-and-moon > :is(.moon, .sun) {
+        fill: var(--icon-fill);
+    }
+
+    .theme-toggle:is(:hover, :focus-visible) > .sun-and-moon > :is(.moon, .sun) {
+        fill: var(--icon-fill-hover);
+    }
+
+    .sun-and-moon > .sun-beams {
+        stroke: var(--icon-fill);
+        stroke-width: 2px;
+    }
+
+    .theme-toggle:is(:hover, :focus-visible) .sun-and-moon > .sun-beams {
+        stroke: var(--icon-fill-hover);
+    }
+
+    /* ✅ must be global selector because theme is on <html> */
+    :global([data-theme="dark"]) .sun-and-moon > .sun {
+        transform: scale(1.75);
+    }
+
+    :global([data-theme="dark"]) .sun-and-moon > .sun-beams {
+        opacity: 0;
+    }
+
+    :global([data-theme="dark"]) .sun-and-moon > .moon > circle {
+        transform: translateX(-7px);
+    }
+
+    @supports (cx: 1) {
+        :global([data-theme="dark"]) .sun-and-moon > .moon > circle {
+            cx: 17;
+            transform: translateX(0);
+        }
+    }
+</style>

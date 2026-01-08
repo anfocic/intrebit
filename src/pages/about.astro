@@ -2,15 +2,11 @@
 import Layout from "../layouts/Layout.astro";
 
 import AboutHero from "../components/about/AboutHero.astro";
-import Values from "../components/about/Values.astro";
-import Philosophy from "../components/about/Philosophy.astro";
 import {pageSEO} from "../config/seo.pages.ts";
 ---
 
 <Layout seo={pageSEO.about}>
     <main>
         <AboutHero />
-        <Values />
-        <Philosophy />
     </main>
 </Layout>
