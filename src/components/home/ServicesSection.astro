@@ -1,40 +1,28 @@
 ---
-/**
-    * ServicesSection — Bento-style asymmetric layout
-    * Featured main service + supporting services
-    * Copy targeted at small business owners, not developers
-    */
 
-// Service data with icons (Lucide-style SVG paths)
 const services = [
     {
         id: "development",
         title: "Development",
         tagline: "We build it. You own it.",
-        description: "Custom software for your business — websites, apps, internal tools. We handle the technical side so you can focus on running your business. No confusing jargon, no hidden costs.",
+        description: "Custom software for your business — websites, apps, internal tools. No confusing jargon, no hidden costs.",
         icon: `<path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/>`,
-        featured: true,
     },
     {
         id: "consulting",
         title: "Consulting",
         tagline: "Clarity before code.",
-        description: "Not sure what you need? We'll look at how your business works, find the bottlenecks, and tell you what's worth fixing — honestly.",
+        description: "We'll look at how your business works, find the bottlenecks, and tell you what's worth fixing — honestly.",
         icon: `<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
-        featured: false,
     },
     {
         id: "automation",
         title: "Automation",
         tagline: "Stop doing it manually.",
-        description: "That repetitive task eating your week? We can make it run itself. Invoices, reports, data entry — automate the boring stuff.",
+        description: "That repetitive task eating your week? We can make it run itself. Invoices, reports, data entry.",
         icon: `<path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/>`,
-        featured: false,
     },
 ];
-
-const featured = services.find(s => s.featured);
-const others = services.filter(s => !s.featured);
 ---
 
 <section class="services-section" aria-label="What we do">
@@ -45,37 +33,16 @@ const others = services.filter(s => !s.featured);
         </header>
 
         <div class="services-grid">
-            <!-- Featured card (larger) -->
-            {featured && (
-                    <article class="service-card service-card--featured">
-                        <div class="service-card__header">
-                            <div class="service-card__icon">
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={featured.icon} />
-                            </div>
-                            <div class="service-card__header-text">
-                                <h3 class="service-card__title">{featured.title}</h3>
-                                <p class="service-card__tagline">{featured.tagline}</p>
-                            </div>
+            {services.map((service) => (
+                    <article class="service-card">
+                        <div class="service-card__icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={service.icon} />
                         </div>
-                        <p class="service-card__description">{featured.description}</p>
+                        <h3 class="service-card__title">{service.title}</h3>
+                        <p class="service-card__tagline">{service.tagline}</p>
+                        <p class="service-card__description">{service.description}</p>
                     </article>
-            )}
-
-            <!-- Other cards (stacked) -->
-            <div class="services-stack">
-                {others.map((service) => (
-                        <article class="service-card service-card--compact">
-                            <div class="service-card__icon service-card__icon--small">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={service.icon} />
-                            </div>
-                            <div class="service-card__content">
-                                <h3 class="service-card__title">{service.title}</h3>
-                                <p class="service-card__tagline">{service.tagline}</p>
-                                <p class="service-card__description">{service.description}</p>
-                            </div>
-                        </article>
-                ))}
-            </div>
+            ))}
         </div>
     </div>
 </section>
@@ -94,7 +61,7 @@ const others = services.filter(s => !s.featured);
 
     /* Header */
     .services-header {
-        margin-bottom: 3.5rem;
+        margin-bottom: 3rem;
     }
 
     .services-eyebrow {
@@ -109,7 +76,7 @@ const others = services.filter(s => !s.featured);
 
     .services-title {
         margin: 0;
-        font-family: var(--font-brand, sans-serif);
+        font-family: var(--font-brand, sans-serif),serif;
         font-size: clamp(2rem, 5vw, 3rem);
         font-weight: 750;
         letter-spacing: -0.03em;
@@ -117,27 +84,18 @@ const others = services.filter(s => !s.featured);
         color: var(--text);
     }
 
-    /* Grid: Featured left, stack right */
+    /* Grid: 3 equal columns */
     .services-grid {
         display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        gap: 1.5rem;
-        align-items: stretch;
-    }
-
-    .services-stack {
-        display: flex;
-        flex-direction: column;
+        grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
     }
 
-    /* Base card */
+    /* Card */
     .service-card {
-        position: relative;
-        border-radius: 20px;
-        background: var(--surface);
+        padding: 1.75rem;
         border: 1px solid var(--border);
-        overflow: hidden;
+        border-radius: 16px;
         transition:
                 transform 0.25s var(--ease, ease),
                 border-color 0.25s var(--ease, ease),
@@ -147,126 +105,62 @@ const others = services.filter(s => !s.featured);
     .service-card:hover {
         transform: translateY(-4px);
         border-color: color-mix(in srgb, var(--text) 15%, var(--border));
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
     }
 
-    /* Featured card */
-    .service-card--featured {
-        padding: 2.25rem;
-        display: flex;
-        flex-direction: column;
-        min-height: 100%;
-    }
-
-    /* Featured header: icon + title/tagline in row */
-    .service-card__header {
-        display: flex;
-        align-items: flex-start;
-        gap: 1.25rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .service-card--featured .service-card__icon {
-        width: 56px;
-        height: 56px;
-        min-width: 56px;
-        border-radius: 14px;
-        background: color-mix(in srgb, var(--text) 8%, transparent);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--text);
-    }
-
-    .service-card__header-text {
-        flex: 1;
-        padding-top: 0.25rem;
-    }
-
-    .service-card--featured .service-card__title {
-        font-size: 1.35rem;
-        margin-bottom: 0.25rem;
-    }
-
-    .service-card--featured .service-card__tagline {
-        font-size: 1rem;
-        color: var(--text-muted);
-        font-weight: 500;
-    }
-
-    .service-card--featured .service-card__description {
-        font-size: 1rem;
-        line-height: 1.7;
-        flex: 1;
-    }
-
-    /* Compact cards */
-    .service-card--compact {
-        padding: 1.75rem;
-        display: flex;
-        gap: 1.25rem;
-        align-items: flex-start;
-    }
-
-    .service-card__icon--small {
+    /* Icon */
+    .service-card__icon {
         width: 48px;
         height: 48px;
-        min-width: 48px;
         border-radius: 12px;
         background: color-mix(in srgb, var(--text) 6%, transparent);
         display: flex;
         align-items: center;
         justify-content: center;
         color: var(--text-muted);
-        transition: color 0.2s var(--ease, ease), background 0.2s var(--ease, ease);
+        margin-bottom: 1.25rem;
+        transition: color 0.2s ease, background 0.2s ease;
     }
 
-    .service-card--compact:hover .service-card__icon--small {
+    .service-card:hover .service-card__icon {
         color: var(--text);
         background: color-mix(in srgb, var(--text) 10%, transparent);
     }
 
-    .service-card--compact .service-card__title {
-        font-size: 1.15rem;
-        margin-bottom: 0.2rem;
-    }
-
-    .service-card--compact .service-card__tagline {
-        font-size: 0.92rem;
-        margin-bottom: 0.6rem;
-        color: var(--text-muted);
-        font-weight: 500;
-    }
-
-    .service-card--compact .service-card__description {
-        font-size: 0.9rem;
-        line-height: 1.6;
-    }
-
-    /* Shared text styles */
+    /* Text */
     .service-card__title {
-        margin: 0;
+        margin: 0 0 0.25rem;
         font-family: var(--font-brand, sans-serif);
+        font-size: 1.2rem;
         font-weight: 700;
         letter-spacing: -0.02em;
         color: var(--text);
     }
 
     .service-card__tagline {
-        margin: 0;
+        margin: 0 0 0.75rem;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: var(--text-muted);
     }
 
     .service-card__description {
         margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
         color: var(--text-muted);
+        opacity: 0.85;
     }
 
-    .service-card__content {
-        flex: 1;
+    /* Tablet: 2 columns */
+    @media (max-width: 900px) {
+        .services-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
     }
 
-    /* Mobile: stack everything */
-    @media (max-width: 800px) {
+    /* Mobile: 1 column */
+    @media (max-width: 600px) {
         .services-section {
             padding: 4rem 0;
         }
@@ -276,8 +170,8 @@ const others = services.filter(s => !s.featured);
         }
 
         .services-header {
-            margin-bottom: 2.5rem;
             text-align: center;
+            margin-bottom: 2.5rem;
         }
 
         .services-title br {
@@ -289,49 +183,25 @@ const others = services.filter(s => !s.featured);
             gap: 1.25rem;
         }
 
-        .service-card--featured {
-            padding: 1.75rem;
-        }
-
-        .service-card__header {
-            margin-bottom: 1.25rem;
-        }
-
-        .service-card--featured .service-card__icon {
-            width: 48px;
-            height: 48px;
-            min-width: 48px;
-        }
-
-        .service-card--featured .service-card__icon svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        .service-card--compact {
+        .service-card {
             padding: 1.5rem;
         }
     }
 
     /* Light mode */
     :root[data-theme="light"] .service-card {
-        background: rgba(255, 255, 255, 0.7);
-        box-shadow: 0 8px 32px rgba(14, 42, 71, 0.06);
+        box-shadow: 0 4px 20px rgba(14, 42, 71, 0.04);
     }
 
     :root[data-theme="light"] .service-card:hover {
-        box-shadow: 0 16px 48px rgba(14, 42, 71, 0.1);
+        box-shadow: 0 12px 36px rgba(14, 42, 71, 0.08);
     }
 
-    :root[data-theme="light"] .service-card--featured .service-card__icon {
-        background: rgba(14, 42, 71, 0.06);
+    :root[data-theme="light"] .service-card__icon {
+        background: rgba(14, 42, 71, 0.05);
     }
 
-    :root[data-theme="light"] .service-card__icon--small {
-        background: rgba(14, 42, 71, 0.04);
-    }
-
-    :root[data-theme="light"] .service-card--compact:hover .service-card__icon--small {
+    :root[data-theme="light"] .service-card:hover .service-card__icon {
         background: rgba(14, 42, 71, 0.08);
     }
 </style>

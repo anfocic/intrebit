@@ -1,17 +1,8 @@
 // src/config/seo.pages.ts
 import type { SEOOverrides } from "./seo";
 
-/**
- * ✅ Toggle this when you're ready to launch:
- * - true  = only Coming Soon gets indexed
- * - false = all pages get indexed
- */
 const PRELAUNCH = true;
 
-/**
- * ✅ Helper: applies prelaunch noindex to any page
- * unless it explicitly overrides noindex.
- */
 const prelaunch = (seo: SEOOverrides): SEOOverrides => ({
     ...seo,
     noindex: seo.noindex ?? PRELAUNCH,

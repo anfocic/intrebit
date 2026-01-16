@@ -33,7 +33,7 @@ type SiteSEOConfig = {
 };
 
 const SITE: SiteSEOConfig = {
-    siteName: "Intrebit",
+    siteName: "Software that works for you",
     siteUrl: "https://intrebit.com",
     defaultTitle: "Intrebit",
     defaultDescription:

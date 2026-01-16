@@ -1,0 +1,249 @@
+---
+/**
+    * ContactForm — Minimal contact form
+    * Clean, no-card design with underline inputs
+    */
+---
+
+<div class="contact-form-wrap">
+    <form class="contact-form" id="contact-form">
+        <!-- Honeypot (spam trap) -->
+        <label class="honeypot" aria-hidden="true">
+            Do not fill
+            <input type="text" name="company" tabindex="-1" autocomplete="off"/>
+        </label>
+
+        <div class="contact-form__field">
+            <label for="contact-name" class="contact-form__label">Name</label>
+            <input
+                    class="contact-form__input"
+                    type="text"
+                    name="name"
+                    id="contact-name"
+                    placeholder="What should we call you?"
+                    autocomplete="name"
+            />
+        </div>
+
+        <div class="contact-form__field">
+            <label for="contact-email" class="contact-form__label">
+                Email <span class="contact-form__required">*</span>
+            </label>
+            <input
+                    class="contact-form__input"
+                    type="email"
+                    name="email"
+                    id="contact-email"
+                    placeholder="you@company.com"
+                    required
+                    autocomplete="email"
+            />
+        </div>
+
+        <div class="contact-form__field">
+            <label for="contact-message" class="contact-form__label">
+                Message <span class="contact-form__required">*</span>
+            </label>
+            <textarea
+                    class="contact-form__textarea"
+                    name="message"
+                    id="contact-message"
+                    placeholder="Tell us about your project..."
+                    rows="4"
+                    required
+            ></textarea>
+        </div>
+
+        <div class="contact-form__footer">
+            <button class="contact-form__submit" type="submit">
+                Send message
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </button>
+            <p class="contact-form__note">
+                No spam. We'll only use this to reply.
+            </p>
+        </div>
+    </form>
+
+    <div class="contact-form__status" id="contact-status" aria-live="polite"></div>
+</div>
+
+<style>
+    .contact-form-wrap {
+        padding-top: 0.5rem;
+    }
+
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    /* Honeypot - hide from users */
+    .honeypot {
+        position: absolute;
+        left: -9999px;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    /* Field */
+    .contact-form__field {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .contact-form__label {
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: var(--text);
+    }
+
+    .contact-form__required {
+        color: var(--text);
+        font-weight: 400;
+    }
+
+    /* Minimal inputs - underline style */
+    .contact-form__input,
+    .contact-form__textarea {
+        width: 100%;
+        padding: 0.75rem 0;
+        border: none;
+        border-bottom: 0.3px solid var(--text);
+        background: transparent;
+        color: var(--text);
+        font-size: 1rem;
+        font-family: inherit;
+        line-height: 1.5;
+        transition: border-color 0.2s ease;
+    }
+
+    .contact-form__textarea {
+        min-height: 100px;
+        resize: vertical;
+    }
+
+    .contact-form__input::placeholder,
+    .contact-form__textarea::placeholder {
+        color: var(--text-muted);
+        opacity: 0.5;
+    }
+
+    .contact-form__input:focus,
+    .contact-form__textarea:focus {
+        outline: none;
+        border-bottom-color: var(--text);
+    }
+
+    /* Footer */
+    .contact-form__footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1.5rem;
+        padding-top: 0.5rem;
+    }
+
+    /* Submit button - minimal */
+    .contact-form__submit {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1.5rem;
+        border-radius: 999px;
+        border: 0.3px solid var(--text);
+        background: transparent;
+        color: var(--text);
+        font-size: 0.95rem;
+        font-weight: 600;
+        font-family: inherit;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+
+    .contact-form__submit:hover {
+        background: var(--text);
+        color: var(--bg);
+        border-color: var(--text);
+    }
+
+    .contact-form__submit svg {
+        transition: transform 0.2s ease;
+    }
+
+    .contact-form__submit:hover svg {
+        transform: translateX(3px);
+    }
+
+    /* Note */
+    .contact-form__note {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        margin: 0;
+        opacity: 0.7;
+    }
+
+    /* Status message */
+    .contact-form__status {
+        margin-top: 1.5rem;
+        padding: 1rem;
+        border-radius: 8px;
+        font-size: 0.92rem;
+        font-weight: 500;
+        line-height: 1.5;
+        opacity: 0;
+        transition: opacity 0.2s ease;
+    }
+
+    .contact-form__status:not(:empty) {
+        opacity: 1;
+    }
+
+    .contact-form__status.status--success {
+        background: rgba(34, 197, 94, 0.1);
+        color: #4ade80;
+    }
+
+    .contact-form__status.status--error {
+        background: rgba(239, 68, 68, 0.1);
+        color: #f87171;
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+        .contact-form__footer {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 1rem;
+        }
+
+        .contact-form__submit {
+            justify-content: center;
+        }
+
+        .contact-form__note {
+            text-align: center;
+        }
+    }
+
+    /* Light mode */
+    :global(:root[data-theme="light"]) .contact-form__submit:hover {
+        background: var(--text);
+        color: var(--bg);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__status.status--success {
+        color: #16a34a;
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__status.status--error {
+        color: #dc2626;
+    }
+</style>
+
+<script is:inline src="/scripts/contact.js" defer></script>
