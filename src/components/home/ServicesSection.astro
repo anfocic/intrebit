@@ -35,9 +35,7 @@ const services = [
         <div class="services-grid">
             {services.map((service) => (
                     <article class="service-card">
-                        <div class="service-card__icon">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" set:html={service.icon} />
-                        </div>
+
                         <h3 class="service-card__title">{service.title}</h3>
                         <p class="service-card__tagline">{service.tagline}</p>
                         <p class="service-card__description">{service.description}</p>

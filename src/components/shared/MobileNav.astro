@@ -120,15 +120,30 @@ import Logo from "../shared/Logo.astro";
         position: fixed;
         top: 0;
         right: 0;
+        left: 0;
         height: 100vh;
         width: 100%;
-        max-width: 420px;
-        background: var(--bg);
+        background: var(--bg, #0a1628);
+        /* Fallback solid colors */
+        background-color: #0a1628;
         transform: translateX(100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        z-index: 250;
+        z-index: 999;
         display: flex;
         flex-direction: column;
+        isolation: isolate;
+    }
+
+    :global(:root[data-theme="light"]) .mobile-nav {
+        background-color: #f5f5f0;
+    }
+
+    /* Only limit width on larger screens */
+    @media (min-width: 600px) {
+        .mobile-nav {
+            left: auto;
+            max-width: 420px;
+        }
     }
 
     .mobile-nav.is-open {
@@ -239,7 +254,6 @@ import Logo from "../shared/Logo.astro";
 
     :global(.mobile-nav__social-icon:hover) {
         background: rgba(255, 255, 255, 0.08);
-        border-color: var(--accent);
         color: var(--text);
     }
 
