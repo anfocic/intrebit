@@ -3,7 +3,7 @@ const services = [
     {
         title: "Systems that work for you",
         description:
-        "You still do the hard part — we just remove the stupid part.",
+            "You still do the hard part — we just remove the stupid part.",
         story:
             "Your website and systems behave: fast, reliable, and doing what they’re supposed to." +
             "So you’re not losing customers while you’re busy doing the actual work.",
@@ -11,9 +11,9 @@ const services = [
     {
         title: "Cleanup the mess",
         description:
-        "We make it work like it was supposed to all along.",
+            "We make it work like it was supposed to all along.",
         story:
-        "Example: everything worked fine until one day it didn’t — we find what broke and make it behave again.",
+            "Example: everything worked fine until one day it didn’t — we find what broke and make it behave again.",
     },
     {
         title: "Automate the Busywork",
@@ -214,6 +214,7 @@ const services = [
     .container {
         max-width: var(--container-width);
         margin: 0 auto;
+        padding: 0 2rem;
     }
 
     .services__layout {
@@ -449,6 +450,14 @@ const services = [
        Responsive
        ========================================================= */
     @media (max-width: 900px) {
+        .services {
+            padding: 5rem 0;
+        }
+
+        .container {
+            padding: 0 1.25rem;
+        }
+
         .services__layout {
             grid-template-columns: 1fr;
             gap: 2.5rem;
@@ -458,6 +467,48 @@ const services = [
             position: relative;
             top: 0;
             padding: 0;
+            text-align: center;
+            max-width: none;
+        }
+
+        .services__intro p {
+            max-width: none;
+        }
+
+        /* On mobile, show everything immediately - no scroll reveal */
+        .reveal {
+            opacity: 1;
+            transform: none;
+        }
+
+        .service {
+            opacity: 1;
+            transform: none;
+            filter: none;
+        }
+
+        .services__title .char {
+            opacity: 1;
+            transform: none;
+        }
+
+        /* Smaller trigger on mobile */
+        .service__trigger {
+            gap: 0.75rem;
+        }
+
+        .service__chevron {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+        }
+
+        .service__meta h3 {
+            font-size: 1.2rem;
+        }
+
+        .service__meta p {
+            font-size: 0.95rem;
         }
     }
 

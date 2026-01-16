@@ -9,6 +9,7 @@ const year = new Date().getFullYear();
     <p class="footer__text">
         © {year} Intrebit. Software built properly.
     </p>
+
     <ThemeToggle />
 
     <div class="footer__social">
@@ -38,6 +39,8 @@ const year = new Date().getFullYear();
         grid-template-columns: 1fr auto auto;
         align-items: center;
         gap: 1.25rem;
+        max-width: var(--container-width, 1100px);
+        margin: 0 auto;
     }
 
     .footer__text {
@@ -52,18 +55,28 @@ const year = new Date().getFullYear();
         gap: 0.75rem;
     }
 
-
-
-    /* Mobile: stack + center */
+    /* Mobile: horizontal row but compact */
     @media (max-width: 720px) {
         .footer {
+            padding: 1.5rem 1.25rem;
             grid-template-columns: 1fr;
             justify-items: center;
             text-align: center;
+            gap: 1rem;
         }
 
+        /* Reorder: socials first, then toggle, then copyright */
         .footer__social {
-            justify-content: center;
+            order: 1;
+        }
+
+        .footer > :global(.theme-toggle) {
+            order: 2;
+        }
+
+        .footer__text {
+            order: 3;
+            font-size: 0.85rem;
         }
     }
 </style>
