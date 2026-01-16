@@ -1,34 +1,40 @@
 ---
+import ProcessIcon from "./ProcessIcon.astro";
 const steps = [
     {
+        icon: "phone" as const,
         title: "The Call",
         description: "You complain. We nod.",
         detail:
-            "We talk through what’s broken, what’s annoying you daily, and what “working properly” looks like — so we’re solving the right problem.",
+            "We talk through what's broken, what's annoying you daily, and what working properly looks like — so we're solving the right problem.",
     },
     {
+        icon: "clipboard-list" as const,
         title: "The Plan",
-        description: "We hand you the plan. You’re mildly impressed.",
+        description: "We hand you the plan. You're mildly impressed.",
         detail:
-            "You get a clear scope, timeline, and fixed cost — so you know what’s being built, what it will do, and what it won’t.",
+            "You get a clear scope, timeline, and fixed cost — so you know what's being built, what it will do, and what it won't.",
     },
     {
+        icon: "hammer" as const,
         title: "The Build",
         description: "This is the part where magic happens.",
         detail:
             "We build in small releases, keep you updated weekly, and show progress early — so nothing disappears into a black hole.",
     },
     {
+        icon: "rocket" as const,
         title: "The Launch",
         description: "No drama here. Carry on.",
         detail:
             "We handle the deployment, set up monitoring, and make sure everything works in the real world — not just on our laptops.",
     },
     {
+        icon: "life-buoy" as const,
         title: "The Aftermath",
         description: "We are here for you — just don't call before 10AM.",
         detail:
-            "Maintenance, fixes, and improvements when things break or need adjusting — so you’re not stuck dealing with the tech alone.",
+            "Maintenance, fixes, and improvements when things break or need adjusting — so you're not stuck dealing with the tech alone.",
     },
 ];
 ---
@@ -43,14 +49,19 @@ const steps = [
         <div class="process__list" role="list">
             {steps.map((step, i) => (
                     <article class="process__step" role="listitem">
-                        <div class="process__index">
-                            <span>{String(i + 1).padStart(2, "0")}</span>
-                        </div>
+                        <!-- Centered divider (not on first item) -->
+                        {i > 0 && <div class="process__divider" aria-hidden="true" />}
 
-                        <div class="how-card">
-                            <h3 class="how-card__title">{step.title}</h3>
-                            <p class="how-card__desc">{step.description}</p>
-                            <p class="how-card__detail">{step.detail}</p>
+                        <div class="process__content">
+                            <div class="process__icon-wrap">
+                                <ProcessIcon icon={step.icon} size={24} />
+                            </div>
+
+                            <div class="process__body">
+                                <h3 class="process__title">{step.title}</h3>
+                                <p class="process__desc">{step.description}</p>
+                                <p class="process__detail">{step.detail}</p>
+                            </div>
                         </div>
                     </article>
             ))}
@@ -94,114 +105,173 @@ const steps = [
     .process__list {
         max-width: 920px;
         margin: 0 auto;
-        display: grid;
-        gap: 0;
+        display: flex;
+        flex-direction: column;
     }
 
-    /* Step row */
+    /* Centered divider */
+    .process__divider {
+        width: 80px;
+        height: 1px;
+        background: var(--border);
+        margin: 0 auto;
+    }
+
+    /* Step */
     .process__step {
-        display: grid;
-        grid-template-columns: 80px 1fr;
-        gap: 1.75rem;
-        padding: 2.25rem 0;
-        border-top: 0.1px solid var(--text);
-        align-items: start;
+        position: relative;
     }
 
-    .process__index span {
-        display: inline-flex;
+    .process__content {
+        display: grid;
+        grid-template-columns: 64px 1fr;
+        gap: 1.5rem;
+        padding: 2.5rem 1rem;
+        border-radius: var(--radius-soft, 14px);
+        align-items: start;
+        transition: background 280ms var(--ease, ease);
+    }
+
+    .process__content:hover {
+        background: color-mix(in srgb, var(--surface) 50%, transparent);
+    }
+
+    /* Icon container */
+    .process__icon-wrap {
+        display: flex;
         align-items: center;
         justify-content: center;
         width: 52px;
         height: 52px;
-        border-radius: 16px;
-        font-weight: 700;
-        letter-spacing: 0.02em;
-        font-size: 0.95rem;
-        color: var(--text);
+        border-radius: 14px;
+        color: var(--text-muted);
         background: color-mix(in srgb, var(--surface) 84%, var(--text) 4%);
         border: 1px solid var(--border);
+        transition:
+                color 280ms var(--ease, ease),
+                border-color 280ms var(--ease, ease),
+                box-shadow 280ms var(--ease, ease);
+    }
+
+    /* Hover: icon gets a glow */
+    .process__content:hover .process__icon-wrap {
+        color: var(--text);
+        border-color: color-mix(in srgb, var(--text) 25%, var(--border));
+        box-shadow:
+                0 0 0 4px color-mix(in srgb, var(--text) 6%, transparent),
+                0 8px 24px color-mix(in srgb, var(--text) 8%, transparent);
     }
 
     /* Body */
-    .process__body h3 {
-        margin: 0 0 0.75rem;
-        font-size: clamp(1.35rem, 2vw, 1.6rem);
-        font-weight: 750;
+    .process__body {
+        padding-top: 0.25rem;
+    }
+
+    .process__title {
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.25rem, 2vw, 1.45rem);
+        font-weight: 700;
         letter-spacing: -0.02em;
         color: var(--text);
     }
 
-    .process__body p {
+    .process__desc {
         margin: 0;
-        max-width: 70ch;
         font-size: 1.05rem;
+        line-height: 1.5;
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    .process__detail {
+        margin: 0;
+        font-size: 0.95rem;
         line-height: 1.65;
         color: var(--text-muted);
-    }
+        max-width: 58ch;
 
-    /* Hover feel */
-    .process__step {
-        transition: transform 240ms ease, background 240ms ease;
-    }
-
-    .process__step:hover {
-        transform: translateY(-2px);
-        background: color-mix(in srgb, var(--surface) 58%, transparent);
-    }
-
-    .how-card {
-        position: relative;
-        overflow: hidden;
-    }
-
-    /* default: detail hidden */
-    .how-card__detail {
-        margin: 0.85rem 0 0;
-        color: var(--text-muted);
-        font-size: 0.98rem;
-        line-height: 1.65;
-        max-width: 62ch;
-
+        /* Hidden by default on desktop */
         opacity: 0;
-        transform: translateY(6px);
         max-height: 0;
-
+        overflow: hidden;
         transition:
-                opacity 300ms ease-in-out,
-                transform 300ms ease-in-out,
-                max-height 300ms ease-in-out;
+                opacity 250ms var(--ease, ease),
+                max-height 250ms var(--ease, ease),
+                margin 250ms var(--ease, ease);
     }
 
-    /* reveal on hover */
-    .how-card:hover .how-card__detail,
-    .how-card:focus-within .how-card__detail {
+    /* Reveal on hover */
+    .process__content:hover .process__detail {
         opacity: 1;
-        transform: translateY(0);
-        max-height: 220px; /* enough room for 2-3 lines */
+        max-height: 200px;
+        margin: 0.75rem 0 0;
     }
 
-    /* bonus: slightly lift card */
-    .how-card:hover {
-        transform: translateY(-4px);
+    /* Focus states for accessibility (keyboard users) */
+    .process__content:focus-within .process__icon-wrap {
+        color: var(--text);
+        border-color: color-mix(in srgb, var(--text) 25%, var(--border));
+        box-shadow:
+                0 0 0 4px color-mix(in srgb, var(--text) 6%, transparent),
+                0 8px 24px color-mix(in srgb, var(--text) 8%, transparent);
     }
 
+    .process__content:focus-within .process__detail {
+        opacity: 1;
+        max-height: 200px;
+        margin: 0.75rem 0 0;
+    }
+
+    /* Mobile — no hover, always show detail */
     @media (max-width: 720px) {
-        .process__step {
+        .process {
+            padding: 4rem 0 5rem;
+        }
+
+        .process__divider {
+            width: 60px;
+        }
+
+        .process__content {
             grid-template-columns: 52px 1fr;
             gap: 1.25rem;
-            padding: 1.75rem 0;
+            padding: 2rem 0.5rem;
         }
 
-        .process__index span {
+        .process__icon-wrap {
             width: 44px;
             height: 44px;
-            border-radius: 14px;
-            font-size: 0.85rem;
+            border-radius: 12px;
         }
 
-        .process__body p {
+        .process__icon-wrap :global(svg) {
+            width: 20px;
+            height: 20px;
+        }
+
+        .process__title {
+            font-size: 1.15rem;
+        }
+
+        .process__desc {
             font-size: 1rem;
+        }
+
+        .process__detail {
+            /* Always visible on mobile */
+            opacity: 1;
+            max-height: none;
+            margin: 0.75rem 0 0;
+            font-size: 0.9rem;
+        }
+    }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+        .process__content,
+        .process__icon-wrap,
+        .process__detail {
+            transition: none;
         }
     }
 </style>
