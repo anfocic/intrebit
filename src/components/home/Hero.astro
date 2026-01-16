@@ -15,7 +15,6 @@ const tagline = "No buzzwords. No nonsense.";
                             <span class={`hc hc-t${i}`}>{letter}</span>
                     ))}
                 </span>
-                <span class="hero-cursor" aria-hidden="true"></span>
             </h1>
 
             <p class="hero-subtitle" aria-label={subtitle}>
@@ -32,7 +31,7 @@ const tagline = "No buzzwords. No nonsense.";
         </header>
 
         <div class="hero-actions">
-            <Button href="/contact" variant="primary">
+            <Button href="#contact" variant="primary">
                 Get in touch
             </Button>
             <Button
@@ -57,7 +56,6 @@ const tagline = "No buzzwords. No nonsense.";
     .hero-section {
         position: relative;
         width: 100%;
-        min-height: calc(100vh - var(--header-height, 72px));
         min-height: calc(100svh - var(--header-height, 72px));
         display: flex;
         align-items: center;

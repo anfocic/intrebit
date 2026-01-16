@@ -1,4 +1,5 @@
 (() => {
+    console.log("contact.js loaded");
     const API_BASE = "https://api.intrebit.com";
     const ENDPOINT = "/contact";
 
@@ -15,16 +16,18 @@
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        console.log("submit fired ✅");
         setStatus("Sending…", "info");
 
         const data = new FormData(form);
 
-        // Honeypot
-        if (data.get("company")) {
-            setStatus("Thanks — got it.", "success");
-            form.reset();
-            return;
-        }
+        //todo fix this since mail doesnt send
+        // // Honeypot
+        // if (data.get("company")) {
+        //     setStatus("Thanks — got it.", "success");
+        //     form.reset();
+        //     return;
+        // }
 
         const name = data.get("name")?.toString().trim();
         const email = data.get("email")?.toString().trim();
