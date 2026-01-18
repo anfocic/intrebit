@@ -2,21 +2,17 @@
 import {getPathname} from "../../utils/helpers.ts";
 import {navLinks} from "../../config/navLinks.ts";
 import Link from "../shared/Link.astro";
-import MobileNav from "../shared/MobileNav.astro";
 const pathname = getPathname(Astro.url);
 ---
 
 <nav class="nav" aria-label="Primary navigation">
     <div class="nav__content">
-        <a href="/" class="hero__title" aria-label="intrebit home">
-            intrebit
-        </a>
+        <a href="/" class="hero__title" aria-label="intrebit home">intrebit</a>
 
         <div class="nav__right nav__right--desktop">
             <ul class="nav__links">
                 {navLinks.map(({ path, label }) => {
                     const isActive = path === "/" ? pathname === "/" : pathname.startsWith(path);
-
                     return (
                             <Link
                                     path={path}
@@ -28,18 +24,12 @@ const pathname = getPathname(Astro.url);
             </ul>
         </div>
 
-        <button
-                class="nav__menu-btn"
-                type="button"
-                aria-label="Open menu"
-                data-mobile-open
-        >
-            ☰
-        </button>
+        <a class="nav__cta" href="#contact" aria-label="Get in touch">
+            Talk to us <span aria-hidden="true">→</span>
+        </a>
     </div>
-
 </nav>
-<MobileNav/>
+
 
 <style>
     .hero__title {
@@ -110,32 +100,44 @@ const pathname = getPathname(Astro.url);
         border-radius: 2px;
     }
 
-    /* Mobile open button */
-    .nav__menu-btn {
-        display: none;
-        width: 44px;
-        height: 44px;
-        border: none;
-        background: transparent;
-        color: var(--text);
-        font-size: 1.25rem;
-        cursor: pointer;
-    }
-
-
     @media (max-width: 768px) {
         .nav__right--desktop {
             display: none;
         }
+    }
 
-        .nav__menu-btn {
-            width: 44px;
-            height: 44px;
-            color: var(--text);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.35rem;
+    .nav__cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        padding: 0.65rem 1rem;
+        border-radius: 999px;
+
+        text-decoration: none;
+        font-weight: 650;
+        font-size: 0.95rem;
+
+        color: var(--text);
+        border: 1px solid var(--border);
+        background: rgba(255,255,255,0.03);
+
+        transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .nav__cta:hover {
+        background: rgba(255,255,255,0.05);
+        border-color: rgba(255,255,255,0.14);
+    }
+
+    .nav__cta:active {
+        transform: scale(0.99);
+    }
+
+    /* On desktop, keep it but slightly subtler if you want */
+    @media (min-width: 769px) {
+        .nav__cta {
+            padding: 0.6rem 0.95rem;
         }
     }
 </style>

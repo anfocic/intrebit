@@ -1,29 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import {pageSEO} from "../config/seo.pages.ts";
-import Hero from "../components/home/Hero.astro";
-import SectionDivider from "../components/shared/SectionDivider.astro";
-import ContactHero from "../components/contact/ContactHero.astro";
-import ServicesSection from "../components/home/ServicesSection.astro";
+import HomeMobile from "../components/home/HomeMobile.astro";
+import HomeDesktop from "../components/home/HomeDesktop.astro";
 ---
 
 <Layout seo={pageSEO.comingSoon}>
     <main class="coming">
-        <Hero/>
-        <div class="scroll-cue" aria-hidden="true">
-            <span></span>
+
+        <div class="desktop-only">
+          <HomeDesktop/>
         </div>
 
-        <SectionDivider/>
+        <div class="mobile-only">
+            <HomeMobile/>
+        </div>
 
-        <ServicesSection/>
-
-        <SectionDivider/>
-
-        <ContactHero/>
     </main>
 </Layout>
-
-<style>
-
-</style>

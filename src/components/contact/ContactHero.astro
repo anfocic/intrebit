@@ -6,7 +6,9 @@ import ContactForm from "./ContactForm.astro";
 <section id="contact" class="contact-section" aria-label="Contact">
     <div class="contact-container">
         <div class="contact-grid">
-            <ContactIntro />
+            <div class="desktop-only">
+                <ContactIntro />
+            </div>
             <ContactForm />
         </div>
     </div>

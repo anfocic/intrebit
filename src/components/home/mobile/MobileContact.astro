@@ -1,0 +1,189 @@
+---
+const action = "#"; // TODO: replace with your endpoint
+const method = "post";
+---
+
+<section id="contact" class="mc" aria-label="Contact">
+    <div class="mc__inner">
+        <header class="mc__header">
+            <h2 class="mc__title">Let’s build something.</h2>
+            <p class="mc__sub">
+                Tell us what you need. We’ll reply within 24–48h.
+            </p>
+        </header>
+
+        <form class="mc__form" action={action} method={method}>
+            <div class="mc__field">
+                <label class="mc__label" for="name">Name</label>
+                <input
+                        class="mc__input"
+                        id="name"
+                        name="name"
+                        type="text"
+                        autocomplete="name"
+                        placeholder="What should we call you?"
+                />
+            </div>
+
+            <div class="mc__field">
+                <label class="mc__label" for="email">
+                    Email <span class="mc__req">*</span>
+                </label>
+                <input
+                        class="mc__input"
+                        id="email"
+                        name="email"
+                        type="email"
+                        autocomplete="email"
+                        required
+                        placeholder="you@company.com"
+                />
+            </div>
+
+            <div class="mc__field">
+                <label class="mc__label" for="message">
+                    Message <span class="mc__req">*</span>
+                </label>
+                <textarea
+                        class="mc__textarea"
+                        id="message"
+                        name="message"
+                        required
+                        rows="5"
+                        placeholder="Tell us about your project..."
+                ></textarea>
+            </div>
+
+            <button class="mc__submit" type="submit">
+                Send message <span class="mc__arrow" aria-hidden="true">→</span>
+            </button>
+
+            <p class="mc__fineprint">No spam. We’ll only use this to reply.</p>
+        </form>
+    </div>
+</section>
+
+<style>
+    .mc {
+        padding: 3rem 0;
+    }
+
+    .mc__inner {
+        max-width: 640px;
+        margin: 0 auto;
+    }
+
+    .mc__header {
+        margin-bottom: 1.75rem;
+    }
+
+    .mc__title {
+        margin: 0;
+        font-size: clamp(1.6rem, 6vw, 2.15rem);
+        letter-spacing: -0.03em;
+        color: var(--text);
+        line-height: 1.1;
+    }
+
+    .mc__sub {
+        margin: 0.75rem 0 0;
+        color: var(--text-muted);
+        opacity: 0.9;
+        line-height: 1.5;
+        max-width: 42ch;
+    }
+
+    .mc__form {
+        display: grid;
+        gap: 1.25rem;
+    }
+
+    .mc__field {
+        display: grid;
+        gap: 0.5rem;
+    }
+
+    .mc__label {
+        font-size: 1.15rem;
+        font-weight: 650;
+        color: var(--text);
+        letter-spacing: -0.01em;
+    }
+
+    .mc__req {
+        color: var(--text-muted);
+        opacity: 0.85;
+        font-weight: 650;
+    }
+
+    .mc__input,
+    .mc__textarea {
+        width: 100%;
+        padding: 0.95rem 0 0.85rem;
+        border: none;
+        border-bottom: .3px solid var(--text);
+        background: transparent;
+        color: var(--text);
+        font-size: 1.05rem;
+        line-height: 1.45;
+    }
+
+    .mc__textarea {
+        resize: vertical;
+        min-height: 8.5rem;
+    }
+
+    .mc__input::placeholder,
+    .mc__textarea::placeholder {
+        color: var(--text);
+    }
+
+    .mc__input:focus,
+    .mc__textarea:focus {
+        outline: none;
+        border-bottom-color: var(--text);
+        box-shadow: 0 1px 0 var(--text);
+    }
+
+    /* Submit */
+    .mc__submit {
+        margin-top: 0.25rem;
+        width: 100%;
+        padding: 1.05rem 1.25rem;
+        border-radius: 999px;
+
+        border: .3px solid var(--text);
+        background: rgba(255, 255, 255, 0.03);
+
+        color: var(--text);
+        font-weight: 700;
+        font-size: 1.05rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.75rem;
+
+        transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .mc__submit:hover {
+        border-color: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .mc__submit:active {
+        transform: scale(0.99);
+    }
+
+    .mc__arrow {
+        opacity: 0.9;
+    }
+
+    .mc__fineprint {
+        margin: 0.25rem 0 0;
+        color: var(--text-muted);
+        opacity: 0.75;
+        text-align: center;
+        line-height: 1.4;
+    }
+</style>

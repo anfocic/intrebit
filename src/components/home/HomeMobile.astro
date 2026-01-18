@@ -1,0 +1,45 @@
+---
+import Heading from "../shared/Heading.astro";
+import Subcopy from "../shared/Subcopy.astro";
+import SectionDivider from "../shared/SectionDivider.astro";
+
+import AboutTeaser from "./mobile/AboutTeaser.astro";
+import MobileContact from "./mobile/MobileContact.astro";
+import ServiceChips from "./mobile/ServiceChips.astro";
+import MobileHero from "./mobile/MobileHero.astro";
+---
+
+<section class="wrap" aria-label="Home mobile">
+    <MobileHero/>
+
+    <Heading title="What we do" muted=" — at least what we think so"/>
+    <ServiceChips href="#contact"/>
+
+    <Subcopy>
+        Websites, internal apps, honest consulting, and automations for the things you never want to do twice.
+    </Subcopy>
+
+    <AboutTeaser/>
+
+    <SectionDivider/>
+
+    <MobileContact/>
+</section>
+
+<style>
+    .wrap {
+        padding: 2.25rem 1.5rem 3rem;
+        display: grid;
+        gap: 1.75rem;
+    }
+
+    .divider {
+        margin-top: 0.25rem;
+    }
+
+    @media (max-width: 420px) {
+        .wrap {
+            padding: 2rem 1.25rem 2.75rem;
+        }
+    }
+</style>

@@ -1,7 +1,8 @@
 ---
-import Button from "../shared/Button.astro";
 
 // Text content
+
+import Button from "../../shared/Button.astro";
 const title = "intrebit";
 const subtitle = "Software, built properly.";
 const tagline = "No buzzwords. No nonsense.";
@@ -46,7 +47,7 @@ const tagline = "No buzzwords. No nonsense.";
     </div>
 </section>
 
-<style is:global>
+<style>
     /* ============================================
        HERO STYLES
        Using is:global because of dynamic class names
@@ -54,14 +55,11 @@ const tagline = "No buzzwords. No nonsense.";
 
     /* ---------- Hero Container ---------- */
     .hero-section {
-        position: relative;
-        width: 100%;
         min-height: calc(100svh - var(--header-height, 72px));
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
-        padding: 4rem 2rem 6rem;
     }
 
     .hero-inner {

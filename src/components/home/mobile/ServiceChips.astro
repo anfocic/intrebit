@@ -1,0 +1,96 @@
+---
+import { Pencil, Code2, MessageCircleQuestion, Sparkles } from "lucide-astro";
+
+const {
+    href = "#contact",
+    items = [
+        { title: "Design", icon: Pencil },
+        { title: "Build", icon: Code2 },
+        { title: "Consulting", icon: MessageCircleQuestion },
+        { title: "Automate", icon: Sparkles },
+    ],
+} = Astro.props;
+---
+
+<div class="grid" role="list" aria-label="Services">
+    {items.map(({ title, icon: Icon }) => (
+            <a class="chip" href={href} role="listitem" aria-label={`Go to contact: ${title}`}>
+      <span class="icon" aria-hidden="true">
+        <Icon size={18} />
+      </span>
+                <span class="text">{title}</span>
+            </a>
+    ))}
+</div>
+
+<style>
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.9rem;
+        margin-top: 0.25rem;
+
+        /* makes the grid feel like a “block” instead of stretching */
+        align-items: start;
+    }
+
+
+    .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-align: center;
+
+        padding: 0.95rem 1rem;
+        border-radius: 999px;
+        text-decoration: none;
+
+        background: rgba(255, 255, 255, 0.03);
+        border: .3px solid var(--text);
+
+        transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .chip:hover {
+        background: rgba(255, 255, 255, 0.05);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .chip:active {
+        transform: scale(0.99);
+    }
+
+    .icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        background: rgba(255, 255, 255, 0.03);
+        border: .11px solid var(--text);
+        color: var(--text-muted);
+        flex: 0 0 auto;
+    }
+
+    .icon :global(svg) {
+        stroke: currentColor;
+    }
+
+    .text {
+        color: var(--text);
+        font-weight: 650;
+        opacity: 0.7;
+        letter-spacing: -0.01em;
+        line-height: 1;
+    }
+
+    /* Keep 2x2 on normal phones; only stack on tiny widths */
+    @media (max-width: 360px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

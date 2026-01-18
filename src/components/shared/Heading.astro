@@ -1,0 +1,75 @@
+---
+const {
+    as: Tag = "h3",
+    title,
+    muted,
+    align, // "left" | "center" | "right"
+    class: className = "",
+} = Astro.props;
+
+const alignClass =
+    align === "center" ? "heading--center" : align === "right" ? "heading--right" : "heading--left";
+---
+
+<Tag class={`heading ${alignClass} ${className}`}>
+    <span class="title">{title}</span>
+    {muted ? <span class="muted">{muted}</span> : null}
+</Tag>
+
+<style>
+    .heading {
+        margin: 1rem 0 0.25rem;
+        line-height: 1.15;
+        letter-spacing: -0.02em;
+        color: var(--text);
+        font-weight: 650;
+
+        display: inline-flex;
+        align-items: baseline;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+    }
+
+    .title {
+        font-size: clamp(1.8rem, 3.8vw, 3.1rem);
+    }
+
+    .muted {
+        font-size: 0.7em;
+        font-weight: 500;
+        color: var(--text-muted);
+        opacity: 0.85;
+        letter-spacing: -0.01em;
+
+        /* instead of padding-left, use spacing that behaves with wrap */
+        margin-left: 0.35rem;
+    }
+
+    /* Alignment */
+    .heading--left {
+        justify-content: flex-start;
+        text-align: left;
+    }
+
+    .heading--center {
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .heading--right {
+        justify-content: flex-end;
+        text-align: right;
+        padding-right: 0.4rem;
+        width: 100%;
+    }
+
+    @media (max-width: 420px) {
+        .heading {
+            gap: 0.35rem;
+        }
+        .muted {
+            font-size: 0.68em;
+        }
+    }
+</style>

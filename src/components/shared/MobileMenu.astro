@@ -1,0 +1,268 @@
+---
+import { navLinks } from "../../config/navLinks";
+const { ctaHref = "/contact", ctaLabel = "Get in touch" } = Astro.props;
+---
+
+<div class="mm" data-mm>
+    <!-- Open button -->
+    <button class="mm__open" type="button" aria-label="Open menu" data-mm-open>
+        ☰ open
+    </button>
+
+    <!-- Overlay -->
+    <div class="mm__overlay" data-mm-overlay aria-hidden="true"></div>
+
+    <!-- Sidebar -->
+    <aside class="mm__sidebar" data-mm-sidebar aria-label="Mobile navigation" aria-hidden="true">
+        <div class="mm__header">
+            <a href="/" class="mm__brand" aria-label="Home">intrebit</a>
+
+            <button class="mm__close" type="button" aria-label="Close menu" data-mm-close>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="2" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+
+        <nav class="mm__menu" aria-label="Menu">
+            {navLinks.map(({ path, label }) => (
+                    <a href={path} class="mm__link">{label}</a>
+            ))}
+        </nav>
+
+        <div class="mm__bottom">
+            <a href={ctaHref} class="mm__cta">
+                {ctaLabel}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+
+            <div class="mm__row">
+                <a href="mailto:hello@intrebit.com" class="mm__email">hello@intrebit.com</a>
+                <div class="mm__socials">
+                    <a href="https://www.linkedin.com/company/intrebit" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        in
+                    </a>
+                    <a href="https://mastodon.social/@intrebit" target="_blank" rel="me noopener noreferrer" aria-label="Mastodon">
+                        m
+                    </a>
+                </div>
+            </div>
+        </div>
+    </aside>
+</div>
+
+<script is:inline>
+    const initMobileMenu = () => {
+        document.querySelectorAll("[data-mm]").forEach((root) => {
+            const openBtn = root.querySelector("[data-mm-open]");
+            const closeBtn = root.querySelector("[data-mm-close]");
+            const overlay = root.querySelector("[data-mm-overlay]");
+            const sidebar = root.querySelector("[data-mm-sidebar]");
+
+            if (!openBtn || !closeBtn || !overlay || !sidebar) return;
+
+            const open = () => {
+                document.body.classList.add("menu-open");
+                overlay.classList.add("is-open");
+                sidebar.classList.add("is-open");
+                overlay.setAttribute("aria-hidden", "false");
+                sidebar.setAttribute("aria-hidden", "false");
+                closeBtn.focus?.();
+            };
+
+            const close = () => {
+                document.body.classList.remove("menu-open");
+                overlay.classList.remove("is-open");
+                sidebar.classList.remove("is-open");
+                overlay.setAttribute("aria-hidden", "true");
+                sidebar.setAttribute("aria-hidden", "true");
+            };
+
+            // avoid double listeners on astro swaps
+            openBtn.onclick = open;
+            closeBtn.onclick = close;
+            overlay.onclick = close;
+
+            sidebar.querySelectorAll("a").forEach((a) => (a.onclick = close));
+
+            window.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") close();
+            });
+
+            close();
+        });
+    };
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initMobileMenu, { once: true });
+    } else {
+        initMobileMenu();
+    }
+    document.addEventListener("astro:page-load", initMobileMenu);
+    document.addEventListener("astro:after-swap", initMobileMenu);
+</script>
+
+<style>
+
+    .mm__overlay { z-index: 3000; }
+    .mm__sidebar { z-index: 3200; }
+    /* show only on mobile */
+    .mm__open { display: none; }
+    @media (max-width: 768px) {
+        .mm__open {
+            display: inline-flex;
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: transparent;
+            color: var(--text);
+            font-size: 1.35rem;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    }
+
+    .mm__overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.5);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
+        z-index: 900;
+    }
+    .mm__overlay.is-open {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .mm__sidebar {
+        position: fixed;
+        top: 0; right: 0; bottom: 0;
+        width: 100%;
+        background: var(--bg);
+        transform: translateX(100%);
+        transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+    }
+    @media (min-width: 480px) {
+        .mm__sidebar { max-width: 320px; }
+    }
+    .mm__sidebar.is-open { transform: translateX(0); }
+
+    .mm__open {
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        position: relative;
+        z-index: 2100; /* above nav content */
+    }
+
+    .mm__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .mm__brand {
+        font-family: var(--font-brand, sans-serif);
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        color: var(--text);
+        text-decoration: none;
+    }
+
+    .mm__close {
+        width: 40px; height: 40px;
+        border: none;
+        background: transparent;
+        color: var(--text-muted);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .mm__menu {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem 0;
+    }
+
+    .mm__link {
+        padding: 1rem 1.5rem;
+        font-size: 1.05rem;
+        font-weight: 500;
+        color: var(--text);
+        text-decoration: none;
+        transition: opacity 0.15s ease;
+    }
+    .mm__link:hover { opacity: 0.6; }
+
+    .mm__bottom {
+        padding: 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+    }
+
+    .mm__cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.9rem 1.5rem;
+        background: var(--text);
+        color: var(--bg);
+        border-radius: 999px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+    .mm__row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .mm__email {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        text-decoration: none;
+    }
+
+    .mm__socials {
+        display: flex;
+        gap: 0.35rem;
+    }
+
+    .mm__socials a {
+        width: 38px;
+        height: 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--text-muted);
+        text-decoration: none;
+    }
+
+    :global(body.menu-open) {
+        overflow: hidden;
+    }
+</style>
