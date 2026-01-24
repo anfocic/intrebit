@@ -105,10 +105,10 @@ const {
         flex: 0 0 auto;
 
         background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.10);
+        border: 1px solid var(--text-muted);
         box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 
-        color: rgba(255, 255, 255, 0.90); /* makes lucide pop */
+        color: var(--text); /* makes lucide pop */
     }
 
     .icon :global(svg) {
@@ -119,7 +119,7 @@ const {
         font-weight: 650;
         letter-spacing: -0.01em;
         line-height: 1;
-        color: rgba(255, 255, 255, 0.86); /* remove the “disabled” look */
+        color: var(--text) /* remove the “disabled” look */
     }
 
     /* Keep 2x2 on normal phones; only stack on tiny widths */
