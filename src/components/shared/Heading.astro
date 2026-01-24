@@ -3,17 +3,23 @@ const {
     as: Tag = "h3",
     title,
     muted,
+    mutedPosition = "after", // "after" | "before"
     align, // "left" | "center" | "right"
     class: className = "",
 } = Astro.props;
 
 const alignClass =
-    align === "center" ? "heading--center" : align === "right" ? "heading--right" : "heading--left";
+    align === "center"
+        ? "heading--center"
+        : align === "right"
+            ? "heading--right"
+            : "heading--left";
 ---
 
 <Tag class={`heading ${alignClass} ${className}`}>
+    {muted && mutedPosition === "before" ? <span class="muted">{muted}</span> : null}
     <span class="title">{title}</span>
-    {muted ? <span class="muted">{muted}</span> : null}
+    {muted && mutedPosition !== "before" ? <span class="muted">{muted}</span> : null}
 </Tag>
 
 <style>
@@ -41,8 +47,8 @@ const alignClass =
         opacity: 0.85;
         letter-spacing: -0.01em;
 
-        /* instead of padding-left, use spacing that behaves with wrap */
-        margin-left: 0.35rem;
+        /* works for both orders */
+        margin-inline: 0.35rem 0;
     }
 
     /* Alignment */
