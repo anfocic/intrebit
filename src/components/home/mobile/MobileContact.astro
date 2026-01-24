@@ -54,18 +54,21 @@ const method = "post";
                 ></textarea>
             </div>
 
-            <button class="mc__submit" type="submit">
-                Send message <span class="mc__arrow" aria-hidden="true">→</span>
-            </button>
+            <div class="mc__row">
+                <button class="mc__submit" type="submit">
+                    Send
+                </button>
 
-            <p class="mc__fineprint">No spam. We’ll only use this to reply.</p>
+                <p class="mc__fineprint">No spam. We’ll only use this to reply.</p>
+            </div>
+
         </form>
     </div>
 </section>
 
 <style>
     .mc {
-        padding: 3rem 0;
+        padding: 3rem 1rem;
     }
 
     .mc__inner {
@@ -121,7 +124,7 @@ const method = "post";
         width: 100%;
         padding: 0.95rem 0 0.85rem;
         border: none;
-        border-bottom: .3px solid var(--text);
+        border-bottom: .3px solid var(--text-muted);
         background: transparent;
         color: var(--text);
         font-size: 1.05rem;
@@ -147,20 +150,16 @@ const method = "post";
 
     /* Submit */
     .mc__submit {
-        margin-top: 0.25rem;
-        width: 100%;
+        margin: 0;
+        width: 70%;
         padding: 1.05rem 1.25rem;
         border-radius: 999px;
 
-        border: .3px solid var(--text);
+        border: .1px solid var(--text-muted);
         background: rgba(255, 255, 255, 0.03);
-
         color: var(--text);
         font-weight: 700;
         font-size: 1.05rem;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
         gap: 0.75rem;
 
         transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
@@ -180,10 +179,11 @@ const method = "post";
     }
 
     .mc__fineprint {
-        margin: 0.25rem 0 0;
+        margin: 1.25rem 0 0;
         color: var(--text-muted);
         opacity: 0.75;
         text-align: center;
         line-height: 1.4;
     }
+
 </style>

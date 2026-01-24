@@ -1,27 +1,18 @@
 ---
-import Button from "../../shared/Button.astro";
-
 const title = "intrebit";
 const subtitle = "Software, built properly.";
 const tagline = "No buzzwords. No nonsense.";
-
-const proof = [
-    { k: "Websites", v: "fast, clean, conversion-ready" },
-    { k: "Internal apps", v: "tools your team actually uses" },
-    { k: "Automation", v: "invoices, reports, admin" },
-];
 ---
 
 <section class="mhero" aria-label="Hero">
     <div class="mhero__inner">
         <header class="mhero__header">
             <h1 class="mhero__title" aria-label={title}>
-        <span class="mhero__title-text">
-          {title.split("").map((letter, i) => (
-                  <span class={`hc hc-t${i}`}>{letter}</span>
-          ))}
-        </span>
-                <span class="mhero__cursor" aria-hidden="true" />
+                <span class="mhero__title-text">
+                    {title.split("").map((letter, i) => (
+                            <span class={`hc hc-t${i}`}>{letter}</span>
+                    ))}
+                </span>
             </h1>
 
             <p class="mhero__subtitle" aria-label={subtitle}>
@@ -34,34 +25,34 @@ const proof = [
                 {tagline.split("").map((letter, i) => (
                         <span class={`hc hc-g${i}`}>{letter === " " ? "\u00A0" : letter}</span>
                 ))}
+                <span class="mhero__cursor" aria-hidden="true" />
             </p>
         </header>
-
-
-
-        <p class="mhero__micro">
-            Small team. Few clients. Direct communication.
-        </p>
     </div>
 </section>
 
 <style is:global>
-    /* Container */
+    /* Container - centered with good padding */
     .mhero {
-        padding: 1.75rem 1.25rem 1.25rem;
+        padding: 4rem 1.5rem 3rem;
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .mhero__inner {
         max-width: 720px;
         margin: 0 auto;
         display: grid;
-        gap: 1.15rem; /* tighter rhythm */
+        gap: 1.15rem;
+        width: 100%;
     }
 
     .mhero__header {
         display: grid;
-        gap: 0.45rem;
-        text-align: left;
+        gap: 0.5rem;
+        text-align: center;
     }
 
     /* Title */
@@ -72,11 +63,12 @@ const proof = [
         font-size: clamp(2.6rem, 11vw, 3.6rem);
         font-weight: 750;
         color: var(--text);
-
         display: inline-flex;
         align-items: baseline;
+        justify-content: center;
         gap: 0.25rem;
         line-height: 1.05;
+        padding-bottom: 2rem;
     }
 
     .mhero__title-text {
@@ -88,7 +80,7 @@ const proof = [
         margin: 0;
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        justify-content: center;
         font-size: 1.1rem;
         font-weight: 650;
         color: var(--text);
@@ -99,7 +91,7 @@ const proof = [
         margin: 0;
         display: flex;
         flex-wrap: wrap;
-        justify-content: flex-start;
+        justify-content: center;
         font-size: 1rem;
         color: var(--text-muted);
         opacity: 0.9;
@@ -134,62 +126,7 @@ const proof = [
     @keyframes heroCursorAppear { to { opacity: 1; } }
     @keyframes heroCursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-    /* Proof pills (adds content + reduces whitespace) */
-    .mhero__proof {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
-        margin-top: 0.35rem;
-    }
-
-    .mhero__pill {
-        padding: 0.9rem 1rem;
-        border-radius: 18px;
-        border: 1px solid rgba(255,255,255,0.08);
-        background: rgba(255,255,255,0.03);
-        display: grid;
-        gap: 0.2rem;
-    }
-
-    .mhero__pill-k {
-        font-weight: 750;
-        color: var(--text);
-        letter-spacing: -0.01em;
-        line-height: 1.2;
-    }
-
-    .mhero__pill-v {
-        color: var(--text-muted);
-        opacity: 0.9;
-        line-height: 1.35;
-        font-size: 0.98rem;
-    }
-
-    /* Actions */
-    .mhero__actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.75rem;
-        opacity: 0;
-        animation: heroFadeUp 0.45s ease-out 3.2s forwards;
-        margin-top: 0.25rem;
-    }
-
-    @keyframes heroFadeUp {
-        from { opacity: 0; transform: translateY(16px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* Micro line */
-    .mhero__micro {
-        margin: 0.25rem 0 0;
-        color: var(--text-muted);
-        opacity: 0.85;
-        line-height: 1.45;
-        font-size: 0.95rem;
-    }
-
-    /* ===== animation delays (keep your existing timing, shortened a bit) ===== */
+    /* Animation delays - title "intrebit" */
     .hc-t0 { animation-delay: 0.22s; }
     .hc-t1 { animation-delay: 0.30s; }
     .hc-t2 { animation-delay: 0.38s; }
@@ -199,7 +136,7 @@ const proof = [
     .hc-t6 { animation-delay: 0.70s; }
     .hc-t7 { animation-delay: 0.78s; }
 
-    /* subtitle: "Software, built properly." */
+    /* Subtitle: "Software, built properly." */
     .hc-s0  { animation-delay: 0.95s; }
     .hc-s1  { animation-delay: 0.99s; }
     .hc-s2  { animation-delay: 1.03s; }
@@ -226,7 +163,7 @@ const proof = [
     .hc-s23 { animation-delay: 1.87s; }
     .hc-s24 { animation-delay: 1.91s; }
 
-    /* tagline: "No buzzwords. No nonsense." */
+    /* Tagline: "No buzzwords. No nonsense." */
     .hc-g0  { animation-delay: 2.05s; }
     .hc-g1  { animation-delay: 2.09s; }
     .hc-g2  { animation-delay: 2.13s; }
@@ -256,14 +193,15 @@ const proof = [
 
     /* Smaller phones */
     @media (max-width: 420px) {
-        .mhero { padding: 1.5rem 1.1rem 1.1rem; }
-        .mhero__actions { grid-template-columns: 1fr; }
+        .mhero {
+            padding: 3rem 1.25rem 2rem;
+            min-height: 50vh;
+        }
     }
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
         .hc { opacity: 1; animation: none; }
         .mhero__cursor { opacity: 1; animation: heroCursorBlink 1.2s ease-in-out infinite; }
-        .mhero__actions { opacity: 1; animation: none; }
     }
 </style>

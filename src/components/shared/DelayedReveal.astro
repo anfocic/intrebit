@@ -1,0 +1,44 @@
+---
+
+interface Props {
+    delay?: number; // delay in seconds, default 3.5s (after hero animation)
+    class?: string;
+}
+
+const { delay = 3.5, class: className = "" } = Astro.props;
+---
+
+<div
+        class:list={["delayed-reveal", className]}
+        style={`--reveal-delay: ${delay}s`}
+>
+    <slot />
+</div>
+
+<style>
+    .delayed-reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: delayedFadeIn 0.6s ease-out forwards;
+        animation-delay: var(--reveal-delay, 3.5s);
+    }
+
+    @keyframes delayedFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .delayed-reveal {
+            opacity: 1;
+            transform: none;
+            animation: none;
+        }
+    }
+</style>

@@ -1,25 +1,18 @@
 ---
-import Heading from "../shared/Heading.astro";
-import Subcopy from "../shared/Subcopy.astro";
 import SectionDivider from "../shared/SectionDivider.astro";
 
-import AboutTeaser from "./mobile/AboutTeaser.astro";
+import MobileAbout from "./mobile/MobileAbout.astro";
 import MobileContact from "./mobile/MobileContact.astro";
-import ServiceChips from "./mobile/ServiceChips.astro";
 import MobileHero from "./mobile/MobileHero.astro";
+import MobileServices from "./mobile/MobileServices.astro";
 ---
 
 <section class="wrap" aria-label="Home mobile">
     <MobileHero/>
 
-    <Heading title="What we do" muted=" — at least what we think so"/>
-    <ServiceChips href="#contact"/>
+    <MobileServices/>
 
-    <Subcopy>
-        Websites, internal apps, honest consulting, and automations for the things you never want to do twice.
-    </Subcopy>
-
-    <AboutTeaser/>
+    <MobileAbout/>
 
     <SectionDivider/>
 

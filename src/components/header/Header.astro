@@ -2,13 +2,15 @@
 import {getPathname} from "../../utils/helpers.ts";
 import {navLinks} from "../../config/navLinks.ts";
 import Link from "../shared/Link.astro";
+import MobileMenu from "../shared/MobileMenu.astro";
 const pathname = getPathname(Astro.url);
 ---
 
 <nav class="nav" aria-label="Primary navigation">
     <div class="nav__content">
-        <a href="/" class="hero__title" aria-label="intrebit home">intrebit</a>
+        <a href="/" class="nav__logo" aria-label="intrebit home">intrebit</a>
 
+        <!-- Desktop nav links -->
         <div class="nav__right nav__right--desktop">
             <ul class="nav__links">
                 {navLinks.map(({ path, label }) => {
@@ -24,15 +26,34 @@ const pathname = getPathname(Astro.url);
             </ul>
         </div>
 
-        <a class="nav__cta" href="#contact" aria-label="Get in touch">
-            Talk to us <span aria-hidden="true">→</span>
-        </a>
+        <!-- Right side: CTA + Hamburger -->
+        <div class="nav__actions">
+            <a class="nav__cta" href="#contact" aria-label="Get in touch">
+                Talk to us <span aria-hidden="true">→</span>
+            </a>
+
+            <!-- Mobile hamburger -->
+            <button
+                    class="nav__hamburger"
+                    data-mobile-open
+                    aria-label="Open menu"
+                    aria-expanded="false"
+            >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
     </div>
 </nav>
 
+<!-- MobileNav outside nav to avoid z-index issues -->
+<MobileMenu />
 
 <style>
-    .hero__title {
+    .nav__logo {
         text-decoration: none;
         font-family: var(--font-brand), serif;
         letter-spacing: 0.05em;
@@ -72,24 +93,24 @@ const pathname = getPathname(Astro.url);
         padding: 0;
     }
 
-    .nav__link {
+    :global(.nav__link) {
         color: var(--text-muted);
         font-weight: 600;
         font-size: var(--text-sm);
         text-decoration: none;
-        transition: color 0.2s var(--ease);
+        transition: color 0.2s ease;
     }
 
-    .nav__link:hover {
+    :global(.nav__link:hover) {
         color: var(--text);
     }
 
-    .nav__link--active {
+    :global(.nav__link--active) {
         color: var(--text);
         position: relative;
     }
 
-    .nav__link--active::after {
+    :global(.nav__link--active::after) {
         content: "";
         position: absolute;
         left: 0;
@@ -100,29 +121,26 @@ const pathname = getPathname(Astro.url);
         border-radius: 2px;
     }
 
-    @media (max-width: 768px) {
-        .nav__right--desktop {
-            display: none;
-        }
+    /* Right actions: CTA + hamburger */
+    .nav__actions {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     }
 
     .nav__cta {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-
         padding: 0.65rem 1rem;
         border-radius: 999px;
-
         text-decoration: none;
         font-weight: 650;
         font-size: 0.95rem;
-
         color: var(--text);
         border: 1px solid var(--border);
         background: rgba(255,255,255,0.03);
-
-        transition: transform 0.15s ease, border-color 0.2s ease, background 0.2s ease;
+        transition: background 0.2s ease, border-color 0.2s ease;
     }
 
     .nav__cta:hover {
@@ -130,14 +148,44 @@ const pathname = getPathname(Astro.url);
         border-color: rgba(255,255,255,0.14);
     }
 
-    .nav__cta:active {
-        transform: scale(0.99);
+    /* Hamburger - hidden on desktop */
+    .nav__hamburger {
+        display: none;
+        width: 44px;
+        height: 44px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        -webkit-tap-highlight-color: transparent;
     }
 
-    /* On desktop, keep it but slightly subtler if you want */
-    @media (min-width: 769px) {
+    /* Mobile */
+    @media (max-width: 768px) {
+        .nav__right--desktop {
+            display: none;
+        }
+
+        .nav__hamburger {
+            display: flex;
+        }
+
+        .nav__content {
+            padding: 1rem 1.25rem;
+        }
+
         .nav__cta {
-            padding: 0.6rem 0.95rem;
+            padding: 0.55rem 0.85rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 400px) {
+        .nav__cta span {
+            display: none;
         }
     }
 </style>

@@ -1,29 +1,44 @@
 ---
-import { Pencil, Code2, MessageCircleQuestion, Sparkles } from "lucide-astro";
+import {Pencil, Code2, MessageCircleQuestion, Sparkles} from "lucide-astro";
+import Heading from "../../shared/Heading.astro";
+import Subcopy from "../../shared/Subcopy.astro";
+import DelayedReveal from "../../shared/DelayedReveal.astro";
 
 const {
     href = "#contact",
     items = [
-        { title: "Design", icon: Pencil },
-        { title: "Build", icon: Code2 },
-        { title: "Consulting", icon: MessageCircleQuestion },
-        { title: "Automate", icon: Sparkles },
+        {title: "Design", icon: Pencil},
+        {title: "Build", icon: Code2},
+        {title: "Consulting", icon: MessageCircleQuestion},
+        {title: "Automate", icon: Sparkles},
     ],
 } = Astro.props;
 ---
+<!--<DelayedReveal delay={5.2}>-->
 
-<div class="grid" role="list" aria-label="Services">
-    {items.map(({ title, icon: Icon }) => (
-            <a class="chip" href={href} role="listitem" aria-label={`Go to contact: ${title}`}>
+    <Heading  class="service-heading"  title="What we do" muted=" — at least what we think so"/>
+
+    <div class="grid" role="list" aria-label="Services">
+        {items.map(({title, icon: Icon}) => (
+                <a class="chip" href={href} role="listitem" aria-label={`Go to contact: ${title}`}>
       <span class="icon" aria-hidden="true">
-        <Icon size={18} />
+        <Icon size={18}/>
       </span>
-                <span class="text">{title}</span>
-            </a>
-    ))}
-</div>
+                    <span class="text">{title}</span>
+                </a>
+        ))}
+    </div>
 
+    <Subcopy>
+        Websites, internal apps, honest consulting, and automations for the things you never want to do twice.
+    </Subcopy>
+<!--</DelayedReveal>-->
 <style>
+
+    .service-heading {
+        padding: 1rem;
+    }
+
     .grid {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
