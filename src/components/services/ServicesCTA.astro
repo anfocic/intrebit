@@ -5,9 +5,9 @@
 <section class="cta">
     <div class="container">
         <div class="cta-card">
-            <h2>Open for new work.</h2>
-            <p>If you need reliable software or smoother ops, we'll reply fast.</p>
-            <a class="btn btn--primary" href="/#contact">Let's talk</a>
+            <h2>Got a project in mind?</h2>
+            <p>Drop us a line — we reply fast, no sales pitch.</p>
+            <a class="btn btn--primary" href="/contact">Let's talk</a>
         </div>
     </div>
 </section>
@@ -49,5 +49,32 @@
         .cta-card {
             padding: 1.8rem;
         }
+    }
+
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.85rem 1.5rem;
+        border-radius: 10px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease;
+    }
+
+    .btn--primary {
+        background: var(--text);
+        color: var(--bg);
+        border: 1px solid var(--text);
+    }
+
+    .btn--primary:hover {
+        opacity: 0.85;
+        transform: translateY(-1px);
+    }
+
+    .btn--primary:active {
+        transform: translateY(0);
     }
 </style>

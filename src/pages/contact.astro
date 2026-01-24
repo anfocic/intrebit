@@ -3,8 +3,29 @@ import Layout from "../layouts/Layout.astro";
 
 import ContactHero from "../components/contact/ContactHero.astro";
 import {pageSEO} from "../config/seo.pages.ts";
+import Heading from "../components/shared/Heading.astro";
 ---
 
 <Layout seo={pageSEO.contact}>
+    <div class="heading-wrapper">
+        <Heading  title="Drop us a line" align="center"/>
+        <p class="sub-heading">No sales pitch, just a conversation.</p>
+    </div>
     <ContactHero/>
 </Layout>
+
+<style>
+    .heading-wrapper {
+        margin: 5rem 0 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sub-heading {
+        margin: 1.5rem auto 0;
+        text-align: center;
+        max-width: 38ch;
+        color: var(--text-muted);
+    }
+</style>

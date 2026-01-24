@@ -1,28 +1,31 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { pageSEO } from "../config/seo.pages.ts";
+import {pageSEO} from "../config/seo.pages.ts";
 import ServicesCTA from "../components/services/ServicesCTA.astro";
 import ServicesGrid from "../components/services/ServicesGrid.astro";
 import ServicesHero from "../components/services/ServicesHero.astro";
 import HowWeWork from "../components/services/HowWeWork.astro";
 import SectionDivider from "../components/shared/SectionDivider.astro";
+import DelayedReveal from "../components/shared/DelayedReveal.astro";
 ---
 
 <Layout seo={pageSEO.services}>
     <main class="services">
-        <ServicesHero />
-
-        <SectionDivider />
-
-        <ServicesGrid />
+        <ServicesHero/>
 
         <SectionDivider/>
 
-        <HowWeWork />
+        <DelayedReveal delay={3.5}>
+            <ServicesGrid/>
+        </DelayedReveal>
 
         <SectionDivider/>
 
-        <ServicesCTA />
+        <HowWeWork/>
+
+        <SectionDivider/>
+
+        <ServicesCTA/>
     </main>
 
 </Layout>

@@ -1,12 +1,13 @@
 ---
 import ProcessIcon from "../shared/ProcessIcon.astro";
+
 const steps = [
     {
         icon: "phone" as const,
         title: "The Call",
-        description: "You complain. We nod.",
+        description: "You talk. We ask annoying questions.",
         detail:
-            "We talk through what's broken, what's annoying you daily, and what working properly looks like — so we're solving the right problem.",
+            "You explain the problem. We make sure we understand it."
     },
     {
         icon: "clipboard-list" as const,
@@ -18,23 +19,23 @@ const steps = [
     {
         icon: "hammer" as const,
         title: "The Build",
-        description: "This is the part where magic happens.",
+        description: "We build. You see progress.",
         detail:
-            "We build in small releases, keep you updated weekly, and show progress early — so nothing disappears into a black hole.",
+            "Every week you'll see what's done, what's next, and how it's looking. You won't have to guess."
     },
     {
         icon: "rocket" as const,
         title: "The Launch",
         description: "No drama here. Carry on.",
         detail:
-            "We handle the deployment, set up monitoring, and make sure everything works in the real world — not just on our laptops.",
+            "It goes live. We watch it closely so you don't have to."
     },
     {
         icon: "life-buoy" as const,
         title: "The Aftermath",
-        description: "We are here for you — just don't call before 10AM.",
+        description: "We're here for you — just don't call before 10AM.",
         detail:
-            "Maintenance, fixes, and improvements when things break or need adjusting — so you're not stuck dealing with the tech alone.",
+            "Something stops working at 2pm on a Tuesday? You message us, not Google."
     },
 ];
 ---
@@ -46,21 +47,32 @@ const steps = [
             <p>Simple steps. Clear costs. You own the code.</p>
         </header>
 
-        <div class="process__list" role="list">
+        <div class="process__timeline">
             {steps.map((step, i) => (
-                    <article class="process__step" role="listitem">
-                        <!-- Centered divider (not on first item) -->
-                        {i > 0 && <div class="process__divider" aria-hidden="true" />}
-
-                        <div class="process__content">
-                            <div class="process__icon-wrap">
-                                <ProcessIcon icon={step.icon} size={24} />
+                    <article class="step" data-step>
+                        <!-- Icon + Line -->
+                        <div class="step__rail">
+                            <div class="step__icon">
+                                <ProcessIcon icon={step.icon} size={20}/>
                             </div>
+                            {i < steps.length - 1 &&
+                                    <div class="step__line"/>}
+                        </div>
 
-                            <div class="process__body">
-                                <h3 class="process__title">{step.title}</h3>
-                                <p class="process__desc">{step.description}</p>
-                                <p class="process__detail">{step.detail}</p>
+                        <!-- Content -->
+                        <div class="step__body">
+                            <button class="step__header" type="button" data-step-trigger aria-expanded="false">
+                                <h3 class="step__title">{step.title}</h3>
+                                <span class="step__chevron" aria-hidden="true">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 9l6 6 6-6"/>
+                                </svg>
+                            </span>
+                            </button>
+                            <p class="step__desc">{step.description}</p>
+                            <div class="step__detail" data-step-panel>
+                                <p>{step.detail}</p>
                             </div>
                         </div>
                     </article>
@@ -69,9 +81,46 @@ const steps = [
     </div>
 </section>
 
+<script>
+    function initProcess() {
+        const steps = document.querySelectorAll('[data-step]');
+
+        steps.forEach((step) => {
+            const trigger = step.querySelector('[data-step-trigger]');
+            const panel = step.querySelector('[data-step-panel]');
+
+            if (!trigger || !panel) return;
+
+            trigger.addEventListener('click', () => {
+                const isOpen = step.classList.contains('is-open');
+
+                // Close all others
+                steps.forEach((s) => {
+                    s.classList.remove('is-open');
+                    const btn = s.querySelector('[data-step-trigger]');
+                    if (btn) btn.setAttribute('aria-expanded', 'false');
+                });
+
+                // Toggle current
+                if (!isOpen) {
+                    step.classList.add('is-open');
+                    trigger.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+    }
+
+    document.addEventListener('astro:page-load', initProcess);
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initProcess);
+    } else {
+        initProcess();
+    }
+</script>
+
 <style>
     .process {
-        padding: 6rem 0 7rem;
+        padding: 6rem 0;
     }
 
     .container {
@@ -83,194 +132,223 @@ const steps = [
     /* Header */
     .process__header {
         text-align: center;
-        max-width: 740px;
-        margin: 0 auto 3.75rem;
+        max-width: 600px;
+        margin: 0 auto 4rem;
     }
 
     .process__header h2 {
-        margin: 0 0 1rem;
-        font-size: clamp(2rem, 3vw, 2.5rem);
+        margin: 0 0 0.75rem;
+        font-size: clamp(1.75rem, 3vw, 2.25rem);
         color: var(--text);
         letter-spacing: -0.03em;
     }
 
     .process__header p {
         margin: 0;
-        font-size: 1.1rem;
-        line-height: 1.65;
+        font-size: 1.05rem;
         color: var(--text-muted);
     }
 
-    /* List */
-    .process__list {
-        max-width: 920px;
+    /* Timeline */
+    .process__timeline {
+        max-width: 540px;
         margin: 0 auto;
+    }
+
+    /* Step - simple grid: icon rail | content */
+    .step {
+        display: grid;
+        grid-template-columns: 44px 1fr;
+        gap: 1.25rem;
+    }
+
+    /* Rail: icon + vertical line */
+    .step__rail {
         display: flex;
         flex-direction: column;
+        align-items: center;
     }
 
-    /* Centered divider */
-    .process__divider {
-        width: 80px;
-        height: 1px;
-        background: var(--border);
-        margin: 0 auto;
-    }
-
-    /* Step */
-    .process__step {
-        position: relative;
-    }
-
-    .process__content {
-        display: grid;
-        grid-template-columns: 64px 1fr;
-        gap: 1.5rem;
-        padding: 2.5rem 1rem;
-        border-radius: var(--radius-soft, 14px);
-        align-items: start;
-        transition: background 280ms var(--ease, ease);
-    }
-
-    .process__content:hover {
-        background: color-mix(in srgb, var(--surface) 50%, transparent);
-    }
-
-    /* Icon container */
-    .process__icon-wrap {
+    .step__icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 52px;
-        height: 52px;
-        border-radius: 14px;
-        color: var(--text-muted);
-        background: color-mix(in srgb, var(--surface) 84%, var(--text) 4%);
+        background: rgba(255, 255, 255, 0.04);
         border: 1px solid var(--border);
-        transition:
-                color 280ms var(--ease, ease),
-                border-color 280ms var(--ease, ease),
-                box-shadow 280ms var(--ease, ease);
+        color: var(--text-muted);
+        flex-shrink: 0;
+        transition: all 0.2s ease;
     }
 
-    /* Hover: icon gets a glow */
-    .process__content:hover .process__icon-wrap {
+    .step:hover .step__icon {
         color: var(--text);
-        border-color: color-mix(in srgb, var(--text) 25%, var(--border));
-        box-shadow:
-                0 0 0 4px color-mix(in srgb, var(--text) 6%, transparent),
-                0 8px 24px color-mix(in srgb, var(--text) 8%, transparent);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .step__line {
+        width: 1px;
+        flex: 1;
+        background: var(--border);
+        margin: 0.75rem 0;
+        min-height: 20px;
     }
 
     /* Body */
-    .process__body {
-        padding-top: 0.25rem;
+    .step__body {
+        padding: 0.5rem 0 2rem;
     }
 
-    .process__title {
-        margin: 0 0 0.5rem;
-        font-size: clamp(1.25rem, 2vw, 1.45rem);
-        font-weight: 700;
-        letter-spacing: -0.02em;
+    .step__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        background: none;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        text-align: left;
+        color: inherit;
+    }
+
+    .step__title {
+        margin: 0;
+        font-size: 1.1rem;
+        font-weight: 600;
         color: var(--text);
     }
 
-    .process__desc {
-        margin: 0;
-        font-size: 1.05rem;
-        line-height: 1.5;
+    .step__chevron {
         color: var(--text-muted);
-        font-weight: 500;
+        transition: transform 0.2s ease;
     }
 
-    .process__detail {
-        margin: 0;
+    .step.is-open .step__chevron {
+        transform: rotate(180deg);
+    }
+
+    .step__desc {
+        margin: 1.35rem 0;
         font-size: 0.95rem;
-        line-height: 1.65;
         color: var(--text-muted);
-        max-width: 58ch;
+        line-height: 1.5;
+        max-height: 100px;
+        opacity: 1;
+        transition: all 0.25s ease;
+    }
 
-        /* Hidden by default on desktop */
-        opacity: 0;
+    .step.is-open .step__desc {
         max-height: 0;
+        padding: 0.3rem;
+        opacity: 0;
+        margin: 0;
         overflow: hidden;
-        transition:
-                opacity 250ms var(--ease, ease),
-                max-height 250ms var(--ease, ease),
-                margin 250ms var(--ease, ease);
     }
 
-    /* Reveal on hover */
-    .process__content:hover .process__detail {
+    /* Detail - accordion */
+    .step__detail {
+        overflow: hidden;
+        max-height: 0;
+        opacity: 0;
+        transition: all 0.25s ease;
+    }
+
+    .step.is-open .step__detail {
+        max-height: 150px;
         opacity: 1;
-        max-height: 200px;
-        margin: 0.75rem 0 0;
+        margin-top: 0.75rem;
     }
 
-    /* Focus states for accessibility (keyboard users) */
-    .process__content:focus-within .process__icon-wrap {
-        color: var(--text);
-        border-color: color-mix(in srgb, var(--text) 25%, var(--border));
-        box-shadow:
-                0 0 0 4px color-mix(in srgb, var(--text) 6%, transparent),
-                0 8px 24px color-mix(in srgb, var(--text) 8%, transparent);
+    .step__detail p {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        color: var(--text-muted);
     }
 
-    .process__content:focus-within .process__detail {
-        opacity: 1;
-        max-height: 200px;
-        margin: 0.75rem 0 0;
+    /* Desktop: hover reveals detail, hide chevron */
+    @media (min-width: 721px) {
+        .step__chevron {
+            display: none;
+        }
+
+        .step__header {
+            cursor: default;
+        }
+
+        .step__detail {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
+        }
+
+        .step:hover .step__detail {
+            max-height: 150px;
+            opacity: 1;
+            margin-top: 0.75rem;
+        }
     }
 
-    /* Mobile — no hover, always show detail */
+    /* Mobile */
     @media (max-width: 720px) {
         .process {
-            padding: 4rem 0 5rem;
+            padding: 4rem 0;
         }
 
-        .process__divider {
-            width: 60px;
+        .process__header {
+            margin-bottom: 3rem;
         }
 
-        .process__content {
-            grid-template-columns: 52px 1fr;
-            gap: 1.25rem;
-            padding: 2rem 0.5rem;
+        .step {
+            grid-template-columns: 36px 1fr;
+            gap: 1rem;
         }
 
-        .process__icon-wrap {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+        .step__icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
         }
 
-        .process__icon-wrap :global(svg) {
-            width: 20px;
-            height: 20px;
+        .step__icon :global(svg) {
+            width: 16px;
+            height: 16px;
         }
 
-        .process__title {
-            font-size: 1.15rem;
+        .step__body {
+            padding: 0.25rem 0 1.5rem;
         }
 
-        .process__desc {
+        .step__title {
             font-size: 1rem;
         }
 
-        .process__detail {
-            /* Always visible on mobile */
-            opacity: 1;
-            max-height: none;
-            margin: 0.75rem 0 0;
+        .step__desc {
             font-size: 0.9rem;
+        }
+
+        .step__detail p {
+            font-size: 0.85rem;
         }
     }
 
-    /* Reduce motion */
+    /* Light mode */
+    :global(:root[data-theme="light"]) .step__icon {
+        background: rgba(0, 0, 0, 0.03);
+    }
+
+    :global(:root[data-theme="light"]) .step:hover .step__icon {
+        border-color: rgba(0, 0, 0, 0.15);
+    }
+
+    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
-        .process__content,
-        .process__icon-wrap,
-        .process__detail {
+        .step__icon,
+        .step__chevron,
+        .step__detail {
             transition: none;
         }
     }

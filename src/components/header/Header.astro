@@ -28,11 +28,6 @@ const pathname = getPathname(Astro.url);
 
         <!-- Right side: CTA + Hamburger -->
         <div class="nav__actions">
-            <a class="nav__cta" href="#contact" aria-label="Get in touch">
-                Talk to us <span aria-hidden="true">→</span>
-            </a>
-
-            <!-- Mobile hamburger -->
             <button
                     class="nav__hamburger"
                     data-mobile-open
@@ -49,7 +44,6 @@ const pathname = getPathname(Astro.url);
     </div>
 </nav>
 
-<!-- MobileNav outside nav to avoid z-index issues -->
 <MobileMenu />
 
 <style>
@@ -61,6 +55,12 @@ const pathname = getPathname(Astro.url);
         margin: 0;
         font-size: 1.75rem;
         color: var(--text);
+        flex: 0 0 auto;
+    }
+
+    .nav__right--desktop {
+        flex: 1;                 /* take remaining space */
+        justify-content: flex-end; /* push links to the right */
     }
 
     .nav {
@@ -126,26 +126,6 @@ const pathname = getPathname(Astro.url);
         display: flex;
         align-items: center;
         gap: 0.75rem;
-    }
-
-    .nav__cta {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.65rem 1rem;
-        border-radius: 999px;
-        text-decoration: none;
-        font-weight: 650;
-        font-size: 0.95rem;
-        color: var(--text);
-        border: 1px solid var(--border);
-        background: rgba(255,255,255,0.03);
-        transition: background 0.2s ease, border-color 0.2s ease;
-    }
-
-    .nav__cta:hover {
-        background: rgba(255,255,255,0.05);
-        border-color: rgba(255,255,255,0.14);
     }
 
     /* Hamburger - hidden on desktop */

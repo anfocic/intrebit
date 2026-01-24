@@ -1,4 +1,4 @@
-<div class="contact-form-wrap">
+<div class="contact-card">
     <form class="contact-form" id="contact-form">
         <!-- Honeypot (spam trap) -->
         <label class="honeypot" aria-hidden="true">
@@ -48,15 +48,12 @@
         </div>
 
         <div class="contact-form__footer">
+            <p class="contact-form__note">
+                You can also email us at <a href="mailto:hello@intrebit.com">hello@intrebit.com</a>
+            </p>
             <button class="contact-form__submit" type="submit">
                 Send message
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
             </button>
-            <p class="contact-form__note">
-                No spam. We'll only use this to reply.
-            </p>
         </div>
     </form>
 
@@ -64,17 +61,22 @@
 </div>
 
 <style>
-    .contact-form-wrap {
-        padding-top: 0.5rem;
+    /* Card wrapper - subtle border like Linear */
+    .contact-card {
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        padding: 1.75rem;
+        background: transparent;
     }
 
+    /* Form */
     .contact-form {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 1.25rem;
     }
 
-    /* Honeypot - hide from users */
+    /* Honeypot */
     .honeypot {
         position: absolute;
         left: -9999px;
@@ -90,47 +92,46 @@
     }
 
     .contact-form__label {
-        font-size: 1.2rem;
-        font-weight: 600;
-        letter-spacing: 0.02em;
-        color: var(--text);
-    }
-
-    .contact-form__required {
-        color: var(--text);
+        font-size: 0.875rem;
         font-weight: 400;
+        color: rgba(255, 255, 255, 0.5);
     }
 
-    /* Minimal inputs - underline style */
+    /* INPUTS - Linear style: dark filled, visible background */
     .contact-form__input,
     .contact-form__textarea {
         width: 100%;
-        padding: 0.75rem 0;
-        border: none;
-        border-bottom: 0.3px solid var(--text);
-        background: transparent;
+        padding: 0.875rem 1rem;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
         color: var(--text);
-        font-size: 1rem;
+        font-size: 0.9375rem;
         font-family: inherit;
         line-height: 1.5;
-        transition: border-color 0.2s ease;
+        transition: border-color 0.15s ease, background 0.15s ease;
     }
 
     .contact-form__textarea {
-        min-height: 100px;
+        min-height: 140px;
         resize: vertical;
     }
 
     .contact-form__input::placeholder,
     .contact-form__textarea::placeholder {
-        color: var(--text-muted);
-        opacity: 0.5;
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .contact-form__input:hover,
+    .contact-form__textarea:hover {
+        border-color: rgba(255, 255, 255, 0.15);
     }
 
     .contact-form__input:focus,
     .contact-form__textarea:focus {
         outline: none;
-        border-bottom-color: var(--text);
+        border-color: rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.07);
     }
 
     /* Footer */
@@ -138,63 +139,62 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        gap: 1.5rem;
-        padding-top: 0.5rem;
-    }
-
-    /* Submit button - minimal */
-    .contact-form__submit {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.85rem 1.5rem;
-        border-radius: 999px;
-        border: 0.3px solid var(--text);
-        background: transparent;
-        color: var(--text);
-        font-size: 0.95rem;
-        font-weight: 600;
-        font-family: inherit;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
-
-    .contact-form__submit:hover {
-        background: var(--text);
-        color: var(--bg);
-        border-color: var(--text);
-    }
-
-    .contact-form__submit svg {
-        transition: transform 0.2s ease;
-    }
-
-    .contact-form__submit:hover svg {
-        transform: translateX(3px);
+        gap: 1rem;
+        margin-top: 0.5rem;
     }
 
     /* Note */
     .contact-form__note {
-        font-size: 0.82rem;
-        color: var(--text-muted);
+        font-size: 0.8125rem;
+        color: rgba(255, 255, 255, 0.4);
         margin: 0;
-        opacity: 0.7;
+    }
+
+    .contact-form__note a {
+        color: rgba(255, 255, 255, 0.5);
+        text-decoration: none;
+    }
+
+    .contact-form__note a:hover {
+        color: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Submit button - Linear style: subtle filled */
+    .contact-form__submit {
+        padding: 0.625rem 1rem;
+        border-radius: 6px;
+        border: none;
+        background: rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 0.875rem;
+        font-weight: 500;
+        font-family: inherit;
+        cursor: pointer;
+        transition: background 0.15s ease, color 0.15s ease;
+        white-space: nowrap;
+    }
+
+    .contact-form__submit:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .contact-form__submit:active {
+        background: rgba(255, 255, 255, 0.12);
     }
 
     /* Status message */
     .contact-form__status {
-        margin-top: 1.5rem;
-        padding: 1rem;
+        margin-top: 1.25rem;
+        padding: 0.875rem 1rem;
         border-radius: 8px;
-        font-size: 0.92rem;
+        font-size: 0.875rem;
         font-weight: 500;
-        line-height: 1.5;
-        opacity: 0;
-        transition: opacity 0.2s ease;
+        display: none;
     }
 
     .contact-form__status:not(:empty) {
-        opacity: 1;
+        display: block;
     }
 
     .contact-form__status.status--success {
@@ -209,14 +209,25 @@
 
     /* Mobile */
     @media (max-width: 600px) {
+        .contact-card {
+            padding: 1.25rem;
+        }
+
+        .contact-card__title {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+        }
+
         .contact-form__footer {
-            flex-direction: column;
+            flex-direction: column-reverse;
             align-items: stretch;
-            gap: 1rem;
+            gap: 0.875rem;
         }
 
         .contact-form__submit {
-            justify-content: center;
+            width: 100%;
+            text-align: center;
+            padding: 0.75rem 1rem;
         }
 
         .contact-form__note {
@@ -225,17 +236,56 @@
     }
 
     /* Light mode */
+    :global(:root[data-theme="light"]) .contact-card {
+        border-color: rgba(0, 0, 0, 0.1);
+    }
+
+    :global(:root[data-theme="light"]) .contact-card__title {
+        border-bottom-color: rgba(0, 0, 0, 0.08);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__label {
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__input,
+    :global(:root[data-theme="light"]) .contact-form__textarea {
+        border-color: rgba(0, 0, 0, 0.1);
+        background: rgba(0, 0, 0, 0.04);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__input::placeholder,
+    :global(:root[data-theme="light"]) .contact-form__textarea::placeholder {
+        color: rgba(0, 0, 0, 0.35);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__input:hover,
+    :global(:root[data-theme="light"]) .contact-form__textarea:hover {
+        border-color: rgba(0, 0, 0, 0.18);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__input:focus,
+    :global(:root[data-theme="light"]) .contact-form__textarea:focus {
+        border-color: rgba(0, 0, 0, 0.25);
+        background: rgba(0, 0, 0, 0.06);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__note {
+        color: rgba(0, 0, 0, 0.45);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__note a {
+        color: rgba(0, 0, 0, 0.55);
+    }
+
+    :global(:root[data-theme="light"]) .contact-form__submit {
+        background: rgba(0, 0, 0, 0.06);
+        color: rgba(0, 0, 0, 0.7);
+    }
+
     :global(:root[data-theme="light"]) .contact-form__submit:hover {
-        background: var(--text);
-        color: var(--bg);
-    }
-
-    :global(:root[data-theme="light"]) .contact-form__status.status--success {
-        color: #16a34a;
-    }
-
-    :global(:root[data-theme="light"]) .contact-form__status.status--error {
-        color: #dc2626;
+        background: rgba(0, 0, 0, 0.1);
+        color: rgba(0, 0, 0, 0.85);
     }
 </style>
 

@@ -1,15 +1,12 @@
 <section class="services-hero">
     <div class="container services-hero__inner">
         <header class="services-hero__header hero-reveal">
-            <h1 class="title reveal-1">Build it right. Keep it running.</h1>
+            <h1 class="title reveal-1">Build it right.</h1>
+            <h1 class="title reveal-2">Keep it running.</h1>
 
-            <p class="subtitle reveal-2">
-                We help teams ship dependable software and remove the technical debt and operational mess that slows them down.
+            <p class="subtitle reveal-3">
+                You focus on the business. We'll make sure the software doesn't fall apart.
             </p>
-
-            <div class="actions reveal-3">
-                <a class="btn btn--primary" href="/#contact">Get in touch</a>
-            </div>
         </header>
     </div>
 </section>
@@ -17,11 +14,10 @@
 <style>
     .services-hero {
         position: relative;
-        padding: 17rem 0;
+        padding: 10rem 0;
         text-align: center;
         overflow: hidden;
     }
-
 
     .container {
         max-width: var(--container-width, 1200px);
@@ -40,7 +36,7 @@
 
     .title {
         font-size: clamp(2.1rem, 4vw, 3.2rem);
-        margin: 0 0 1rem;
+        margin: 0;
         letter-spacing: -0.03em;
         line-height: 1.1;
         color: var(--text);
@@ -48,32 +44,15 @@
 
     .subtitle {
         max-width: 650px;
-        margin: 0 auto 2.25rem;
+        margin: 0 auto;
+        padding-top: 2rem;
         font-size: 1.15rem;
         line-height: 1.65;
         color: var(--text-muted);
     }
 
-    /* --- Buttons & Actions --- */
-    .actions {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-    }
-
-    .btn {
-        transition: transform 0.2s ease, box-shadow 0.2s ease,
-        background-color 0.2s;
-    }
-
-    .btn--primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
-    }
-
     /* =========================================
-       HERO REVEAL — fade up + blur in + stagger
+       HERO REVEAL — staggered fade up + blur
        ========================================= */
 
     .hero-reveal > * {
@@ -84,10 +63,19 @@
         will-change: opacity, transform, filter;
     }
 
-    /* stagger order */
-    .hero-reveal .reveal-1 { animation-delay: 80ms; }
-    .hero-reveal .reveal-2 { animation-delay: 200ms; }
-    .hero-reveal .reveal-3 { animation-delay: 340ms; }
+    /* Stagger: Title 1 → Title 2 → Subtitle */
+    .hero-reveal .reveal-1 {
+        animation-delay: 100ms;
+    }
+
+    .hero-reveal .reveal-2 {
+        margin-top: 1rem;
+        animation-delay: 1400ms;
+    }
+
+    .hero-reveal .reveal-3 {
+        animation-delay: 2400ms;
+    }
 
     @keyframes heroReveal {
         from {
@@ -115,11 +103,12 @@
     /* --- Responsive --- */
     @media (max-width: 520px) {
         .services-hero {
-            padding: 6rem 0 4rem;
+            padding: 5rem 0 3rem;
         }
 
         .subtitle {
             font-size: 1.05rem;
+            padding-top: 1.5rem;
         }
     }
 </style>
