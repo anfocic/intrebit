@@ -1,11 +1,7 @@
----
-// src/components/services/ServicesCTA.astro
----
-
 <section class="cta">
     <div class="container">
         <div class="cta-card">
-            <h2>Got a project in mind?</h2>
+            <h2>Got a project in mind? Or just want to chat?</h2>
             <p>Drop us a line — we reply fast, no sales pitch.</p>
             <a class="btn btn--primary" href="/contact">Let's talk</a>
         </div>
@@ -64,14 +60,14 @@
     }
 
     .btn--primary {
-        background: var(--text);
-        color: var(--bg);
-        border: 1px solid var(--text);
+        background: var(--bg);
+        color: var(--text-muted);
     }
 
     .btn--primary:hover {
-        opacity: 0.85;
         transform: translateY(-1px);
+        color: var(--text);
+        box-shadow: var(--text-muted);
     }
 
     .btn--primary:active {

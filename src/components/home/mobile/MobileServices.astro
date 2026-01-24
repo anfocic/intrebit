@@ -14,7 +14,7 @@ const {
     ],
 } = Astro.props;
 ---
-<!--<DelayedReveal delay={5.2}>-->
+<DelayedReveal delay={5.2}>
 
     <Heading  class="service-heading"  title="What we do" muted=" — at least what we think so"/>
 
@@ -32,7 +32,7 @@ const {
     <Subcopy>
         Websites, internal apps, honest consulting, and automations for the things you never want to do twice.
     </Subcopy>
-<!--</DelayedReveal>-->
+</DelayedReveal>
 <style>
 
     .service-heading {
@@ -57,7 +57,7 @@ const {
         text-align: center;
 
         padding: 0.95rem 1rem;
-        border-radius: 999px;
+        border-radius: 1rem;
         text-decoration: none;
 
         background: rgba(255, 255, 255, 0.03);
@@ -78,7 +78,7 @@ const {
     .icon {
         width: 34px;
         height: 34px;
-        border-radius: 999px;
+        border-radius: 10px;
 
         display: inline-flex;
         align-items: center;
@@ -86,7 +86,6 @@ const {
 
         background: rgba(255, 255, 255, 0.03);
         border: .11px solid var(--text);
-        color: var(--text-muted);
         flex: 0 0 auto;
     }
 
