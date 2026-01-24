@@ -1,9 +1,7 @@
 ---
-type Variant = "primary" | "ghost";
 
 interface Props {
     href?: string;
-    variant?: Variant;
     type?: "button" | "submit" | "reset";
     target?: string;
     rel?: string;
@@ -14,7 +12,6 @@ interface Props {
 
 const {
     href,
-    variant = "primary",
     type = "button",
     target,
     rel,
@@ -23,33 +20,22 @@ const {
     ariaLabel,
 } = Astro.props;
 
-const classes = `btn btn--${variant} ${className}`.trim();
+const classes = `btn ${className}`.trim();
 ---
 
 {href ? (
-<a
-        class={classes}
-        href={href}
-        target={target}
-        rel={rel}
-        aria-label={ariaLabel}
->
+<a class={classes} href={href} target={target} rel={rel} aria-label={ariaLabel}>
     <slot />
 </a>
     ) : (
-<button
-        class={classes}
-        type={type}
-        disabled={disabled}
-        aria-label={ariaLabel}
->
+<button class={classes} type={type} disabled={disabled} aria-label={ariaLabel}>
     <slot />
 </button>
     )}
 
 <style>
     .btn {
-        height: 56px; /* match inputs */
+        height: 56px;
         padding: 0 1.35rem;
         border-radius: 999px;
         display: inline-flex;
@@ -59,70 +45,63 @@ const classes = `btn btn--${variant} ${className}`.trim();
         font-weight: 650;
         font-size: 1rem;
         letter-spacing: -0.01em;
+        line-height: 1;
 
         cursor: pointer;
         user-select: none;
         text-decoration: none;
 
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid rgba(255, 255, 255, 0.14);
-        color: rgba(255, 255, 255, 0.92);
+        border: 1px solid transparent;
 
         transition:
-                transform 0.16s var(--ease),
-                background 0.16s var(--ease),
-                border-color 0.16s var(--ease),
-                box-shadow 0.16s var(--ease),
-                filter 0.16s var(--ease);
+                transform 0.16s cubic-bezier(0.25, 0.8, 0.25, 1),
+                background 0.16s cubic-bezier(0.25, 0.8, 0.25, 1),
+                border-color 0.16s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.16s cubic-bezier(0.25, 0.8, 0.25, 1),
+                filter 0.16s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+    /* Default: inverted against theme */
+    .btn {
+        background: var(--text);
+        color: var(--bg);
+        border-color: color-mix(in srgb, var(--text) 70%, transparent);
+        box-shadow: 0 18px 42px rgba(7, 24, 38, 0.16);
     }
 
+    /* Hover: nudge bg slightly so it's noticeable in both themes */
     .btn:hover {
         transform: translateY(-1px);
-        background: rgba(255, 255, 255, 0.10);
-        border-color: rgba(255, 255, 255, 0.22);
-        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.22);
+        background: color-mix(in srgb, var(--text) 88%, white); /* lighter ink */
+        border-color: color-mix(in srgb, var(--text) 85%, white);
+        box-shadow: 0 22px 56px rgba(7, 24, 38, 0.20);
     }
 
+    /* Active */
     .btn:active {
         transform: translateY(0);
         filter: brightness(0.98);
     }
 
-    /* keyboard accessibility */
+    /* Focus */
     .btn:focus-visible {
         outline: none;
-        box-shadow: 0 0 0 5px rgba(178, 223, 219, 0.18);
+        box-shadow: 0 0 0 5px rgba(178, 223, 219, 0.18), 0 18px 42px rgba(7, 24, 38, 0.18);
     }
 
-    .btn--primary {
-        background: rgba(255, 255, 255, 0.10);
-        border-color: rgba(255, 255, 255, 0.22);
-    }
-
-    .btn--primary:hover {
-        background: rgba(255, 255, 255, 0.14);
-        border-color: rgba(255, 255, 255, 0.28);
-    }
-
-    .btn--ghost {
-        background: rgba(255, 255, 255, 0.03);
-        color: var(--text);
-        border-color: rgba(255, 255, 255, 0.1);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    }
-
-    .btn--ghost:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.16);
-    }
-
-
-
-    /* Optional: disabled styling */
+    /* Disabled */
     .btn:disabled {
         opacity: 0.55;
         cursor: not-allowed;
         transform: none;
         box-shadow: none;
     }
+
+    /* If you want the shadow to flip in dark mode (optional but nice) */
+    :root[data-theme="dark"] .btn {
+        box-shadow: 0 18px 42px rgba(246, 244, 239, 0.08);
+    }
+    :root[data-theme="dark"] .btn:hover {
+        box-shadow: 0 22px 56px rgba(246, 244, 239, 0.12);
+    }
+
 </style>

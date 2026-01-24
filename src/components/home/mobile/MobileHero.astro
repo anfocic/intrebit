@@ -1,4 +1,5 @@
 ---
+import Button from "../../shared/Button.astro";
 const title = "intrebit";
 const subtitle = "Software, built properly.";
 const tagline = "No buzzwords. No nonsense.";
@@ -25,17 +26,23 @@ const tagline = "No buzzwords. No nonsense.";
                 {tagline.split("").map((letter, i) => (
                         <span class={`hc hc-g${i}`}>{letter === " " ? "\u00A0" : letter}</span>
                 ))}
-                <span class="mhero__cursor" aria-hidden="true" />
             </p>
         </header>
+        <div class="hero-actions">
+            <Button href="/contact" >
+                Get in touch
+            </Button>
+            <Button href="/services" >
+                See what we do
+            </Button>
+        </div>
     </div>
 </section>
 
 <style is:global>
     /* Container - centered with good padding */
     .mhero {
-        padding: 4rem 1.5rem 3rem;
-        min-height: 60vh;
+        min-height: 50vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -190,6 +197,17 @@ const tagline = "No buzzwords. No nonsense.";
     .hc-g25 { animation-delay: 3.05s; }
 
     /* Smaller phones */
+
+    .hero-actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        padding-top: 1rem;
+        flex-wrap: wrap;
+        opacity: 0;
+        animation: heroFadeUp 0.5s ease-out 3.6s forwards;
+    }
+
     @media (max-width: 420px) {
         .mhero {
             padding: 3rem 1.25rem 2rem;

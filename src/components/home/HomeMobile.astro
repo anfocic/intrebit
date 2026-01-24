@@ -5,12 +5,15 @@ import MobileAbout from "./mobile/MobileAbout.astro";
 import MobileContact from "./mobile/MobileContact.astro";
 import MobileHero from "./mobile/MobileHero.astro";
 import MobileServices from "./mobile/MobileServices.astro";
+import DelayedReveal from "../shared/DelayedReveal.astro";
 ---
 
 <section class="wrap" aria-label="Home mobile">
     <MobileHero/>
 
-    <MobileServices/>
+    <DelayedReveal delay={3.5}>
+        <MobileServices/>
+    </DelayedReveal>
 
     <MobileAbout/>
 

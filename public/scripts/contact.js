@@ -1,5 +1,4 @@
 (() => {
-    console.log("contact.js loaded");
     const API_BASE = "https://api.intrebit.com";
     const ENDPOINT = "/contact";
 

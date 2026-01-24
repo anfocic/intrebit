@@ -33,9 +33,9 @@ type SiteSEOConfig = {
 };
 
 const SITE: SiteSEOConfig = {
-    siteName: "Software that works for you",
+    siteName: "intrebit",
     siteUrl: "https://intrebit.com",
-    defaultTitle: "Intrebit",
+    defaultTitle: "intrebit",
     defaultDescription:
         "Software development, outsourcing, infrastructure, and consulting — without the corporate BS.",
     defaultImage: {
@@ -53,14 +53,9 @@ export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
         overrides.canonical ??
         `${SITE.siteUrl}${pathname === "/" ? "" : pathname}`.replace(/\/$/, "");
 
-    const titleBase = overrides.title ?? SITE.defaultTitle;
-    const title =
-        overrides.title && overrides.title !== SITE.siteName
-            ? `${titleBase} | ${SITE.siteName}`
-            : `${SITE.defaultTitle} | ${SITE.siteName}`;
+    const title = overrides.title ?? SITE.defaultTitle;
 
     const description = overrides.description ?? SITE.defaultDescription;
-
     const type = overrides.type ?? "website";
 
     const image = {
@@ -88,7 +83,6 @@ export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
         type,
         image,
         robots,
-
         article:
             type === "article"
                 ? {
@@ -98,7 +92,6 @@ export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
                     tags: overrides.tags ?? [],
                 }
                 : null,
-
         twitter: {
             card: "summary_large_image",
             handle: SITE.twitterHandle,

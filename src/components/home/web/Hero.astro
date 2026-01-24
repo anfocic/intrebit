@@ -1,5 +1,4 @@
 ---
-
 // Text content
 
 import Button from "../../shared/Button.astro";
@@ -32,16 +31,11 @@ const tagline = "No buzzwords. No nonsense.";
         </header>
 
         <div class="hero-actions">
-            <Button href="#contact" variant="primary">
+            <Button href="/contact">
                 Get in touch
             </Button>
-            <Button
-                    href="https://www.linkedin.com/company/intrebit"
-                    variant="ghost"
-                    target="_blank"
-                    rel="noopener noreferrer"
-            >
-                Who are you?
+            <Button href="/services">
+                See what we do
             </Button>
         </div>
     </div>
@@ -135,69 +129,243 @@ const tagline = "No buzzwords. No nonsense.";
     }
 
     /* ========== TITLE: "intrebit" (8 chars) ========== */
-    .hc-t0 { animation-delay: 0.30s; }
-    .hc-t1 { animation-delay: 0.39s; }
-    .hc-t2 { animation-delay: 0.48s; }
-    .hc-t3 { animation-delay: 0.57s; }
-    .hc-t4 { animation-delay: 0.66s; }
-    .hc-t5 { animation-delay: 0.75s; }
-    .hc-t6 { animation-delay: 0.84s; }
-    .hc-t7 { animation-delay: 0.93s; }
+    .hc-t0 {
+        animation-delay: 0.30s;
+    }
+
+    .hc-t1 {
+        animation-delay: 0.39s;
+    }
+
+    .hc-t2 {
+        animation-delay: 0.48s;
+    }
+
+    .hc-t3 {
+        animation-delay: 0.57s;
+    }
+
+    .hc-t4 {
+        animation-delay: 0.66s;
+    }
+
+    .hc-t5 {
+        animation-delay: 0.75s;
+    }
+
+    .hc-t6 {
+        animation-delay: 0.84s;
+    }
+
+    .hc-t7 {
+        animation-delay: 0.93s;
+    }
 
     /* ========== SUBTITLE: "Software, built properly." (25 chars) ========== */
-    .hc-s0  { animation-delay: 1.15s; }
-    .hc-s1  { animation-delay: 1.19s; }
-    .hc-s2  { animation-delay: 1.23s; }
-    .hc-s3  { animation-delay: 1.27s; }
-    .hc-s4  { animation-delay: 1.31s; }
-    .hc-s5  { animation-delay: 1.35s; }
-    .hc-s6  { animation-delay: 1.39s; }
-    .hc-s7  { animation-delay: 1.43s; }
-    .hc-s8  { animation-delay: 1.47s; }
-    .hc-s9  { animation-delay: 1.51s; }
-    .hc-s10 { animation-delay: 1.55s; }
-    .hc-s11 { animation-delay: 1.59s; }
-    .hc-s12 { animation-delay: 1.63s; }
-    .hc-s13 { animation-delay: 1.67s; }
-    .hc-s14 { animation-delay: 1.71s; }
-    .hc-s15 { animation-delay: 1.75s; }
-    .hc-s16 { animation-delay: 1.79s; }
-    .hc-s17 { animation-delay: 1.83s; }
-    .hc-s18 { animation-delay: 1.87s; }
-    .hc-s19 { animation-delay: 1.91s; }
-    .hc-s20 { animation-delay: 1.95s; }
-    .hc-s21 { animation-delay: 1.99s; }
-    .hc-s22 { animation-delay: 2.03s; }
-    .hc-s23 { animation-delay: 2.07s; }
-    .hc-s24 { animation-delay: 2.11s; }
+    .hc-s0 {
+        animation-delay: 1.15s;
+    }
+
+    .hc-s1 {
+        animation-delay: 1.19s;
+    }
+
+    .hc-s2 {
+        animation-delay: 1.23s;
+    }
+
+    .hc-s3 {
+        animation-delay: 1.27s;
+    }
+
+    .hc-s4 {
+        animation-delay: 1.31s;
+    }
+
+    .hc-s5 {
+        animation-delay: 1.35s;
+    }
+
+    .hc-s6 {
+        animation-delay: 1.39s;
+    }
+
+    .hc-s7 {
+        animation-delay: 1.43s;
+    }
+
+    .hc-s8 {
+        animation-delay: 1.47s;
+    }
+
+    .hc-s9 {
+        animation-delay: 1.51s;
+    }
+
+    .hc-s10 {
+        animation-delay: 1.55s;
+    }
+
+    .hc-s11 {
+        animation-delay: 1.59s;
+    }
+
+    .hc-s12 {
+        animation-delay: 1.63s;
+    }
+
+    .hc-s13 {
+        animation-delay: 1.67s;
+    }
+
+    .hc-s14 {
+        animation-delay: 1.71s;
+    }
+
+    .hc-s15 {
+        animation-delay: 1.75s;
+    }
+
+    .hc-s16 {
+        animation-delay: 1.79s;
+    }
+
+    .hc-s17 {
+        animation-delay: 1.83s;
+    }
+
+    .hc-s18 {
+        animation-delay: 1.87s;
+    }
+
+    .hc-s19 {
+        animation-delay: 1.91s;
+    }
+
+    .hc-s20 {
+        animation-delay: 1.95s;
+    }
+
+    .hc-s21 {
+        animation-delay: 1.99s;
+    }
+
+    .hc-s22 {
+        animation-delay: 2.03s;
+    }
+
+    .hc-s23 {
+        animation-delay: 2.07s;
+    }
+
+    .hc-s24 {
+        animation-delay: 2.11s;
+    }
 
     /* ========== TAGLINE: "No buzzwords. No nonsense." (26 chars) ========== */
-    .hc-g0  { animation-delay: 2.30s; }
-    .hc-g1  { animation-delay: 2.34s; }
-    .hc-g2  { animation-delay: 2.38s; }
-    .hc-g3  { animation-delay: 2.42s; }
-    .hc-g4  { animation-delay: 2.46s; }
-    .hc-g5  { animation-delay: 2.50s; }
-    .hc-g6  { animation-delay: 2.54s; }
-    .hc-g7  { animation-delay: 2.58s; }
-    .hc-g8  { animation-delay: 2.62s; }
-    .hc-g9  { animation-delay: 2.66s; }
-    .hc-g10 { animation-delay: 2.70s; }
-    .hc-g11 { animation-delay: 2.74s; }
-    .hc-g12 { animation-delay: 2.78s; }
-    .hc-g13 { animation-delay: 2.82s; }
-    .hc-g14 { animation-delay: 2.86s; }
-    .hc-g15 { animation-delay: 2.90s; }
-    .hc-g16 { animation-delay: 2.94s; }
-    .hc-g17 { animation-delay: 2.98s; }
-    .hc-g18 { animation-delay: 3.02s; }
-    .hc-g19 { animation-delay: 3.06s; }
-    .hc-g20 { animation-delay: 3.10s; }
-    .hc-g21 { animation-delay: 3.14s; }
-    .hc-g22 { animation-delay: 3.18s; }
-    .hc-g23 { animation-delay: 3.22s; }
-    .hc-g24 { animation-delay: 3.26s; }
-    .hc-g25 { animation-delay: 3.30s; }
+    .hc-g0 {
+        animation-delay: 2.30s;
+    }
+
+    .hc-g1 {
+        animation-delay: 2.34s;
+    }
+
+    .hc-g2 {
+        animation-delay: 2.38s;
+    }
+
+    .hc-g3 {
+        animation-delay: 2.42s;
+    }
+
+    .hc-g4 {
+        animation-delay: 2.46s;
+    }
+
+    .hc-g5 {
+        animation-delay: 2.50s;
+    }
+
+    .hc-g6 {
+        animation-delay: 2.54s;
+    }
+
+    .hc-g7 {
+        animation-delay: 2.58s;
+    }
+
+    .hc-g8 {
+        animation-delay: 2.62s;
+    }
+
+    .hc-g9 {
+        animation-delay: 2.66s;
+    }
+
+    .hc-g10 {
+        animation-delay: 2.70s;
+    }
+
+    .hc-g11 {
+        animation-delay: 2.74s;
+    }
+
+    .hc-g12 {
+        animation-delay: 2.78s;
+    }
+
+    .hc-g13 {
+        animation-delay: 2.82s;
+    }
+
+    .hc-g14 {
+        animation-delay: 2.86s;
+    }
+
+    .hc-g15 {
+        animation-delay: 2.90s;
+    }
+
+    .hc-g16 {
+        animation-delay: 2.94s;
+    }
+
+    .hc-g17 {
+        animation-delay: 2.98s;
+    }
+
+    .hc-g18 {
+        animation-delay: 3.02s;
+    }
+
+    .hc-g19 {
+        animation-delay: 3.06s;
+    }
+
+    .hc-g20 {
+        animation-delay: 3.10s;
+    }
+
+    .hc-g21 {
+        animation-delay: 3.14s;
+    }
+
+    .hc-g22 {
+        animation-delay: 3.18s;
+    }
+
+    .hc-g23 {
+        animation-delay: 3.22s;
+    }
+
+    .hc-g24 {
+        animation-delay: 3.26s;
+    }
+
+    .hc-g25 {
+        animation-delay: 3.30s;
+    }
 
     /* ---------- Cursor ---------- */
     .hero-cursor {
@@ -208,18 +376,23 @@ const tagline = "No buzzwords. No nonsense.";
         margin-left: 6px;
         border-radius: 2px;
         opacity: 0;
-        animation:
-                heroCursorAppear 0.1s ease-out 0.25s forwards,
-                heroCursorBlink 0.9s ease-in-out 1.1s infinite;
+        animation: heroCursorAppear 0.1s ease-out 0.25s forwards,
+        heroCursorBlink 0.9s ease-in-out 1.1s infinite;
     }
 
     @keyframes heroCursorAppear {
-        to { opacity: 1; }
+        to {
+            opacity: 1;
+        }
     }
 
     @keyframes heroCursorBlink {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0; }
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0;
+        }
     }
 
     /* ---------- Actions ---------- */

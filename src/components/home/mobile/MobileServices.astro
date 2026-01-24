@@ -16,7 +16,7 @@ const {
 ---
 <DelayedReveal delay={5.2}>
 
-    <Heading  class="service-heading"  title="What we do" muted=" — at least what we think so"/>
+    <Heading class="service-heading" title="What we do" muted=" — at least what we think so"/>
 
     <div class="grid" role="list" aria-label="Services">
         {items.map(({title, icon: Icon}) => (
@@ -29,9 +29,11 @@ const {
         ))}
     </div>
 
-    <Subcopy>
-        Websites, internal apps, honest consulting, and automations for the things you never want to do twice.
-    </Subcopy>
+    <div class="service__subcopy">
+        <Subcopy>
+            Websites, internal apps, honest consulting, and automations for the things you never want to do twice.
+        </Subcopy>
+    </div>
 </DelayedReveal>
 <style>
 
@@ -41,11 +43,11 @@ const {
 
     .grid {
         display: grid;
+        padding: 2rem 0;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 0.9rem;
         margin-top: 0.25rem;
 
-        /* makes the grid feel like a “block” instead of stretching */
         align-items: start;
     }
 
@@ -106,5 +108,10 @@ const {
         .grid {
             grid-template-columns: 1fr;
         }
+    }
+
+    .service__subcopy {
+        padding: 0 1rem;
+        text-wrap: wrap;
     }
 </style>
