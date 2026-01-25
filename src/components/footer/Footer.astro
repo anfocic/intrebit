@@ -7,9 +7,8 @@ const year = new Date().getFullYear();
 
 <footer class="footer">
     <p class="footer__text">
-        © {year} intrebit.
+        © {year} intrebit. MIT Licensed.
     </p>
-
 
     <div class="footer__social">
         <ThemeToggle />
@@ -30,6 +29,20 @@ const year = new Date().getFullYear();
                 className="footer__social-icon footer__social-icon--linkedin"
         />
     </div>
+
+
+    <nav class="footer__links" aria-label="Footer">
+        <a class="footer__link" href="/privacy">Privacy</a>
+        <a class="footer__link" href="/terms">Terms</a>
+        <a
+                class="footer__link"
+                href="https://codeberg.org/intrebit/intrebit-web"
+                target="_blank"
+                rel="noopener noreferrer"
+        >
+            Source
+        </a>
+    </nav>
 </footer>
 
 <style>
@@ -50,13 +63,31 @@ const year = new Date().getFullYear();
         color: var(--text-muted);
     }
 
+    .footer__links {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.9rem;
+        justify-content: center;
+    }
+
+    .footer__link {
+        font-size: 0.92rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        transition: color 0.16s var(--ease);
+    }
+
+    .footer__link:hover {
+        color: var(--text);
+    }
+
     .footer__social {
         display: flex;
         align-items: center;
         gap: 0.75rem;
+        justify-content: flex-end;
     }
 
-    /* Mobile: horizontal row but compact */
     @media (max-width: 720px) {
         .footer {
             padding: 1.5rem 1.25rem;
@@ -66,13 +97,15 @@ const year = new Date().getFullYear();
             gap: 1rem;
         }
 
-        /* Reorder: socials first, then toggle, then copyright */
         .footer__social {
             order: 1;
+            justify-content: center;
         }
 
-        .footer > :global(.theme-toggle) {
+        .footer__links {
             order: 2;
+            flex-wrap: wrap;
+            row-gap: 0.5rem;
         }
 
         .footer__text {
