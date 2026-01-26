@@ -10,7 +10,7 @@
 
     /* Text */
     --text: var(--brand-navy);
-    --text-muted: rgba(14, 42, 71, 0.72);
+    --text-muted: rgba(14, 42, 71, 0.82);
 
     /* Borders */
     --border: rgba(14, 42, 71, 0.12);
@@ -28,7 +28,7 @@
     --surface-strong: rgba(255, 255, 255, 0.09);
 
     --text: var(--brand-ivory);
-    --text-muted: rgba(246, 244, 239, 0.72);
+    --text-muted: rgba(246, 244, 239, 0.8);
 
     --border: rgba(246, 244, 239, 0.12);
 
@@ -91,7 +91,7 @@
         --surface-strong: rgba(255, 255, 255, 0.09);
 
         --text: var(--brand-ivory);
-        --text-muted: rgba(246, 244, 239, 0.72);
+        --text-muted: rgba(246, 244, 239, 0.8);
 
         --border: rgba(246, 244, 239, 0.12);
 

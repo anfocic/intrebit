@@ -1,135 +1,113 @@
 ---
-import {Pencil, Code2, MessageCircleQuestion, Sparkles} from "lucide-astro";
 import Heading from "../../shared/Heading.astro";
 import Subcopy from "../../shared/Subcopy.astro";
 import DelayedReveal from "../../shared/DelayedReveal.astro";
+import { Paintbrush, Code, MessageCircle, Zap } from "lucide-astro";
 
 const {
     href = "#contact",
     items = [
-        {title: "Design", icon: Pencil},
-        {title: "Build", icon: Code2},
-        {title: "Consulting", icon: MessageCircleQuestion},
-        {title: "Automate", icon: Sparkles},
+        {
+            title: "Design",
+            body: "UI/UX for websites and product interfaces.",
+            icon: Paintbrush,
+        },
+        {
+            title: "Development",
+            body: "Websites, apps, and internal tools built to last.",
+            icon: Code,
+        },
+        {
+            title: "Consulting",
+            body: "Find bottlenecks, cut the waste, ship what matters.",
+            icon: MessageCircle,
+        },
+        {
+            title: "Automation",
+            body: "Invoices, reports, deployments — hands-off.",
+            icon: Zap,
+        },
     ],
 } = Astro.props;
 ---
+
 <DelayedReveal delay={5.2}>
+    <Heading title="What we do" muted=" — and we're good at it" />
 
-    <div class="service-heading">
-
-    </div>
-    <Heading title="What we do" muted=" — and we’re good at it"/>
-
-    <div class="grid" role="list" aria-label="Services">
-        {items.map(({title, icon: Icon}) => (
-                <a class="chip" href={href} role="listitem" aria-label={`Go to contact: ${title}`}>
-      <span class="icon" aria-hidden="true">
-        <Icon size={18}/>
-      </span>
-                    <span class="text">{title}</span>
+    <div class="services" role="list" aria-label="Services">
+        {items.map(({ title, body, icon: Icon }) => (
+                <a class="service-card" href={href} role="listitem" aria-label={`Contact us about ${title}`}>
+                    <div class="service-card__header">
+                        <Icon size={20} strokeWidth={1.75} />
+                        <h3 class="service-card__title">{title}</h3>
+                    </div>
+                    <p class="service-card__body">{body}</p>
                 </a>
         ))}
     </div>
 
     <div class="service__subcopy">
         <Subcopy>
-            Websites, internal apps, honest consulting, and automations for the things you never want to do twice.
+            Tell us what you need. We’ll make it done right.
         </Subcopy>
     </div>
 </DelayedReveal>
 
 <style>
-
-    .service-heading {
-    }
-
-    .grid {
+    .services {
         display: grid;
-        padding: 1rem 0;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 1rem;
-        margin-top: 0.25rem;
+        margin-top: 1rem;
     }
 
-    /* Premium “card chip” */
-    .chip {
-        display: flex;
-        align-items: center;
-        gap: 0.9rem;
-
-        padding: 1.1rem 1.15rem;
-        border-radius: 18px;
+    .service-card {
+        padding: 1.25rem;
+        border-radius: 22px;
         text-decoration: none;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
 
-        /* subtle surface, not an outline */
-        background: rgba(255, 255, 255, 0.045);
-        border: 1px solid rgba(255, 255, 255, 0.09);
-
-        /* depth */
         box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.07),
-                0 18px 45px rgba(0, 0, 0, 0.22);
-
-        /* typography */
-        color: rgba(255, 255, 255, 0.88);
-
-        transition:
-                transform 0.18s var(--ease),
-                background 0.18s var(--ease),
-                border-color 0.18s var(--ease),
-                box-shadow 0.18s var(--ease);
+                0 1px 2px rgba(0, 0, 0, 0.04),
+                0 4px 12px rgba(0, 0, 0, 0.03);
     }
 
-    .chip:hover {
-        transform: translateY(-2px);
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(255, 255, 255, 0.14);
-        box-shadow:
-                inset 0 1px 0 rgba(255, 255, 255, 0.08),
-                0 24px 60px rgba(0, 0, 0, 0.28);
+    .service-card__header {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--text);
     }
 
-    .chip:active {
-        transform: translateY(0);
+    .service-card__title {
+        margin: 0;
+        font-size: 1.2rem;
+        line-height: 1.1;
+        letter-spacing: -0.015em;
+        color: var(--text);
+        font-weight: 750;
     }
 
-    /* Icon chip looks “designed” */
-    .icon {
-        width: 42px;
-        height: 42px;
-        border-radius: 14px;
-
-        display: grid;
-        place-items: center;
-        flex: 0 0 auto;
-
-        background: rgba(255, 255, 255, 0.06);
-        border: 1px solid var(--text-muted);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-
-        color: var(--text); /* makes lucide pop */
-    }
-
-    .icon :global(svg) {
-        stroke: currentColor;
-    }
-
-    .text {
-        font-weight: 650;
-        letter-spacing: -0.01em;
-        line-height: 1;
-        color: var(--text) /* remove the “disabled” look */
-    }
-
-    /* Keep 2x2 on normal phones; only stack on tiny widths */
-    @media (max-width: 360px) {
-        .grid {
-            grid-template-columns: 1fr;
-        }
+    .service-card__body {
+        margin: 0;
+        font-size: 0.8rem;
+        line-height: 1.45;
+        color: var(--text-muted);
     }
 
     .service__subcopy {
-        padding: 0 1rem;
+        margin-top: 2rem;
+        text-align: center;
+        text-wrap: nowrap;
+    }
+
+    @media (max-width: 480px) {
+        .services {
+            grid-template-columns: 1fr;
+        }
     }
 </style>

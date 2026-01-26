@@ -1,14 +1,17 @@
 ---
 import {navLinks} from "../../config/navLinks";
 
-const {ctaHref = "/contact", ctaLabel = "Get in touch"} = Astro.props;
 ---
 
-<!-- Overlay (covers page below header) -->
 <div class="mobile-nav__overlay" data-mobile-overlay></div>
-
-<!-- Panel under header -->
-<aside class="mobile-nav__panel" data-mobile-sidebar aria-hidden="true" hiddenwr>
+<aside
+        class="mobile-nav__panel"
+        data-mobile-sidebar
+        aria-label="Mobile navigation panel"
+        aria-hidden="true"
+        hidden
+        inert
+>
     <nav class="mobile-nav__menu" aria-label="Mobile navigation">
         {navLinks.map(({href, label}) => (
                 <a href={href} class="mobile-nav__link">{label}</a>
@@ -16,8 +19,8 @@ const {ctaHref = "/contact", ctaLabel = "Get in touch"} = Astro.props;
     </nav>
 
     <div class="mobile-nav__bottom">
-        <a href={ctaHref} class="mobile-nav__cta">
-            {ctaLabel}
+        <a href="/contact" class="mobile-nav__cta">
+            Talk to us
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                  stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>

@@ -19,7 +19,8 @@ const year = new Date().getFullYear();
                 </div>
 
                 <p class="footer__brandText">
-                    Small team. High quality. Done right.
+                    Small team. High quality.<br class="footer__brandBreak"/>
+                    Done right.
                 </p>
 
                 <div class="footer__social" aria-label="Theme and social links">
@@ -272,6 +273,10 @@ const year = new Date().getFullYear();
         border-radius: 6px;
     }
 
+    .footer__brandBreak {
+        display: none;
+    }
+
     @media (max-width: 720px) {
         .footer__inner {
             padding-block: var(--s-9);
@@ -282,20 +287,41 @@ const year = new Date().getFullYear();
             gap: var(--s-4);
         }
 
+        .footer__brandText {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            text-wrap: balance;
+            line-height: 1.5;
+        }
+
+        /* Push nav down to align with brand text */
         .footer__nav {
-            padding-top: 0;
+            padding-top: var(--s-4);
             gap: var(--s-4);
         }
 
+        /* Stack vertically, center, and reverse order */
         .footer__bottom {
             display: flex;
-            justify-content: space-between;
+            flex-direction: column-reverse;
             align-items: center;
             text-align: center;
+            gap: var(--s-4);
         }
 
         .footer__bottomRight {
             justify-content: center;
         }
+
+        .footer__copyright {
+            text-align: center;
+        }
+
+        .footer__brandBreak {
+            display: inline;
+            text-align: center;
+        }
+
     }
+
 </style>
