@@ -8,7 +8,7 @@ const {ctaHref = "/contact", ctaLabel = "Get in touch"} = Astro.props;
 <div class="mobile-nav__overlay" data-mobile-overlay></div>
 
 <!-- Panel under header -->
-<aside class="mobile-nav__panel" data-mobile-sidebar aria-hidden="true">
+<aside class="mobile-nav__panel" data-mobile-sidebar aria-hidden="true" hiddenwr>
     <nav class="mobile-nav__menu" aria-label="Mobile navigation">
         {navLinks.map(({href, label}) => (
                 <a href={href} class="mobile-nav__link">{label}</a>

@@ -1,8 +1,5 @@
 # intrebit
 
-Small team. High quality. Done right.  
-No buzzwords. No fluff. Just a solid website that loads fast and stays out of the way.
-
 This repo contains the **intrebit** website, built with **Astro** and deployed on **Cloudflare Pages**.
 
 ## Links
@@ -20,5 +17,3 @@ This repo contains the **intrebit** website, built with **Astro** and deployed o
 - No tracking junk.
 - Minimal dependencies.
 - Built to be fast.
-
-That’s it. Ship it.

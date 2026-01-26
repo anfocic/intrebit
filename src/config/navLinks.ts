@@ -5,7 +5,7 @@ type FooterLink = {
 };
 
 export const navLinks = [
-    { href: "/services", label: "What we do" },
+    { href: "/services", label: "Services" },
     { path: "/about", label: "About" },
     { href: "/contact" , label: "Contact" },
     // { path: "/blog", label: "Blog" },
