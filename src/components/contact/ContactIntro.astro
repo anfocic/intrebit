@@ -1,21 +1,30 @@
 <div class="contact-intro">
-    <h2 class="contact-intro__title">What's on your mind?</h2>
+    <h2 class="contact-intro__title">Let's talk.</h2>
 
     <div class="contact-intro__about">
-        <h3 class="contact-intro__about-label">WHO WE ARE</h3>
-        <p>
-            Millennials done with corporate theatre.
-        </p>
+        <section class="contact-intro__block" aria-label="Contact">
+            <h3 class="contact-intro__about-label">CONTACT</h3>
+            <p>
+                Just tell us what’s broken (or what you want built).<br />
+                We’ll reply with a straight answer.
+            </p>
+        </section>
 
-        <h3 class="contact-intro__about-label">HOW WE WORK</h3>
-        <p>
-            Few clients. Direct communication. No surprises.
-        </p>
+        <section class="contact-intro__block" aria-label="What to say">
+            <h3 class="contact-intro__about-label">WHAT TO SAY</h3>
+            <p>
+                If you’ve got a deadline, say it.<br />
+                If you’ve got a budget range, even better.
+            </p>
+        </section>
 
-        <h3 class="contact-intro__about-label">WHERE WE ARE</h3>
-        <p>
-            Europe-based. Timezone-flexible.
-        </p>
+        <section class="contact-intro__block" aria-label="What happens next">
+            <h3 class="contact-intro__about-label">WHAT HAPPENS NEXT</h3>
+            <p>
+                We’ll ask a couple of sharp questions, then propose a plan.<br />
+                If we’re not a fit, we’ll tell you fast.
+            </p>
+        </section>
     </div>
 </div>
 
@@ -36,23 +45,38 @@
         color: var(--text);
     }
 
+    /* Turn it into 3 clear blocks */
     .contact-intro__about {
+        display: flex;
+        flex-direction: column;
+        gap: 1.35rem; /* spacing BETWEEN blocks */
         margin-bottom: 2.5rem;
         padding-bottom: 4.5rem;
     }
 
+    .contact-intro__block {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem; /* spacing BETWEEN label and text (closer) */
+    }
+
     .contact-intro__about-label {
+        margin: 0;
         font-size: 1rem;
         letter-spacing: 0.1em;
     }
 
-    .contact-intro__about p {
+    .contact-intro__block p {
         margin: 0;
         font-size: 1rem;
+        line-height: 1.6;
     }
 
-    .contact-intro__about p:last-child {
-        margin-bottom: 0;
+    /* Slight breathing room between sentences */
+    .contact-intro__block p br {
+        content: "";
+        display: block;
+        margin-top: 0.35rem;
     }
 
     /* Mobile */

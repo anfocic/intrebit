@@ -49,7 +49,8 @@
 
         <div class="contact-form__footer">
             <p class="contact-form__note">
-                You can also email us at <a href="mailto:hello@intrebit.com">hello@intrebit.com</a>
+                You can also email us at <br>
+                <a href="mailto:hello@intrebit.com">hello@intrebit.com</a>
             </p>
             <button class="contact-form__submit" type="submit">
                 Send message
@@ -115,12 +116,6 @@
         margin: 0;
     }
 
-    .contact-form__footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
     /* Inline link must not rely on color only */
     .contact-form__note a {
         color: var(--text);
@@ -133,6 +128,13 @@
 
     .contact-form__note a:hover {
         text-decoration-color: currentColor;
+    }
+
+    .contact-form__footer {
+        margin-top: var(--s-5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     /* Button */
