@@ -1,0 +1,147 @@
+---
+import Layout from "../layouts/Layout.astro"; // adjust if your layout path differs
+import SectionDivider from "../components/shared/SectionDivider.astro"; // adjust path
+import Logo from "../components/shared/Logo.astro"; // optional, adjust path
+---
+
+<Layout title="About — intrebit">
+    <main class="about">
+        <header class="about__header">
+            <h1 class="about__title">About</h1>
+            <p class="about__lede">
+                Small team. High quality. Done right.
+            </p>
+        </header>
+
+        <SectionDivider />
+
+        <section class="about__grid" aria-label="About details">
+            <article class="about__card">
+                <h2 class="about__kicker">Who we are</h2>
+                <p class="about__text">
+                    A small team that builds modern web experiences—design and engineering in one place.
+                </p>
+            </article>
+
+            <article class="about__card">
+                <h2 class="about__kicker">How we work</h2>
+                <p class="about__text">
+                    Few clients. Direct communication. Clear scope. We ship with confidence.
+                </p>
+            </article>
+
+            <article class="about__card">
+                <h2 class="about__kicker">Where we are</h2>
+                <p class="about__text">
+                    Europe-based and timezone-flexible.
+                </p>
+            </article>
+        </section>
+
+        <SectionDivider />
+
+        <section class="about__cta" aria-label="Get in touch">
+            <h2 class="about__ctaTitle">Have something in mind?</h2>
+            <p class="about__ctaText">
+                Tell us what you’re building and we’ll reply with next steps.
+            </p>
+
+            <a class="about__ctaLink u-link" href="/#contact">Contact</a>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .about {
+        max-width: var(--container-width, 1100px);
+        margin: 0 auto;
+        padding: var(--page-pad-top) var(--page-pad-x) var(--page-pad-bottom);
+        display: grid;
+        gap: var(--s-10);
+    }
+
+    .about__header {
+        display: grid;
+        gap: var(--s-3);
+    }
+
+    .about__title {
+        margin: 0;
+        font-size: clamp(2rem, 3vw, 2.75rem);
+        letter-spacing: -0.02em;
+    }
+
+    .about__lede {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 1.05rem;
+        line-height: 1.6;
+        max-width: 58ch;
+    }
+
+    .about__grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--s-8);
+    }
+
+    .about__card {
+        padding: var(--s-8);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: color-mix(in srgb, var(--bg) 92%, transparent);
+    }
+
+    .about__kicker {
+        margin: 0 0 var(--s-3);
+        font-size: 0.85rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--text);
+        opacity: 0.9;
+    }
+
+    .about__text {
+        margin: 0;
+        color: var(--text-muted);
+        line-height: 1.65;
+        font-size: 0.98rem;
+    }
+
+    .about__cta {
+        display: grid;
+        gap: var(--s-3);
+        padding: var(--s-9);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: color-mix(in srgb, var(--bg) 92%, transparent);
+    }
+
+    .about__ctaTitle {
+        margin: 0;
+        font-size: 1.25rem;
+    }
+
+    .about__ctaText {
+        margin: 0;
+        color: var(--text-muted);
+        max-width: 60ch;
+        line-height: 1.6;
+    }
+
+    .about__ctaLink {
+        justify-self: start;
+        font-weight: 600;
+    }
+
+    @media (max-width: 900px) {
+        .about__grid {
+            grid-template-columns: 1fr;
+        }
+
+        .about__card,
+        .about__cta {
+            padding: var(--s-7);
+        }
+    }
+</style>

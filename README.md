@@ -1,16 +1,24 @@
 # intrebit
 
-No buzzwords. No junk. Just solid tools that work.
-This repo contains the Intrebit website built with Astro and deployed on Cloudflare.
+Small team. High quality. Done right.  
+No buzzwords. No fluff. Just a solid website that loads fast and stays out of the way.
+
+This repo contains the **intrebit** website, built with **Astro** and deployed on **Cloudflare Pages**.
 
 ## Links
 - **Website:** https://www.intrebit.com
 - **Backend API (Rust):** https://codeberg.org/intrebit/intrebit-api
 
-## Infra (high level)
+## Stack
+- **Framework:** Astro
 - **Hosting:** Cloudflare Pages
 - **DNS / CDN:** Cloudflare
-- **Backend:** Rust API ([intrebit-api](https://codeberg.org/intrebit/intrebit-api))
+- **Backend:** Rust API (`intrebit-api`)
 - **Contact form:** handled by the backend service
+
+## Notes
+- No tracking junk.
+- Minimal dependencies.
+- Built to be fast.
 
 That’s it. Ship it.
