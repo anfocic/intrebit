@@ -1,116 +1,301 @@
 ---
 import SocialIcon from "../shared/SocialIcon.astro";
 import ThemeToggle from "../shared/ThemeToggle.astro";
+import Logo from "../shared/Logo.astro";
+import {legalLinks, navLinks} from "../../config/navLinks.ts";
 
 const year = new Date().getFullYear();
 ---
 
-<footer class="footer">
-    <p class="footer__text">
-        © {year} intrebit. MIT Licensed.
-    </p>
+<footer class="footer" aria-label="Site footer">
 
-    <div class="footer__social">
-        <ThemeToggle />
+    <div class="footer__inner">
+        <div class="footer__divider" aria-hidden="true"/>
 
-        <SocialIcon
-                icon="mastodon"
-                href="https://mastodon.social/@intrebit"
-                title="Mastodon"
-                rel="me noopener noreferrer"
-                className="footer__social-icon footer__social-icon--mastodon"
-        />
-        <SocialIcon
-                icon="linkedin"
-                href="https://www.linkedin.com/company/intrebit"
-                title="LinkedIn"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer__social-icon footer__social-icon--linkedin"
-        />
+        <div class="footer__top">
+            <div class="footer__brand">
+                <div class="footer__brandRow">
+                    <Logo variant="large"/>
+                </div>
+
+                <p class="footer__brandText">
+                    Small team. High quality. Done right.
+                </p>
+
+                <div class="footer__social" aria-label="Theme and social links">
+                    <SocialIcon
+                            icon="mastodon"
+                            href="https://mastodon.social/@intrebit"
+                            title="Mastodon"
+                            rel="me noopener noreferrer"
+                    />
+
+                    <SocialIcon
+                            icon="codeberg"
+                            href="https://codeberg.org/intrebit/intrebit-web"
+                            title="Codeberg"
+                            className="footer__socialIcon footer__socialIcon--codeberg"
+                    />
+
+                    <SocialIcon
+                            icon="linkedin"
+                            href="https://www.linkedin.com/company/intrebit"
+                            title="LinkedIn"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                    />
+                </div>
+            </div>
+
+            <nav class="footer__nav" aria-label="Footer navigation">
+                <p class="footer__navTitle">Company</p>
+
+                {navLinks.map((link) => (
+                        <a href={link.href} class="u-link footer__navLink">{link.label}</a>
+                ))}
+            </nav>
+        </div>
+
+        <div class="footer__divider" aria-hidden="true"/>
+
+        <div class="footer__bottom">
+            <p class="footer__copyright">
+                © {year} intrebit · MIT License
+            </p>
+
+            <div class="footer__bottomRight">
+                <ThemeToggle/>
+
+                <div class="footer__sep">
+                    ·
+                </div>
+                <nav class="footer__legal" aria-label="Legal">
+                    {legalLinks.map((l, i) => (
+                            <>
+                                {i > 0 && <span class="footer__sep" aria-hidden="true">·</span>}
+                                <a class="footer__legalLink" href={l.href}>{l.label}</a>
+                            </>
+                    ))}
+                </nav>
+            </div>
+        </div>
     </div>
-
-
-    <nav class="footer__links" aria-label="Footer">
-        <a class="footer__link" href="/privacy">Privacy</a>
-        <a class="footer__link" href="/terms">Terms</a>
-        <a
-                class="footer__link"
-                href="https://codeberg.org/intrebit/intrebit-web"
-                target="_blank"
-                rel="noopener noreferrer"
-        >
-            Source
-        </a>
-    </nav>
 </footer>
 
 <style>
     .footer {
-        padding: 2rem;
-        border-top: 1px solid var(--border);
-        display: grid;
-        grid-template-columns: 1fr auto auto;
-        align-items: center;
-        gap: 1.25rem;
+        background: transparent;
+    }
+
+    .footer__inner {
         max-width: var(--container-width, 1100px);
         margin: 0 auto;
+        padding-inline: var(--page-pad-x);
+        padding-block: var(--s-5);
+        display: grid;
+        gap: var(--s-1);
     }
 
-    .footer__text {
-        margin: 0;
-        font-size: 0.92rem;
+    /* TOP - always side by side */
+    .footer__top {
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+    }
+
+    .footer__brand {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .footer__brandText {
+        max-width: 46ch;
         color: var(--text-muted);
-    }
-
-    .footer__links {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.9rem;
-        justify-content: center;
-    }
-
-    .footer__link {
         font-size: 0.92rem;
-        color: var(--text-muted);
-        text-decoration: none;
-        transition: color 0.16s var(--ease);
-    }
-
-    .footer__link:hover {
-        color: var(--text);
+        line-height: 1.5;
     }
 
     .footer__social {
+        padding-top: var(--s-4);
+    }
+
+    /* Make SocialIcon/ThemeToggle behave like compact icon buttons */
+    .footer__social :global(a),
+    .footer__social :global(button) {
+        width: 44px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+
+        color: var(--text-muted);
+        text-decoration: none;
+
+        transition: transform 0.16s var(--ease),
+        background 0.16s var(--ease),
+        border-color 0.16s var(--ease),
+        color 0.16s var(--ease);
+    }
+
+    .footer__social :global(svg) {
+        width: 28px;
+        height: 28px;
+        display: block;
+        fill: currentColor;
+    }
+
+    .footer__social :global(a:hover),
+    .footer__social :global(button:hover) {
+        transform: translateY(-2px);
+        color: var(--text);
+    }
+
+    /* Brand hover accents */
+    .footer__social :global(a[aria-label="LinkedIn"]:hover) {
+        color: rgba(10, 102, 194, 0.95);
+    }
+
+    .footer__social :global(a[aria-label="Mastodon"]:hover) {
+        color: rgba(99, 77, 255, 0.95);
+    }
+
+    .footer__social :global(a[aria-label="Codeberg"]:hover) {
+        color: rgba(10, 102, 194, 0.95);
+    }
+
+    /* Focus */
+    .footer__social :global(a:focus-visible),
+    .footer__social :global(button:focus-visible) {
+        outline: 2px solid color-mix(in srgb, var(--text) 35%, transparent);
+        outline-offset: 3px;
+    }
+
+    /* Nav - stays on right */
+    .footer__nav {
+        display: flex;
+        flex-direction: column;
+        gap: var(--s-4);
+        padding-top: var(--s-2);
+        flex-shrink: 0;
+    }
+
+    .footer__navTitle {
+        margin: 0;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .footer__navLink {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.92rem;
+        transition: color 0.16s var(--ease);
+    }
+
+    .footer__navLink:hover {
+        color: var(--text);
+    }
+
+    .footer__navLink:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--text) 35%, transparent);
+        outline-offset: 3px;
+        border-radius: 6px;
+    }
+
+    /* Divider */
+    .footer__divider {
+        height: 1px;
+        background: var(--border);
+        opacity: 0.9;
+        margin-block: var(--s-3)
+    }
+
+    /* BOTTOM */
+    .footer__bottom {
+        display: inline-flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: var(--s-4);
+    }
+
+    .footer__copyright {
+        margin: 0;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+
+    .footer__bottomRight {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
-        justify-content: flex-end;
+        gap: var(--s-3);
+    }
+
+    .footer__sep {
+        color: var(--text-muted);
+    }
+
+    /* make ThemeToggle match footer icon sizing in bottom row */
+    .footer__bottomRight :global(button) {
+        width: 32px;
+        height: 32px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 14px;
+    }
+
+    .footer__legal {
+        display: flex;
+        align-items: center;
+        gap: var(--s-3);
+    }
+
+    .footer__legalLink {
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.16s var(--ease);
+    }
+
+    .footer__legalLink:hover {
+        color: var(--text);
+    }
+
+    .footer__legalLink:focus-visible {
+        outline: 2px solid color-mix(in srgb, var(--text) 35%, transparent);
+        outline-offset: 3px;
+        border-radius: 6px;
     }
 
     @media (max-width: 720px) {
-        .footer {
-            padding: 1.5rem 1.25rem;
-            grid-template-columns: 1fr;
-            justify-items: center;
+        .footer__inner {
+            padding-block: var(--s-9);
+            gap: var(--s-7);
+        }
+
+        .footer__top {
+            gap: var(--s-4);
+        }
+
+        .footer__nav {
+            padding-top: 0;
+            gap: var(--s-4);
+        }
+
+        .footer__bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             text-align: center;
-            gap: 1rem;
         }
 
-        .footer__social {
-            order: 1;
+        .footer__bottomRight {
             justify-content: center;
-        }
-
-        .footer__links {
-            order: 2;
-            flex-wrap: wrap;
-            row-gap: 0.5rem;
-        }
-
-        .footer__text {
-            order: 3;
-            font-size: 0.85rem;
         }
     }
 </style>

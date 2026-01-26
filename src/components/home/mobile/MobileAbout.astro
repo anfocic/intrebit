@@ -1,6 +1,5 @@
 ---
 import Heading from "../../shared/Heading.astro";
-import MetaLink from "../../shared/MetaLink.astro";
 
 const principles = [
     { label: "Who we are", text: "Millennials done with corporate theatre." },
@@ -20,18 +19,9 @@ const principles = [
                 </div>
         ))}
     </div>
-
-    <!--<div class="meta">-->
-    <!--    <MetaLink href="/about" line1="We’re not for everyone." line2="Read how we work →" />-->
-    <!--</div>-->
 </section>
 
 <style>
-    .about {
-        margin-top: 1.75rem;
-        padding-top: 2.75rem;
-    }
-
     .principles {
         display: grid;
         gap: 0.9rem;
@@ -57,9 +47,5 @@ const principles = [
         color: var(--text);
         opacity: 0.9;
         line-height: 1.5;
-    }
-
-    .meta {
-        margin-top: 1.25rem;
     }
 </style>

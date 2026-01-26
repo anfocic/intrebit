@@ -1,6 +1,5 @@
 ---
 import SectionDivider from "../shared/SectionDivider.astro";
-
 import MobileAbout from "./mobile/MobileAbout.astro";
 import MobileContact from "./mobile/MobileContact.astro";
 import MobileHero from "./mobile/MobileHero.astro";
@@ -22,7 +21,7 @@ import DelayedReveal from "../shared/DelayedReveal.astro";
         <MobileAbout/>
     </DelayedReveal>
 
-    <SectionDivider/>
+    <SectionDivider spaceClass="divider-lg"/>
 
     <DelayedReveal delay={7.5}>
         <MobileContact/>
@@ -31,18 +30,8 @@ import DelayedReveal from "../shared/DelayedReveal.astro";
 
 <style>
     .wrap {
-        padding: 2.25rem 1.5rem 3rem;
+        padding: var(--page-pad-top) var(--page-pad-x) var(--page-pad-bottom);
         display: grid;
-        gap: 1.75rem;
-    }
-
-    .divider {
-        margin-top: 0.25rem;
-    }
-
-    @media (max-width: 420px) {
-        .wrap {
-            padding: 2rem 1.25rem 2.75rem;
-        }
+        gap: var(--stack-gap);
     }
 </style>

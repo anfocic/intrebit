@@ -1,0 +1,100 @@
+---
+// src/pages/404.astro
+import Layout from "../layouts/Layout.astro"; // adjust path if needed
+---
+
+<Layout title={`404 | intrebit`}>
+    <main class="notfound">
+        <div class="notfound__card">
+            <p class="notfound__kicker">404</p>
+            <h1 class="notfound__title">That page doesn’t exist.</h1>
+            <p class="notfound__copy">
+                Either the link is wrong or we moved something. No drama — head back home.
+            </p>
+
+            <div class="notfound__actions">
+                <a class="btn" href="/">Go home</a>
+                <a class="link" href="/contact">Get in touch</a>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<style>
+    .notfound {
+        max-width: 780px;
+        margin: 0 auto;
+        padding: 5rem 1.25rem 6rem;
+    }
+
+    .notfound__card {
+        background: var(--surface-strong);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        padding: 2rem;
+        box-shadow: var(--shadow-soft);
+    }
+
+    .notfound__kicker {
+        margin: 0 0 0.75rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+    }
+
+    .notfound__title {
+        margin: 0;
+        font-family: var(--font-brand, var(--font-sans));
+        font-size: clamp(2rem, 4vw, 2.75rem);
+        letter-spacing: -0.03em;
+        line-height: 1.1;
+        color: var(--text);
+        font-weight: 750;
+    }
+
+    .notfound__copy {
+        margin: 1rem 0 0;
+        color: var(--text-muted);
+        line-height: 1.75;
+        font-size: var(--text-base, 1rem);
+    }
+
+    .notfound__actions {
+        margin-top: 1.75rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        height: 44px;
+        padding: 0 1rem;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-weight: 650;
+        background: var(--text);
+        color: var(--bg);
+        transition: transform 0.16s var(--ease), opacity 0.16s var(--ease);
+    }
+
+    .btn:hover {
+        opacity: 0.92;
+        transform: translateY(-1px);
+    }
+
+    .link {
+        color: var(--text);
+        text-decoration: none;
+        border-bottom: 1px solid color-mix(in srgb, var(--text) 35%, transparent);
+    }
+
+    .link:hover {
+        border-bottom-color: color-mix(in srgb, var(--text) 60%, transparent);
+    }
+</style>
