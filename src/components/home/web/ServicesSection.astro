@@ -4,14 +4,14 @@ const services = [
     {
         id: "development",
         title: "Development",
-        tagline: "We build it. You own it.",
-        description: "Custom software for your business — websites, apps, internal tools. No confusing jargon, no hidden costs.",
+        tagline: "Software that fits your business.",
+        description: "Custom software built for your workflow — websites, apps, portals, tools.",
         icon: `<path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/>`,
     },
     {
         id: "consulting",
         title: "Consulting",
-        tagline: "Clarity before code.",
+        tagline: "Get a plan before spending money.",
         description: "We'll look at how your business works, find the bottlenecks, and tell you what's worth fixing — honestly.",
         icon: `<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
     },
@@ -29,12 +29,26 @@ const services = [
     <div class="services-container">
         <header class="services-header">
             <p class="services-eyebrow">What we do</p>
-            <h2 class="services-title">Build it right.   <br/>Keep it running.</h2>
+            <h2 class="services-title">Build it once.   <br/>Keep it working.</h2>
         </header>
 
+    </div>
+    <div class="services-pin">
         <div class="services-grid">
             {services.map((service) => (
-                    <article class="service-card">
+                    <article class="service-card" data-service={service.id}>
+                        <div class="service-card__icon" aria-hidden="true">
+                            <svg
+                                    class="service-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    stroke-width="1.75"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    set:html={service.icon}
+                            />
+                        </div>
 
                         <h3 class="service-card__title">{service.title}</h3>
                         <p class="service-card__tagline">{service.tagline}</p>
@@ -44,8 +58,13 @@ const services = [
         </div>
     </div>
 </section>
-
 <style>
+
+    .service-icon {
+        width: 22px;
+        height: 22px;
+    }
+
     .services-section {
         padding: 6rem 0;
         position: relative;
@@ -202,4 +221,60 @@ const services = [
     :root[data-theme="light"] .service-card:hover .service-card__icon {
         background: rgba(14, 42, 71, 0.08);
     }
+
+    .service-card {
+        will-change: transform, opacity, filter;
+    }
+
+    .service-card__icon {
+        will-change: transform;
+    }
+
+    .services-pin {
+        padding: 0 3rem;
+        position: relative;
+    }
+    .service-card {
+        will-change: transform, opacity, filter;
+    }
 </style>
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+    if (!prefersReduced) {
+        const section = document.querySelector(".services-section");
+        const cards = gsap.utils.toArray(".service-card");
+
+        if (section && cards.length) {
+            gsap.set(cards, { opacity: 0, x: -28, y: 10, filter: "blur(8px)" });
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top top",
+                    end: () => `+=${Math.max(700, window.innerHeight * 1.4)}`,
+                    scrub: 0.6,
+                    pin: section,         // ✅ pin the whole section so the title stays
+                    pinSpacing: true,
+                    anticipatePin: 1,
+                },
+            });
+
+            cards.forEach((card, i) => {
+                tl.to(card, {
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    filter: "blur(0px)",
+                    duration: 4.0,
+                    ease: "power3.out",
+                    once:true
+                }, i * 0.45);
+            });
+        }
+    }
+</script>

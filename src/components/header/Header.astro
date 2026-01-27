@@ -157,4 +157,80 @@ const pathname = getPathname(Astro.url);
             display: none;
         }
     }
+
+    /* Smooth transition (keep it subtle) */
+    .nav .nav__content,
+    .nav .nav__logo,
+    .nav .nav__hamburger {
+        transition:
+                padding 220ms var(--ease, ease),
+                font-size 220ms var(--ease, ease),
+                transform 220ms var(--ease, ease);
+    }
+
+    /* Compact state */
+    .nav--compact .nav__content {
+        padding: 0.75rem 2rem; /* was 1.25rem 2rem */
+    }
+
+    .nav--compact .nav__logo {
+        font-size: 1.5rem; /* was 1.75rem */
+        transform: translateY(-1px);
+    }
+
+    .nav--compact .nav__hamburger {
+        transform: scale(0.96);
+    }
+
+    /* Mobile: keep your mobile sizing consistent */
+    @media (max-width: 768px) {
+        .nav--compact .nav__content {
+            padding: 0.75rem 1.25rem; /* slightly smaller than 1rem 1.25rem */
+        }
+
+        .nav--compact .nav__logo {
+            font-size: 1.6rem; /* don’t shrink too much on mobile */
+            transform: none;
+        }
+    }
+
+    .nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+    }
+
+    /* Reduced motion: no transitions */
+    @media (prefers-reduced-motion: reduce) {
+        .nav .nav__content,
+        .nav .nav__logo,
+        .nav .nav__hamburger {
+            transition: none !important;
+        }
+    }
 </style>
+
+<script is:inline>
+    window.addEventListener("DOMContentLoaded", () => {
+        const prefersReduced =
+            window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+        if (prefersReduced) return;
+
+        const nav = document.querySelector(".nav");
+        if (!nav) return;
+
+        const threshold = 64; // px before compact mode
+        let last = null;
+
+        const update = () => {
+            const compact = window.scrollY > threshold;
+            if (compact === last) return;
+            last = compact;
+            nav.classList.toggle("nav--compact", compact);
+        };
+
+        update();
+        window.addEventListener("scroll", update, { passive: true });
+    });
+</script>

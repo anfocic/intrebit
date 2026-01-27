@@ -1,53 +1,175 @@
 ---
-// Text content
-
-import Button from "../../shared/Button.astro";
 const title = "intrebit";
 const subtitle = "Software, built properly.";
-const tagline = "No buzzwords. No nonsense.";
+const tagline1 = "No buzzwords. No nonsense.";
 ---
+
 <section class="hero-section" aria-label="Hero">
     <div class="hero-inner">
         <header class="hero-header">
             <h1 class="hero-title">
-                <span class="hero-title-text" aria-label={title}>
-                    {title.split("").map((letter, i) => (
-                            <span class={`hc hc-t${i}`}>{letter}</span>
-                    ))}
-                </span>
+        <span class="hero-title-text" aria-label={title}>
+          {title.split("").map((letter, i) => (
+                  <span class="hc" data-line="title" data-i={i}>{letter}</span>
+          ))}
+        </span>
             </h1>
 
             <p class="hero-subtitle" aria-label={subtitle}>
                 {subtitle.split("").map((letter, i) => (
-                        <span class={`hc hc-s${i}`}>{letter === " " ? "\u00A0" : letter}</span>
+                        <span class="hc" data-line="subtitle" data-i={i}>
+            {letter === " " ? "\u00A0" : letter}
+          </span>
                 ))}
             </p>
 
-            <p class="hero-tagline" aria-label={tagline}>
-                {tagline.split("").map((letter, i) => (
-                        <span class={`hc hc-g${i}`}>{letter === " " ? "\u00A0" : letter}</span>
+            <p class="hero-tagline" aria-label={`${tagline1}}`}>
+                {tagline1.split("").map((letter, i) => (
+                        <span class="hc" data-line="tagline" data-i={i}>
+            {letter === " " ? "\u00A0" : letter}
+          </span>
                 ))}
+                <br />
             </p>
         </header>
-
-        <div class="hero-actions">
-            <Button href="/contact">
-                Get in touch
-            </Button>
-            <Button href="/services">
-                See what we do
-            </Button>
-        </div>
     </div>
 </section>
 
-<style>
-    /* ============================================
-       HERO STYLES
-       Using is:global because of dynamic class names
-       ============================================ */
+<script>
+    import { gsap } from "gsap";
 
-    /* ---------- Hero Container ---------- */
+    const prefersReduced =
+        window.matchMedia &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (!prefersReduced) {
+        // --- Option C: mask reveal the title, then fade up the other lines
+        gsap.set(".hero-title", { opacity: 0, y: 18, clipPath: "inset(0 0 100% 0)" });
+        gsap.set([".hero-subtitle", ".hero-tagline", ".hero-easteregg"], { opacity: 0, y: 14 });
+        gsap.set(".hero-section", { backgroundPosition: "50% 0%" });
+
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        tl.to(".hero-title", {
+            opacity: 1,
+            y: 0,
+            clipPath: "inset(0 0 0% 0)",
+            duration: 0.9,
+        })
+            .to(
+                [".hero-subtitle", ".hero-tagline"],
+                {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    stagger: 0.15,
+                },
+                "-=0.35"
+            )
+            .to(
+                ".hero-easteregg",
+                {
+                    opacity: 0.85,
+                    y: 0,
+                    filter: "blur(0px)",
+                    duration: 0.5,
+                },
+                "+=0.15"
+            );
+
+        // 1) Breathing title (subtle idle motion)
+        // Use a tiny y shift; it's "felt", not noticed.
+        gsap.to(".hero-title", {
+            y: -2,
+            duration: 3.6,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+            delay: 0.8, // start after intro begins
+        });
+
+        // 2) Hover letter lift (title only)
+        const titleEl = document.querySelector(".hero-title");
+        const titleLetters = ".hero-title .hc";
+
+        titleEl?.addEventListener("mouseenter", () => {
+            gsap.to(titleLetters, {
+                y: -4,
+                duration: 0.25,
+                stagger: 0.02,
+                ease: "power2.out",
+                overwrite: "auto",
+            });
+        });
+
+        titleEl?.addEventListener("mouseleave", () => {
+            gsap.to(titleLetters, {
+                y: 0,
+                duration: 0.3,
+                stagger: 0.02,
+                ease: "power2.out",
+                overwrite: "auto",
+            });
+        });
+
+        // 3) Soft background drift (ambient)
+        gsap.to(".hero-section", {
+            backgroundPosition: "50% 12%",
+            duration: 12,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+        });
+
+        // (keep your existing extras)
+        window.addEventListener("scroll", () => {
+            const y = window.scrollY;
+            gsap.to(".hero-inner", {
+                y: y * 0.08,
+                opacity: Math.max(1 - y / 600, 0.85),
+                overwrite: true,
+                duration: 0.3,
+            });
+        });
+
+        const hero = document.querySelector(".hero-inner");
+
+        hero?.addEventListener("mousemove", (e) => {
+            const rect = hero.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            gsap.to(".hero-title", {
+                x: x * 0.02,
+                y: y * 0.02,
+                duration: 0.4,
+                ease: "power3.out",
+                overwrite: true,
+            });
+        });
+
+        hero?.addEventListener("mouseleave", () => {
+            gsap.to(".hero-title", {
+                x: 0,
+                y: 0,
+                duration: 0.6,
+                ease: "power3.out",
+                overwrite: true,
+            });
+        });
+    } else {
+        // Reduced motion: show everything immediately (and skip all loops)
+        gsap.set([".hero-title", ".hero-subtitle", ".hero-tagline", ".hero-easteregg"], {
+            opacity: 1,
+            y: 0,
+            clipPath: "none",
+            filter: "none",
+        });
+    }
+</script>
+
+
+<style>
     .hero-section {
         min-height: calc(100svh - var(--header-height, 72px));
         display: flex;
@@ -82,6 +204,7 @@ const tagline = "No buzzwords. No nonsense.";
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        will-change: transform, opacity, clip-path;
     }
 
     .hero-title-text {
@@ -98,6 +221,7 @@ const tagline = "No buzzwords. No nonsense.";
         font-weight: 600;
         color: var(--text);
         line-height: 1.5;
+        will-change: transform, opacity;
     }
 
     .hero-tagline {
@@ -108,312 +232,21 @@ const tagline = "No buzzwords. No nonsense.";
         font-size: clamp(1rem, 2vw, 1.15rem);
         color: var(--text-muted);
         line-height: 1.5;
+        will-change: transform, opacity;
     }
 
-    /* ---------- Character animation base ---------- */
     .hc {
         display: inline-block;
+    }
+
+    .hero-easteregg {
+        display: block;
+        margin-top: 0.25rem;
+        font-style: italic;
         opacity: 0;
-        animation: heroTypeIn 0.1s ease-out forwards;
-    }
-
-    @keyframes heroTypeIn {
-        0% {
-            opacity: 0;
-            transform: translateY(4px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    /* ========== TITLE: "intrebit" (8 chars) ========== */
-    .hc-t0 {
-        animation-delay: 0.30s;
-    }
-
-    .hc-t1 {
-        animation-delay: 0.39s;
-    }
-
-    .hc-t2 {
-        animation-delay: 0.48s;
-    }
-
-    .hc-t3 {
-        animation-delay: 0.57s;
-    }
-
-    .hc-t4 {
-        animation-delay: 0.66s;
-    }
-
-    .hc-t5 {
-        animation-delay: 0.75s;
-    }
-
-    .hc-t6 {
-        animation-delay: 0.84s;
-    }
-
-    .hc-t7 {
-        animation-delay: 0.93s;
-    }
-
-    /* ========== SUBTITLE: "Software, built properly." (25 chars) ========== */
-    .hc-s0 {
-        animation-delay: 1.15s;
-    }
-
-    .hc-s1 {
-        animation-delay: 1.19s;
-    }
-
-    .hc-s2 {
-        animation-delay: 1.23s;
-    }
-
-    .hc-s3 {
-        animation-delay: 1.27s;
-    }
-
-    .hc-s4 {
-        animation-delay: 1.31s;
-    }
-
-    .hc-s5 {
-        animation-delay: 1.35s;
-    }
-
-    .hc-s6 {
-        animation-delay: 1.39s;
-    }
-
-    .hc-s7 {
-        animation-delay: 1.43s;
-    }
-
-    .hc-s8 {
-        animation-delay: 1.47s;
-    }
-
-    .hc-s9 {
-        animation-delay: 1.51s;
-    }
-
-    .hc-s10 {
-        animation-delay: 1.55s;
-    }
-
-    .hc-s11 {
-        animation-delay: 1.59s;
-    }
-
-    .hc-s12 {
-        animation-delay: 1.63s;
-    }
-
-    .hc-s13 {
-        animation-delay: 1.67s;
-    }
-
-    .hc-s14 {
-        animation-delay: 1.71s;
-    }
-
-    .hc-s15 {
-        animation-delay: 1.75s;
-    }
-
-    .hc-s16 {
-        animation-delay: 1.79s;
-    }
-
-    .hc-s17 {
-        animation-delay: 1.83s;
-    }
-
-    .hc-s18 {
-        animation-delay: 1.87s;
-    }
-
-    .hc-s19 {
-        animation-delay: 1.91s;
-    }
-
-    .hc-s20 {
-        animation-delay: 1.95s;
-    }
-
-    .hc-s21 {
-        animation-delay: 1.99s;
-    }
-
-    .hc-s22 {
-        animation-delay: 2.03s;
-    }
-
-    .hc-s23 {
-        animation-delay: 2.07s;
-    }
-
-    .hc-s24 {
-        animation-delay: 2.11s;
-    }
-
-    /* ========== TAGLINE: "No buzzwords. No nonsense." (26 chars) ========== */
-    .hc-g0 {
-        animation-delay: 2.30s;
-    }
-
-    .hc-g1 {
-        animation-delay: 2.34s;
-    }
-
-    .hc-g2 {
-        animation-delay: 2.38s;
-    }
-
-    .hc-g3 {
-        animation-delay: 2.42s;
-    }
-
-    .hc-g4 {
-        animation-delay: 2.46s;
-    }
-
-    .hc-g5 {
-        animation-delay: 2.50s;
-    }
-
-    .hc-g6 {
-        animation-delay: 2.54s;
-    }
-
-    .hc-g7 {
-        animation-delay: 2.58s;
-    }
-
-    .hc-g8 {
-        animation-delay: 2.62s;
-    }
-
-    .hc-g9 {
-        animation-delay: 2.66s;
-    }
-
-    .hc-g10 {
-        animation-delay: 2.70s;
-    }
-
-    .hc-g11 {
-        animation-delay: 2.74s;
-    }
-
-    .hc-g12 {
-        animation-delay: 2.78s;
-    }
-
-    .hc-g13 {
-        animation-delay: 2.82s;
-    }
-
-    .hc-g14 {
-        animation-delay: 2.86s;
-    }
-
-    .hc-g15 {
-        animation-delay: 2.90s;
-    }
-
-    .hc-g16 {
-        animation-delay: 2.94s;
-    }
-
-    .hc-g17 {
-        animation-delay: 2.98s;
-    }
-
-    .hc-g18 {
-        animation-delay: 3.02s;
-    }
-
-    .hc-g19 {
-        animation-delay: 3.06s;
-    }
-
-    .hc-g20 {
-        animation-delay: 3.10s;
-    }
-
-    .hc-g21 {
-        animation-delay: 3.14s;
-    }
-
-    .hc-g22 {
-        animation-delay: 3.18s;
-    }
-
-    .hc-g23 {
-        animation-delay: 3.22s;
-    }
-
-    .hc-g24 {
-        animation-delay: 3.26s;
-    }
-
-    .hc-g25 {
-        animation-delay: 3.30s;
-    }
-
-    /* ---------- Cursor ---------- */
-    .hero-cursor {
-        display: inline-block;
-        width: 4px;
-        height: 0.75em;
-        background: var(--text);
-        margin-left: 6px;
-        border-radius: 2px;
-        opacity: 0;
-        animation: heroCursorAppear 0.1s ease-out 0.25s forwards,
-        heroCursorBlink 0.9s ease-in-out 1.1s infinite;
-    }
-
-    @keyframes heroCursorAppear {
-        to {
-            opacity: 1;
-        }
-    }
-
-    @keyframes heroCursorBlink {
-        0%, 100% {
-            opacity: 1;
-        }
-        50% {
-            opacity: 0;
-        }
-    }
-
-    /* ---------- Actions ---------- */
-    .hero-actions {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        flex-wrap: wrap;
-        opacity: 0;
-        animation: heroFadeUp 0.5s ease-out 3.6s forwards;
-    }
-
-    @keyframes heroFadeUp {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        transform: translateY(6px);
+        filter: blur(6px);
+        will-change: opacity, transform, filter;
     }
 
     /* ---------- Responsive ---------- */
@@ -429,11 +262,6 @@ const tagline = "No buzzwords. No nonsense.";
             margin-bottom: 1.25rem;
         }
 
-        .hero-cursor {
-            width: 3px;
-            margin-left: 4px;
-        }
-
         .hero-subtitle {
             font-size: 1.05rem;
         }
@@ -445,27 +273,18 @@ const tagline = "No buzzwords. No nonsense.";
         .hero-header {
             margin-bottom: 2rem;
         }
-
-        .hero-actions {
-            gap: 0.75rem;
-        }
     }
 
     /* ---------- Reduced motion ---------- */
     @media (prefers-reduced-motion: reduce) {
-        .hc {
-            opacity: 1;
-            animation: none;
-        }
-
-        .hero-cursor {
-            opacity: 1;
-            animation: heroCursorBlink 1.2s ease-in-out infinite;
-        }
-
-        .hero-actions {
-            opacity: 1;
-            animation: none;
+        .hero-title,
+        .hero-subtitle,
+        .hero-tagline,
+        .hero-easteregg {
+            opacity: 1 !important;
+            transform: none !important;
+            filter: none !important;
+            clip-path: none !important;
         }
     }
 </style>

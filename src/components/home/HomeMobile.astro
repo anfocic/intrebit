@@ -2,14 +2,14 @@
 import SectionDivider from "../shared/SectionDivider.astro";
 import MobileAbout from "./mobile/MobileAbout.astro";
 import MobileContact from "./mobile/MobileContact.astro";
-import MobileHero from "./mobile/MobileHero.astro";
 import MobileServices from "./mobile/MobileServices.astro";
 import DelayedReveal from "../shared/DelayedReveal.astro";
+import Hero from "./web/Hero.astro";
 ---
 
 <section class="wrap" aria-label="Home mobile">
-    <MobileHero/>
-    <SectionDivider/>
+
+    <Hero/>
 
     <DelayedReveal delay={3.5}>
         <MobileServices/>
@@ -17,15 +17,11 @@ import DelayedReveal from "../shared/DelayedReveal.astro";
 
     <SectionDivider/>
 
-    <DelayedReveal delay={5.5}>
-        <MobileAbout/>
-    </DelayedReveal>
+    <MobileAbout/>
 
-    <SectionDivider spaceClass="divider-lg"/>
+    <SectionDivider/>
 
-    <DelayedReveal delay={7.5}>
-        <MobileContact/>
-    </DelayedReveal>
+    <MobileContact/>
 </section>
 
 <style>

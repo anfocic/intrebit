@@ -1,13 +1,20 @@
+---
+import Chevron from "../shared/Chevron.astro";
+---
 <section class="services-hero">
     <div class="container services-hero__inner">
         <header class="services-hero__header hero-reveal">
-            <h1 class="title reveal-1">Build it right.</h1>
-            <h1 class="title reveal-2">Keep it running.</h1>
+            <h1 class="title reveal-1">Build it once.</h1>
+            <h1 class="title reveal-2">Keep it working.</h1>
 
             <p class="subtitle reveal-3">
                 You focus on the business. We'll make sure the software doesn't fall apart.
             </p>
         </header>
+        <div class="chevron">
+
+        </div>
+        <Chevron target="services" delay="3.0s" />
     </div>
 </section>
 
@@ -51,6 +58,10 @@
         color: var(--text-muted);
     }
 
+    .chevron {
+        padding-bottom: var(--s-11);
+
+    }
     /* =========================================
        HERO REVEAL — staggered fade up + blur
        ========================================= */

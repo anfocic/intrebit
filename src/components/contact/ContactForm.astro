@@ -165,5 +165,35 @@
         outline: 2px solid color-mix(in srgb, var(--text) 35%, transparent);
         outline-offset: 3px;
     }
+
+    .contact-form__status {
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.4;
+        min-height: 1.2em;
+        color: var(--text-muted);
+    }
+
+    .status--info {
+        color: color-mix(in srgb, var(--text) 70%, transparent);
+    }
+
+    .status--success {
+        color: color-mix(in srgb, #22c55e 70%, var(--text)); /* tweak if you have tokens */
+    }
+
+    .status--error {
+        color: color-mix(in srgb, #ef4444 70%, var(--text));
+    }
+
+    /* Button: subtle "busy" look */
+    .contact-form__submit[disabled] {
+        opacity: 0.75;
+        cursor: not-allowed;
+    }
 </style>
 <script src="/scripts/contact.js" defer></script>
+
+<script>
+
+</script>

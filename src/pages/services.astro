@@ -6,18 +6,13 @@ import ServicesGrid from "../components/services/ServicesGrid.astro";
 import ServicesHero from "../components/services/ServicesHero.astro";
 import HowWeWork from "../components/services/HowWeWork.astro";
 import SectionDivider from "../components/shared/SectionDivider.astro";
-import DelayedReveal from "../components/shared/DelayedReveal.astro";
 ---
 
 <Layout seo={pageSEO.services}>
     <main class="services">
         <ServicesHero/>
 
-        <SectionDivider/>
-
-        <DelayedReveal delay={3.5}>
-            <ServicesGrid/>
-        </DelayedReveal>
+        <ServicesGrid/>
 
         <SectionDivider/>
 
