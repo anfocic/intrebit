@@ -1,5 +1,4 @@
 ---
-
 const services = [
     {
         id: "development",
@@ -29,28 +28,31 @@ const services = [
     <div class="services-container">
         <header class="services-header">
             <p class="services-eyebrow">What we do</p>
-            <h2 class="services-title">Build it once.   <br/>Keep it working.</h2>
+            <h2 class="services-title">Build it once.<br/>Keep it working.</h2>
         </header>
 
-    </div>
-    <div class="services-pin">
         <div class="services-grid">
-            {services.map((service) => (
-                    <article class="service-card" data-service={service.id}>
-                        <div class="service-card__icon" aria-hidden="true">
-                            <svg
-                                    class="service-icon"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="1.75"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    set:html={service.icon}
-                            />
+            {services.map((service, index) => (
+                    <article
+                            class="service-card"
+                            data-service={service.id}
+                            data-card-index={index}
+                    >
+                        <div class="service-card__header">
+                            <div class="service-card__icon" aria-hidden="true">
+                                <svg
+                                        class="service-icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.75"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        set:html={service.icon}
+                                />
+                            </div>
+                            <h3 class="service-card__title">{service.title}</h3>
                         </div>
-
-                        <h3 class="service-card__title">{service.title}</h3>
                         <p class="service-card__tagline">{service.tagline}</p>
                         <p class="service-card__description">{service.description}</p>
                     </article>
@@ -58,27 +60,28 @@ const services = [
         </div>
     </div>
 </section>
-<style>
 
+<style>
     .service-icon {
-        width: 22px;
-        height: 22px;
+        width: 20px;
+        height: 20px;
     }
 
     .services-section {
         padding: 6rem 0;
-        position: relative;
+        min-height: 200vh; /* Enough scroll room for the animation */
     }
 
     .services-container {
         max-width: var(--container-width, 1100px);
         margin: 0 auto;
         padding: 0 2rem;
+        position: sticky;
+        top: 20vh;
     }
 
-    /* Header */
     .services-header {
-        margin-bottom: 3rem;
+        margin-bottom: 2.5rem;
     }
 
     .services-eyebrow {
@@ -93,49 +96,53 @@ const services = [
 
     .services-title {
         margin: 0;
-        font-family: var(--font-brand, sans-serif),serif;
-        font-size: clamp(2rem, 5vw, 3rem);
+        font-family: var(--font-brand, sans-serif), serif;
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
         font-weight: 750;
         letter-spacing: -0.03em;
         line-height: 1.1;
         color: var(--text);
     }
 
-    /* Grid: 3 equal columns */
+    /* Horizontal grid */
     .services-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 1.5rem;
+        gap: 1.25rem;
     }
 
-    /* Card */
     .service-card {
-        padding: 1.75rem;
+        padding: 1.25rem 1.5rem;
         border: 1px solid var(--border);
-        border-radius: 16px;
+        border-radius: 14px;
+        will-change: transform, opacity;
         transition:
-                transform 0.25s var(--ease, ease),
-                border-color 0.25s var(--ease, ease),
-                box-shadow 0.25s var(--ease, ease);
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
     }
 
     .service-card:hover {
-        transform: translateY(-4px);
         border-color: color-mix(in srgb, var(--text) 15%, var(--border));
         box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
     }
 
-    /* Icon */
+    .service-card__header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
     .service-card__icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
         background: color-mix(in srgb, var(--text) 6%, transparent);
         display: flex;
         align-items: center;
         justify-content: center;
         color: var(--text-muted);
-        margin-bottom: 1.25rem;
+        flex-shrink: 0;
         transition: color 0.2s ease, background 0.2s ease;
     }
 
@@ -144,51 +151,44 @@ const services = [
         background: color-mix(in srgb, var(--text) 10%, transparent);
     }
 
-    /* Text */
     .service-card__title {
-        margin: 0 0 0.25rem;
+        margin: 0;
         font-family: var(--font-brand, sans-serif);
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         font-weight: 700;
         letter-spacing: -0.02em;
         color: var(--text);
     }
 
     .service-card__tagline {
-        margin: 0 0 0.75rem;
-        font-size: 0.95rem;
+        margin: 0 0 0.5rem;
+        font-size: 0.9rem;
         font-weight: 500;
         color: var(--text-muted);
     }
 
     .service-card__description {
         margin: 0;
-        font-size: 0.9rem;
-        line-height: 1.6;
+        font-size: 0.85rem;
+        line-height: 1.55;
         color: var(--text-muted);
         opacity: 0.85;
     }
 
-    /* Tablet: 2 columns */
-    @media (max-width: 900px) {
-        .services-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    /* Mobile: 1 column */
-    @media (max-width: 600px) {
+    /* Mobile */
+    @media (max-width: 768px) {
         .services-section {
-            padding: 4rem 0;
+            padding: 4rem 1.25rem;
+            min-height: auto;
         }
 
         .services-container {
-            padding: 0 1.25rem;
+            position: relative;
+            top: 0;
         }
 
         .services-header {
             text-align: center;
-            margin-bottom: 2.5rem;
         }
 
         .services-title br {
@@ -197,11 +197,7 @@ const services = [
 
         .services-grid {
             grid-template-columns: 1fr;
-            gap: 1.25rem;
-        }
-
-        .service-card {
-            padding: 1.5rem;
+            gap: 1rem;
         }
     }
 
@@ -214,30 +210,11 @@ const services = [
         box-shadow: 0 12px 36px rgba(14, 42, 71, 0.08);
     }
 
-    :root[data-theme="light"] .service-card__icon {
-        background: rgba(14, 42, 71, 0.05);
-    }
-
-    :root[data-theme="light"] .service-card:hover .service-card__icon {
-        background: rgba(14, 42, 71, 0.08);
-    }
-
-    .service-card {
-        will-change: transform, opacity, filter;
-    }
-
-    .service-card__icon {
-        will-change: transform;
-    }
-
-    .services-pin {
-        padding: 0 3rem;
-        position: relative;
-    }
-    .service-card {
-        will-change: transform, opacity, filter;
+    .services-section {
+        min-height: 160vh;  /* Less scroll needed */
     }
 </style>
+
 <script>
     import { gsap } from "gsap";
     import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -247,33 +224,35 @@ const services = [
 
     if (!prefersReduced) {
         const section = document.querySelector(".services-section");
-        const cards = gsap.utils.toArray(".service-card");
+        const cards = gsap.utils.toArray<HTMLElement>(".service-card");
 
         if (section && cards.length) {
-            gsap.set(cards, { opacity: 0, x: -28, y: 10, filter: "blur(8px)" });
+            // Initial state: all cards hidden, shifted up
+            gsap.set(cards, {
+                opacity: 0,
+                y: 50,
+                filter: "blur(8px)"
+            });
 
+            // Master timeline pinned to scroll
             const tl = gsap.timeline({
                 scrollTrigger: {
                     trigger: section,
-                    start: "top top",
-                    end: () => `+=${Math.max(700, window.innerHeight * 1.4)}`,
+                    start: "top 5%",
+                    end: "bottom bottom",
                     scrub: 0.6,
-                    pin: section,         // ✅ pin the whole section so the title stays
-                    pinSpacing: true,
-                    anticipatePin: 1,
-                },
+                }
             });
 
+            // Cards appear left to right, each taking a chunk of scroll
             cards.forEach((card, i) => {
                 tl.to(card, {
                     opacity: 1,
-                    x: 0,
                     y: 0,
                     filter: "blur(0px)",
-                    duration: 4.0,
-                    ease: "power3.out",
-                    once:true
-                }, i * 0.45);
+                    duration: 1,
+                    ease: "power2.out",
+                }, i * 0.5); // Stagger: each card starts 0.5 "units" after the previous
             });
         }
     }

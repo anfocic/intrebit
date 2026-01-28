@@ -1,175 +1,69 @@
 ---
 const title = "intrebit";
 const subtitle = "Software, built properly.";
-const tagline1 = "No buzzwords. No nonsense.";
+const tagline = "No buzzwords. No nonsense.";
 ---
 
 <section class="hero-section" aria-label="Hero">
     <div class="hero-inner">
         <header class="hero-header">
             <h1 class="hero-title">
-        <span class="hero-title-text" aria-label={title}>
-          {title.split("").map((letter, i) => (
-                  <span class="hc" data-line="title" data-i={i}>{letter}</span>
-          ))}
-        </span>
+                <span class="hero-title-text" aria-label={title}>
+                    {title}
+                </span>
             </h1>
 
             <p class="hero-subtitle" aria-label={subtitle}>
-                {subtitle.split("").map((letter, i) => (
-                        <span class="hc" data-line="subtitle" data-i={i}>
-            {letter === " " ? "\u00A0" : letter}
-          </span>
-                ))}
+                {subtitle}
             </p>
 
-            <p class="hero-tagline" aria-label={`${tagline1}}`}>
-                {tagline1.split("").map((letter, i) => (
-                        <span class="hc" data-line="tagline" data-i={i}>
-            {letter === " " ? "\u00A0" : letter}
-          </span>
-                ))}
-                <br />
+            <p class="hero-tagline" aria-label={tagline}>
+                {tagline}
             </p>
         </header>
     </div>
 </section>
+<script>
+    import * as lib from "@lib";
+    console.log("lib keys", Object.keys(lib));
+</script>
 
 <script>
-    import { gsap } from "gsap";
+    import { createHoverLift, createRevealSequence } from "@lib";
 
-    const prefersReduced =
-        window.matchMedia &&
-        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    if (!prefersReduced) {
-        // --- Option C: mask reveal the title, then fade up the other lines
-        gsap.set(".hero-title", { opacity: 0, y: 18, clipPath: "inset(0 0 100% 0)" });
-        gsap.set([".hero-subtitle", ".hero-tagline", ".hero-easteregg"], { opacity: 0, y: 14 });
-        gsap.set(".hero-section", { backgroundPosition: "50% 0%" });
 
-        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+    const run = () => {
+        const root = document.querySelector(".hero-section");
+        if (!root) return;
 
-        tl.to(".hero-title", {
-            opacity: 1,
-            y: 0,
-            clipPath: "inset(0 0 0% 0)",
-            duration: 0.9,
-        })
-            .to(
-                [".hero-subtitle", ".hero-tagline"],
-                {
-                    opacity: 1,
-                    y: 0,
-                    duration: 0.6,
-                    stagger: 0.15,
-                },
-                "-=0.35"
-            )
-            .to(
-                ".hero-easteregg",
-                {
-                    opacity: 0.85,
-                    y: 0,
-                    filter: "blur(0px)",
-                    duration: 0.5,
-                },
-                "+=0.15"
-            );
+        createRevealSequence({
+            root,
+            title: ".hero-title",
+            text: ".hero-subtitle, .hero-tagline",
+            titleDuration: 0.9,
+            textDuration: 0.6,
+            stagger: 0.15,
+        });
 
-        // 1) Breathing title (subtle idle motion)
-        // Use a tiny y shift; it's "felt", not noticed.
-        gsap.to(".hero-title", {
+        createHoverLift(".hero-title", {
             y: -2,
-            duration: 3.6,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-            delay: 0.8, // start after intro begins
+            scale: 1.05,
+            durationIn: 0.25,
+            durationOut: 0.3,
         });
+    };
 
-        // 2) Hover letter lift (title only)
-        const titleEl = document.querySelector(".hero-title");
-        const titleLetters = ".hero-title .hc";
-
-        titleEl?.addEventListener("mouseenter", () => {
-            gsap.to(titleLetters, {
-                y: -4,
-                duration: 0.25,
-                stagger: 0.02,
-                ease: "power2.out",
-                overwrite: "auto",
-            });
-        });
-
-        titleEl?.addEventListener("mouseleave", () => {
-            gsap.to(titleLetters, {
-                y: 0,
-                duration: 0.3,
-                stagger: 0.02,
-                ease: "power2.out",
-                overwrite: "auto",
-            });
-        });
-
-        // 3) Soft background drift (ambient)
-        gsap.to(".hero-section", {
-            backgroundPosition: "50% 12%",
-            duration: 12,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-        });
-
-        // (keep your existing extras)
-        window.addEventListener("scroll", () => {
-            const y = window.scrollY;
-            gsap.to(".hero-inner", {
-                y: y * 0.08,
-                opacity: Math.max(1 - y / 600, 0.85),
-                overwrite: true,
-                duration: 0.3,
-            });
-        });
-
-        const hero = document.querySelector(".hero-inner");
-
-        hero?.addEventListener("mousemove", (e) => {
-            const rect = hero.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-
-            gsap.to(".hero-title", {
-                x: x * 0.02,
-                y: y * 0.02,
-                duration: 0.4,
-                ease: "power3.out",
-                overwrite: true,
-            });
-        });
-
-        hero?.addEventListener("mouseleave", () => {
-            gsap.to(".hero-title", {
-                x: 0,
-                y: 0,
-                duration: 0.6,
-                ease: "power3.out",
-                overwrite: true,
-            });
-        });
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", run, { once: true });
     } else {
-        // Reduced motion: show everything immediately (and skip all loops)
-        gsap.set([".hero-title", ".hero-subtitle", ".hero-tagline", ".hero-easteregg"], {
-            opacity: 1,
-            y: 0,
-            clipPath: "none",
-            filter: "none",
-        });
+        run();
     }
 </script>
 
-
 <style>
+
+
     .hero-section {
         min-height: calc(100svh - var(--header-height, 72px));
         display: flex;
@@ -205,6 +99,8 @@ const tagline1 = "No buzzwords. No nonsense.";
         align-items: center;
         justify-content: center;
         will-change: transform, opacity, clip-path;
+        cursor: default; /* or pointer if it’s a link */
+        transform-origin: center;
     }
 
     .hero-title-text {
@@ -235,25 +131,10 @@ const tagline1 = "No buzzwords. No nonsense.";
         will-change: transform, opacity;
     }
 
-    .hc {
-        display: inline-block;
-    }
-
-    .hero-easteregg {
-        display: block;
-        margin-top: 0.25rem;
-        font-style: italic;
-        opacity: 0;
-        transform: translateY(6px);
-        filter: blur(6px);
-        will-change: opacity, transform, filter;
-    }
-
     /* ---------- Responsive ---------- */
     @media (max-width: 520px) {
         .hero-section {
             padding: 3rem 1.25rem 2.5rem;
-            min-height: calc(100vh - 60px);
             min-height: calc(100svh - 60px);
         }
 
@@ -279,8 +160,7 @@ const tagline1 = "No buzzwords. No nonsense.";
     @media (prefers-reduced-motion: reduce) {
         .hero-title,
         .hero-subtitle,
-        .hero-tagline,
-        .hero-easteregg {
+        .hero-tagline {
             opacity: 1 !important;
             transform: none !important;
             filter: none !important;
