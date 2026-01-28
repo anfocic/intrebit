@@ -1,117 +1,115 @@
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { ElementSelector, EffectInstance, AnimationTrigger } from "../types";
 import {
-    type ElementSelector,
-    type EffectInstance,
-    type AnimationTrigger,
-} from '../types';
-import {prefersReducedMotion, resolveElements} from "../utils/dom.ts";
-
-// Register ScrollTrigger
-if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
+    prefersReducedMotion,
+    resolveElements,
+    hasWindow,
+    hasDocument,
+    supportsHover,
+} from "../utils/dom";
 
 export interface SvgDrawOptions {
+    /** Optional root for scoping selector queries */
+    root?: ParentNode;
+
     /** Animation duration in seconds */
     duration?: number;
+
     /** Delay before animation starts */
     delay?: number;
+
     /** When to trigger animation */
     trigger?: AnimationTrigger;
+
     /** Easing function */
     ease?: string;
+
     /** ScrollTrigger start position */
     scrollStart?: string;
+
     /** Whether to reverse on hover leave (for hover trigger) */
     reverseOnLeave?: boolean;
+
     /** Stagger delay for multiple paths */
     stagger?: number;
+
     /** Callback when animation completes */
     onComplete?: () => void;
 }
 
-const defaultOptions: Required<Omit<SvgDrawOptions, 'onComplete'>> & {
+const defaultOptions: Required<Omit<SvgDrawOptions, "root" | "onComplete">> & {
+    root?: ParentNode;
     onComplete?: () => void;
 } = {
+    root: undefined,
     duration: 1.2,
     delay: 0,
-    trigger: 'load',
-    ease: 'power2.inOut',
-    scrollStart: 'top 80%',
+    trigger: "load",
+    ease: "power2.inOut",
+    scrollStart: "top 80%",
     reverseOnLeave: true,
     stagger: 0.2,
     onComplete: undefined,
 };
 
-/** Calculate the total length of an SVG path */
+function ensureScrollTrigger() {
+    if (!hasWindow()) return;
+    gsap.registerPlugin(ScrollTrigger);
+}
+
 function getPathLength(path: SVGPathElement): number {
     return path.getTotalLength();
 }
 
-/** Prepare a path for draw animation */
 function preparePath(path: SVGPathElement): void {
     const length = getPathLength(path);
     path.style.strokeDasharray = `${length}`;
     path.style.strokeDashoffset = `${length}`;
 }
 
-/**
- * Creates an SVG line draw animation
- *
- * @example
- * ```ts
- * // Draw all paths in an SVG
- * const draw = createSvgDraw('.my-svg path');
- *
- * // Draw on scroll
- * const draw = createSvgDraw('#logo path', {
- *   trigger: 'scroll',
- *   duration: 2,
- * });
- *
- * // Draw on hover
- * const draw = createSvgDraw('.icon path', {
- *   trigger: 'hover',
- *   reverseOnLeave: true,
- * });
- *
- * // Replay
- * draw.replay?.();
- *
- * // Cleanup
- * draw.destroy();
- * ```
- */
+function showPathImmediately(path: SVGPathElement) {
+    path.style.strokeDasharray = "none";
+    path.style.strokeDashoffset = "0";
+}
+
 export function createSvgDraw(
     selector: ElementSelector,
     options: SvgDrawOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion()) {
-        // Show paths immediately
-        const elements = resolveElements(selector);
-        elements.forEach((el) => {
-            if (el instanceof SVGPathElement) {
-                el.style.strokeDasharray = 'none';
-                el.style.strokeDashoffset = '0';
-            }
-        });
+    if (!hasWindow() || !hasDocument()) return { destroy: () => {} };
+
+    const opts = { ...defaultOptions, ...options };
+
+    // On hover trigger, skip on touch/non-hover devices
+    if (opts.trigger === "hover" && !supportsHover()) {
         return { destroy: () => {} };
     }
 
-    const opts = { ...defaultOptions, ...options };
-    const elements = resolveElements(selector);
-    const paths = elements.filter((el): el is SVGPathElement => el instanceof SVGPathElement);
+    const elements = resolveElements(selector, opts.root);
+    const paths = elements.filter(
+        (el): el is SVGPathElement => el instanceof SVGPathElement
+    );
+
+    if (paths.length === 0) return { destroy: () => {} };
+
+    // Reduced motion: just show
+    if (prefersReducedMotion()) {
+        paths.forEach(showPathImmediately);
+        return { destroy: () => {} };
+    }
+
+    ensureScrollTrigger();
+
     const cleanupFns: Array<() => void> = [];
     let currentAnimation: gsap.core.Tween | null = null;
-
-    // Prepare all paths
-    paths.forEach(preparePath);
+    let st: ScrollTrigger | null = null;
 
     const runAnimation = (reverse = false) => {
-        if (currentAnimation) {
-            currentAnimation.kill();
-        }
+        currentAnimation?.kill();
+
+        // Always prep before a draw (important on replay / reverse)
+        paths.forEach(preparePath);
 
         currentAnimation = gsap.to(paths, {
             strokeDashoffset: reverse ? (i: number) => getPathLength(paths[i]) : 0,
@@ -123,74 +121,61 @@ export function createSvgDraw(
         });
     };
 
-    if (opts.trigger === 'load') {
-        runAnimation();
-    } else if (opts.trigger === 'scroll') {
-        // Find parent element for scroll trigger
-        const parentSvg = paths[0]?.closest('svg') || paths[0]?.parentElement;
+    const getTriggerEl = () => paths[0]?.closest("svg") || paths[0]?.parentElement;
 
-        if (parentSvg) {
-            const scrollTrigger = ScrollTrigger.create({
-                trigger: parentSvg,
+    if (opts.trigger === "load") {
+        runAnimation(false);
+    }
+
+    if (opts.trigger === "scroll") {
+        const triggerEl = getTriggerEl();
+        if (triggerEl) {
+            st = ScrollTrigger.create({
+                trigger: triggerEl,
                 start: opts.scrollStart,
-                onEnter: () => runAnimation(),
                 once: true,
+                onEnter: () => runAnimation(false),
             });
-
-            cleanupFns.push(() => scrollTrigger.kill());
+            cleanupFns.push(() => st?.kill());
         }
-    } else if (opts.trigger === 'hover') {
-        const parentSvg = paths[0]?.closest('svg') || paths[0]?.parentElement;
+    }
 
-        if (parentSvg) {
-            const handleMouseEnter = () => runAnimation(false);
-            const handleMouseLeave = () => {
-                if (opts.reverseOnLeave) {
-                    runAnimation(true);
-                }
+    if (opts.trigger === "hover") {
+        const triggerEl = getTriggerEl();
+        if (triggerEl) {
+            const onEnter = () => runAnimation(false);
+            const onLeave = () => {
+                if (opts.reverseOnLeave) runAnimation(true);
             };
 
-            parentSvg.addEventListener('mouseenter', handleMouseEnter);
-            parentSvg.addEventListener('mouseleave', handleMouseLeave);
+            triggerEl.addEventListener("mouseenter", onEnter);
+            triggerEl.addEventListener("mouseleave", onLeave);
 
             cleanupFns.push(() => {
-                parentSvg.removeEventListener('mouseenter', handleMouseEnter);
-                parentSvg.removeEventListener('mouseleave', handleMouseLeave);
+                triggerEl.removeEventListener("mouseenter", onEnter);
+                triggerEl.removeEventListener("mouseleave", onLeave);
             });
         }
     }
 
     return {
         destroy: () => {
-            if (currentAnimation) {
-                currentAnimation.kill();
-            }
+            currentAnimation?.kill();
+            st?.kill();
             cleanupFns.forEach((fn) => fn());
-            paths.forEach((path) => {
-                gsap.killTweensOf(path);
-                path.style.strokeDasharray = '';
-                path.style.strokeDashoffset = '';
+
+            paths.forEach((p) => {
+                gsap.killTweensOf(p);
+                p.style.strokeDasharray = "";
+                p.style.strokeDashoffset = "";
             });
         },
-        replay: () => {
-            paths.forEach(preparePath);
-            runAnimation();
-        },
+        replay: () => runAnimation(false),
     };
 }
 
-/**
- * Creates an animated underline effect using SVG
- *
- * @example
- * ```ts
- * // Wrap text with underline
- * const underline = createSvgUnderline('.highlight', {
- *   color: '#4a9eff',
- *   trigger: 'scroll',
- * });
- * ```
- */
+/* ---------------------------- SVG Underline ---------------------------- */
+
 export interface SvgUnderlineOptions extends SvgDrawOptions {
     /** Stroke color */
     color?: string;
@@ -198,35 +183,44 @@ export interface SvgUnderlineOptions extends SvgDrawOptions {
     strokeWidth?: number;
     /** Vertical offset from text */
     offsetY?: number;
+    /** Path data (so you can swap underline style) */
+    pathD?: string;
 }
+
+const defaultUnderline: Required<Pick<SvgUnderlineOptions, "color" | "strokeWidth" | "offsetY" | "pathD">> =
+    {
+        color: "currentColor",
+        strokeWidth: 3,
+        offsetY: 6,
+        pathD: "M0,15 Q75,5 150,12 T300,8",
+    };
 
 export function createSvgUnderline(
     selector: ElementSelector,
     options: SvgUnderlineOptions = {}
 ): EffectInstance {
-    const {
-        color = 'currentColor',
-        strokeWidth = 3,
-        offsetY = 6,
-        ...drawOptions
-    } = options;
+    if (!hasWindow() || !hasDocument()) return { destroy: () => {} };
 
-    const elements = resolveElements(selector);
+    const { color, strokeWidth, offsetY, pathD, ...drawOptions } = {
+        ...defaultUnderline,
+        ...options,
+    };
+
+    const elements = resolveElements(selector, drawOptions.root);
     const instances: EffectInstance[] = [];
 
     elements.forEach((element) => {
         const el = element as HTMLElement;
 
-        // Make container relative
-        el.style.position = 'relative';
-        el.style.display = 'inline-block';
+        // container styles
+        if (!el.style.position) el.style.position = "relative";
+        el.style.display = "inline-block";
 
-        // Create SVG
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('class', 'svg-underline');
-        svg.setAttribute('viewBox', '0 0 300 20');
-        svg.setAttribute('preserveAspectRatio', 'none');
-        svg.setAttribute('aria-hidden', 'true');
+        const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("class", "svg-underline");
+        svg.setAttribute("viewBox", "0 0 300 20");
+        svg.setAttribute("preserveAspectRatio", "none");
+        svg.setAttribute("aria-hidden", "true");
 
         svg.style.cssText = `
       position: absolute;
@@ -238,61 +232,25 @@ export function createSvgUnderline(
       pointer-events: none;
     `;
 
-        // Create path with wavy line
-        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        path.setAttribute('d', 'M0,15 Q75,5 150,12 T300,8');
-        path.setAttribute('fill', 'none');
-        path.setAttribute('stroke', color);
-        path.setAttribute('stroke-width', strokeWidth.toString());
-        path.setAttribute('stroke-linecap', 'round');
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        path.setAttribute("d", pathD);
+        path.setAttribute("fill", "none");
+        path.setAttribute("stroke", color);
+        path.setAttribute("stroke-width", String(strokeWidth));
+        path.setAttribute("stroke-linecap", "round");
 
         svg.appendChild(path);
         el.appendChild(svg);
 
-        // Create draw animation for the path
-        const instance = createSvgDraw(path, drawOptions);
-        instances.push(instance);
+        instances.push(createSvgDraw(path, drawOptions));
     });
 
     return {
         destroy: () => {
             instances.forEach((i) => i.destroy());
-            elements.forEach((el) => {
-                const svg = (el as HTMLElement).querySelector('.svg-underline');
-                svg?.remove();
-            });
+            elements.forEach((el) => (el as HTMLElement).querySelector(".svg-underline")?.remove());
         },
-        replay: () => {
-            instances.forEach((i) => i.replay?.());
-        },
-    };
-}
-
-/**
- * Auto-initialize SVG draw on elements with data-svg-draw attribute
- */
-export function initSvgDraw(): EffectInstance {
-    const elements = document.querySelectorAll('[data-svg-draw]');
-    const instances: EffectInstance[] = [];
-
-    elements.forEach((el) => {
-        const paths = el.querySelectorAll('path');
-        if (paths.length === 0) return;
-
-        const options: SvgDrawOptions = {
-            duration: parseFloat(el.getAttribute('data-svg-draw-duration') || '1.2'),
-            delay: parseFloat(el.getAttribute('data-svg-draw-delay') || '0'),
-            trigger: (el.getAttribute('data-svg-draw-trigger') as AnimationTrigger) || 'load',
-            stagger: parseFloat(el.getAttribute('data-svg-draw-stagger') || '0.2'),
-        };
-
-        instances.push(createSvgDraw(paths, options));
-    });
-
-    return {
-        destroy: () => {
-            instances.forEach((instance) => instance.destroy());
-        },
+        replay: () => instances.forEach((i) => i.replay?.()),
     };
 }
 

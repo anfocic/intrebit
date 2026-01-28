@@ -1,58 +1,76 @@
-import {gsap} from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import {prefersReducedMotion} from "../utils/dom.ts";
-import type {EffectInstance} from "../types";
-// Register ScrollTrigger
-if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { EffectInstance } from "../types";
+import { prefersReducedMotion, hasWindow, hasDocument } from "../utils/dom";
 
-export type ScrollProgressType = 'bar' | 'bar-side' | 'circle';
-export type ScrollProgressPosition = 'top' | 'bottom' | 'left' | 'right';
+export type ScrollProgressType = "bar" | "bar-side" | "circle";
+export type ScrollProgressPosition = "top" | "bottom" | "left" | "right";
 
 export interface ScrollProgressOptions {
+    /** Optional root for scoping container selector queries */
+    root?: ParentNode;
+
     /** Type of progress indicator */
     type?: ScrollProgressType;
+
     /** Color of the progress indicator */
     color?: string;
+
     /** End color for gradient (bar type only) */
     colorEnd?: string;
+
     /** Size in pixels (height for bar, diameter for circle) */
     size?: number;
+
     /** Position (top/bottom for bar, left/right for side bar) */
     position?: ScrollProgressPosition;
+
     /** Show percentage text (circle type only) */
     showPercent?: boolean;
-    /** Container to track scroll (defaults to document body) */
+
+    /** Container to track scroll (element or selector). Defaults to body */
     container?: Element | string;
+
     /** Z-index for the progress element */
     zIndex?: number;
+
     /** Scrub smoothness (0 = instant, higher = smoother) */
     scrub?: number;
+
     /** Callback on progress update */
     onProgress?: (progress: number) => void;
 }
 
-const defaultOptions: Required<Omit<ScrollProgressOptions, 'colorEnd' | 'onProgress'>> & {
+const defaultOptions: Required<
+    Omit<ScrollProgressOptions, "root" | "colorEnd" | "onProgress">
+> & {
+    root?: ParentNode;
     colorEnd?: string;
     onProgress?: (progress: number) => void;
 } = {
-    type: 'bar',
-    color: '#4a9eff',
+    root: undefined,
+    type: "bar",
+    color: "#4a9eff",
     colorEnd: undefined,
     size: 3,
-    position: 'top',
+    position: "top",
     showPercent: true,
-    container: 'body',
+    container: "body",
     zIndex: 9999,
     scrub: 0.3,
     onProgress: undefined,
 };
 
+function ensureScrollTrigger() {
+    if (!hasWindow()) return;
+    // gsap.registerPlugin is idempotent; safe to call repeatedly
+    gsap.registerPlugin(ScrollTrigger);
+}
+
 /** Create the bar progress element */
 function createBarElement(opts: typeof defaultOptions): HTMLElement {
-    const bar = document.createElement('div');
-    bar.className = 'scroll-progress-bar';
+    const bar = document.createElement("div");
+    bar.className = "scroll-progress-bar";
 
     const gradient = opts.colorEnd
         ? `linear-gradient(90deg, ${opts.color}, ${opts.colorEnd})`
@@ -75,15 +93,15 @@ function createBarElement(opts: typeof defaultOptions): HTMLElement {
 
 /** Create the side bar progress element */
 function createSideBarElement(opts: typeof defaultOptions): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'scroll-progress-side';
+    const container = document.createElement("div");
+    container.className = "scroll-progress-side";
 
-    const isLeft = opts.position === 'left';
+    const isLeft = opts.position === "left";
 
     container.style.cssText = `
     position: fixed;
     top: 50%;
-    ${isLeft ? 'left' : 'right'}: 24px;
+    ${isLeft ? "left" : "right"}: 24px;
     width: ${opts.size}px;
     height: 100px;
     background: rgba(255, 255, 255, 0.1);
@@ -94,8 +112,8 @@ function createSideBarElement(opts: typeof defaultOptions): HTMLElement {
     overflow: hidden;
   `;
 
-    const fill = document.createElement('div');
-    fill.className = 'scroll-progress-side-fill';
+    const fill = document.createElement("div");
+    fill.className = "scroll-progress-side-fill";
     fill.style.cssText = `
     position: absolute;
     bottom: 0;
@@ -113,8 +131,8 @@ function createSideBarElement(opts: typeof defaultOptions): HTMLElement {
 
 /** Create the circle progress element */
 function createCircleElement(opts: typeof defaultOptions): HTMLElement {
-    const container = document.createElement('div');
-    container.className = 'scroll-progress-circle';
+    const container = document.createElement("div");
+    container.className = "scroll-progress-circle";
 
     container.style.cssText = `
     position: fixed;
@@ -160,167 +178,118 @@ function createCircleElement(opts: typeof defaultOptions): HTMLElement {
             font-weight: 600;
             color: ${opts.color};
           ">0%</span>`
-            : ''
+            : ""
     }
   `;
 
     return container;
 }
 
+function resolveContainer(
+    container: Element | string,
+    root?: ParentNode
+): Element | null {
+    if (typeof container !== "string") return container;
+    const scope: ParentNode = root ?? document;
+    return (scope as Document | Element).querySelector?.(container) ?? null;
+}
+
 /**
- * Creates a scroll progress indicator
- *
- * @example
- * ```ts
- * // Top bar (default)
- * const progress = createScrollProgress();
- *
- * // Bottom bar with gradient
- * const progress = createScrollProgress({
- *   position: 'bottom',
- *   color: '#4a9eff',
- *   colorEnd: '#a855f7',
- * });
- *
- * // Side bar
- * const progress = createScrollProgress({
- *   type: 'bar-side',
- *   position: 'right',
- * });
- *
- * // Circle with percentage
- * const progress = createScrollProgress({
- *   type: 'circle',
- *   size: 50,
- * });
- *
- * // With callback
- * const progress = createScrollProgress({
- *   onProgress: (progress) => console.log(`${progress * 100}%`),
- * });
- *
- * // Cleanup
- * progress.destroy();
- * ```
+ * Creates a scroll progress indicator.
  */
-export function createScrollProgress(options: ScrollProgressOptions = {}): EffectInstance {
-    if (prefersReducedMotion()) {
+export function createScrollProgress(
+    options: ScrollProgressOptions = {}
+): EffectInstance {
+    if (!hasWindow() || !hasDocument() || prefersReducedMotion()) {
         return { destroy: () => {} };
     }
 
+    ensureScrollTrigger();
+
     const opts = { ...defaultOptions, ...options };
-    let element: HTMLElement;
-    let scrollTrigger: ScrollTrigger;
+
+    const containerEl =
+        resolveContainer(opts.container, opts.root) ?? document.body;
 
     // Create appropriate element
+    let element: HTMLElement;
     switch (opts.type) {
-        case 'bar-side':
+        case "bar-side":
             element = createSideBarElement(opts);
             break;
-        case 'circle':
+        case "circle":
             element = createCircleElement(opts);
             break;
-        case 'bar':
+        case "bar":
         default:
             element = createBarElement(opts);
+            break;
     }
 
     document.body.appendChild(element);
 
-    // Get the animatable element
-    const getAnimTarget = (): Element | null => {
-        switch (opts.type) {
-            case 'bar-side':
-                return element.querySelector('.scroll-progress-side-fill');
-            case 'circle':
-                return element.querySelector('.scroll-progress-circle-fill');
-            default:
-                return element;
-        }
-    };
+    // Get anim target
+    const target =
+        opts.type === "bar-side"
+            ? element.querySelector(".scroll-progress-side-fill")
+            : opts.type === "circle"
+                ? element.querySelector(".scroll-progress-circle-fill")
+                : element;
 
-    const target = getAnimTarget();
-    const textElement = element.querySelector('.scroll-progress-text');
-    const circumference = 2 * Math.PI * 20;
+    const textElement = element.querySelector(".scroll-progress-text");
 
-    // Resolve container
-    const container =
-        typeof opts.container === 'string'
-            ? document.querySelector(opts.container)
-            : opts.container;
+    // If circle, ensure dashoffset baseline is correct even if user CSS touches it
+    if (opts.type === "circle" && target instanceof SVGCircleElement) {
+        const circumference = 2 * Math.PI * 20;
+        target.style.strokeDasharray = `${circumference}`;
+        target.style.strokeDashoffset = `${circumference}`;
+    }
 
-    // Create animation
-    const animationProps: gsap.TweenVars = {
-        ease: 'none',
-        scrollTrigger: {
-            trigger: container || document.body,
-            start: 'top top',
-            end: 'bottom bottom',
-            scrub: opts.scrub,
-            onUpdate: (self: ScrollTrigger) => {
-                if (textElement && opts.type === 'circle') {
-                    textElement.textContent = `${Math.round(self.progress * 100)}%`;
-                }
-                opts.onProgress?.(self.progress);
-            },
-        },
-    };
+    let tween: gsap.core.Tween | null = null;
 
-    // Set animation target property based on type
     if (target) {
+        const animationProps: gsap.TweenVars = {
+            ease: "none",
+            scrollTrigger: {
+                trigger: containerEl,
+                start: "top top",
+                end: "bottom bottom",
+                scrub: opts.scrub,
+                onUpdate: (self: ScrollTrigger) => {
+                    if (textElement && opts.type === "circle") {
+                        textElement.textContent = `${Math.round(self.progress * 100)}%`;
+                    }
+                    opts.onProgress?.(self.progress);
+                },
+            },
+        };
+
         switch (opts.type) {
-            case 'bar':
-                gsap.to(target, { width: '100%', ...animationProps });
+            case "bar":
+                tween = gsap.to(target, { width: "100%", ...animationProps });
                 break;
-            case 'bar-side':
-                gsap.to(target, { height: '100%', ...animationProps });
+            case "bar-side":
+                tween = gsap.to(target, { height: "100%", ...animationProps });
                 break;
-            case 'circle':
-                gsap.to(target, { strokeDashoffset: 0, ...animationProps });
+            case "circle":
+                tween = gsap.to(target, { strokeDashoffset: 0, ...animationProps });
                 break;
         }
     }
 
     return {
         destroy: () => {
-            ScrollTrigger.getAll().forEach((st) => {
-                if (st.vars.trigger === container || st.vars.trigger === document.body) {
-                    st.kill();
-                }
-            });
+            // Kill only what we created
+            if (tween) {
+                const st = tween.scrollTrigger;
+                tween.kill();
+                st?.kill();
+            }
+
             if (target) gsap.killTweensOf(target);
             element.remove();
         },
     };
-}
-
-/**
- * Auto-initialize scroll progress from data attribute
- *
- * @example
- * ```html
- * <div data-scroll-progress data-scroll-progress-type="circle"></div>
- * ```
- */
-export function initScrollProgress(): EffectInstance {
-    const element = document.querySelector('[data-scroll-progress]');
-
-    if (!element) {
-        // Create default if no element found
-        return createScrollProgress();
-    }
-
-    const options: ScrollProgressOptions = {
-        type: (element.getAttribute('data-scroll-progress-type') as ScrollProgressType) || 'bar',
-        color: element.getAttribute('data-scroll-progress-color') || '#4a9eff',
-        colorEnd: element.getAttribute('data-scroll-progress-color-end') || undefined,
-        size: parseFloat(element.getAttribute('data-scroll-progress-size') || '3'),
-        position:
-            (element.getAttribute('data-scroll-progress-position') as ScrollProgressPosition) || 'top',
-        showPercent: element.getAttribute('data-scroll-progress-show-percent') !== 'false',
-    };
-
-    return createScrollProgress(options);
 }
 
 export default createScrollProgress;

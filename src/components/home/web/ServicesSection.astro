@@ -4,25 +4,48 @@ const services = [
         id: "development",
         title: "Development",
         tagline: "Software that fits your business.",
-        description: "Custom software built for your workflow — websites, apps, portals, tools.",
-        icon: `<path d="M16 18l6-6-6-6"/><path d="M8 6l-6 6 6 6"/>`,
+        description:
+            "Custom software built for your workflow — websites, apps, portals, tools.",
+        icon: `
+      <path d="M10 7 5 12l5 5"/>
+      <path d="M14 7 19 12l-5 5"/>
+    `,
     },
     {
         id: "consulting",
         title: "Consulting",
         tagline: "Get a plan before spending money.",
-        description: "We'll look at how your business works, find the bottlenecks, and tell you what's worth fixing — honestly.",
-        icon: `<circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>`,
+        description:
+            "We'll look at how your business works, find the bottlenecks, and tell you what's worth fixing — honestly.",
+        icon: `
+      <!-- circle as path -->
+      <path d="M12 2a10 10 0 1 1 0 20a10 10 0 0 1 0-20Z"/>
+      <!-- question mark -->
+      <path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/>
+      <!-- dot (tiny vertical segment, reliable) -->
+      <path d="M12 17.2v.01"/>
+    `,
     },
     {
         id: "automation",
         title: "Automation",
         tagline: "Stop doing it manually.",
-        description: "That repetitive task eating your week? We can make it run itself. Invoices, reports, data entry.",
-        icon: `<path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.93 4.93l2.83 2.83"/><path d="M16.24 16.24l2.83 2.83"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.93 19.07l2.83-2.83"/><path d="M16.24 7.76l2.83-2.83"/>`,
+        description:
+            "That repetitive task eating your week? We can make it run itself. Invoices, reports, data entry.",
+        icon: `
+      <path d="M12 2v4"/>
+      <path d="M12 18v4"/>
+      <path d="M4.93 4.93l2.83 2.83"/>
+      <path d="M16.24 16.24l2.83 2.83"/>
+      <path d="M2 12h4"/>
+      <path d="M18 12h4"/>
+      <path d="M4.93 19.07l2.83-2.83"/>
+      <path d="M16.24 7.76l2.83-2.83"/>
+    `,
     },
 ];
 ---
+
 
 <section class="services-section" aria-label="What we do">
     <div class="services-container">
@@ -60,6 +83,29 @@ const services = [
         </div>
     </div>
 </section>
+
+<script>
+
+
+    import {createSvgDraw, onClientReady} from "@lib";
+
+    onClientReady(() => {
+        const section = document.querySelector(".services-section");
+        if (!section) return;
+
+        // Draw all icon paths as the section comes into view
+        // Scoping with root prevents collisions if this component is reused.
+        createSvgDraw(".service-icon path", {
+            root: section,
+            trigger: "scroll",
+            scrollStart: "top 75%",
+            duration: 3,
+            stagger: 0.08,
+            ease: "power2.out",
+        });
+    });
+</script>
+
 
 <style>
     .service-icon {

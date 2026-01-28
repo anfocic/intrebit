@@ -1,72 +1,80 @@
-import {gsap} from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import {type AnimationTrigger, type EffectInstance, type ElementSelector,} from '../types';
-import {prefersReducedMotion, resolveElements} from "../utils/dom.ts";
-// Register ScrollTrigger
-if (typeof window !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-}
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import type { AnimationTrigger, EffectInstance, ElementSelector } from "../types";
+import { prefersReducedMotion, resolveElements, hasWindow, hasDocument, supportsHover } from "../utils/dom";
 
 export type SplitTextAnimation =
-    | 'cascade'
-    | 'wave'
-    | 'spring'
-    | 'blur'
-    | 'rotate'
-    | 'scale'
-    | 'glitch'
-    | 'fade';
+    | "cascade"
+    | "wave"
+    | "spring"
+    | "blur"
+    | "rotate"
+    | "scale"
+    | "glitch"
+    | "fade";
 
 export interface SplitTextOptions {
+    /** Optional root for scoping selector queries */
+    root?: ParentNode;
+
     /** Animation type */
     animation?: SplitTextAnimation;
+
     /** Duration for each character animation */
     duration?: number;
+
     /** Stagger delay between characters */
     stagger?: number;
-    /** Initial delay before animation starts */
+
+    /** Initial delay before animation starts (seconds) */
     delay?: number;
+
     /** When to trigger animation */
     trigger?: AnimationTrigger;
+
     /** Loop animation (only for wave) */
     loop?: boolean;
+
     /** ScrollTrigger start position */
     scrollStart?: string;
+
     /** Custom class for character spans */
     charClass?: string;
+
     /** Callback when animation completes */
     onComplete?: () => void;
 }
 
-const defaultOptions: Required<Omit<SplitTextOptions, 'onComplete'>> & {
+const defaultOptions: Required<Omit<SplitTextOptions, "root" | "onComplete">> & {
+    root?: ParentNode;
     onComplete?: () => void;
 } = {
-    animation: 'cascade',
+    root: undefined,
+    animation: "cascade",
     duration: 0.8,
     stagger: 0.08,
     delay: 0,
-    trigger: 'load',
+    trigger: "load",
     loop: false,
-    scrollStart: 'top 85%',
-    charClass: 'split-char',
+    scrollStart: "top 85%",
+    charClass: "split-char",
     onComplete: undefined,
 };
 
 /** Split text into individual character spans */
 function splitIntoChars(element: HTMLElement, charClass: string): HTMLSpanElement[] {
-    const text = element.textContent || '';
-    element.setAttribute('aria-label', text);
-    element.innerHTML = '';
+    const text = element.textContent ?? "";
+    element.setAttribute("aria-label", text);
+    element.innerHTML = "";
 
     const chars: HTMLSpanElement[] = [];
-
-    text.split('').forEach((char, i) => {
-        const span = document.createElement('span');
+    [...text].forEach((char, i) => {
+        const span = document.createElement("span");
         span.className = charClass;
-        span.style.display = 'inline-block';
-        span.style.willChange = 'transform, opacity, filter';
-        span.textContent = char === ' ' ? '\u00A0' : char;
-        span.style.setProperty('--char-index', i.toString());
+        span.style.display = "inline-block";
+        span.style.willChange = "transform, opacity, filter";
+        span.textContent = char === " " ? "\u00A0" : char;
+        span.style.setProperty("--char-index", String(i));
         element.appendChild(span);
         chars.push(span);
     });
@@ -74,13 +82,14 @@ function splitIntoChars(element: HTMLElement, charClass: string): HTMLSpanElemen
     return chars;
 }
 
-/** Animation implementations */
+type ResolvedOpts = Required<Omit<SplitTextOptions, "root" | "onComplete">> & {
+    root?: ParentNode;
+    onComplete?: () => void;
+};
+
 const animations: Record<
     SplitTextAnimation,
-    (
-        chars: HTMLSpanElement[],
-        opts: Required<Omit<SplitTextOptions, 'onComplete'>> & { onComplete?: () => void }
-    ) => gsap.core.Timeline | gsap.core.Tween
+    (chars: HTMLSpanElement[], opts: ResolvedOpts) => gsap.core.Timeline | gsap.core.Tween
 > = {
     cascade: (chars, opts) => {
         gsap.set(chars, { opacity: 0, y: -50, rotateX: -90 });
@@ -90,7 +99,7 @@ const animations: Record<
             rotateX: 0,
             duration: opts.duration,
             stagger: opts.stagger,
-            ease: 'back.out(1.7)',
+            ease: "back.out(1.7)",
             onComplete: opts.onComplete,
         });
     },
@@ -105,7 +114,7 @@ const animations: Record<
                 repeat: opts.loop ? -1 : 0,
                 yoyo: true,
             },
-            ease: 'sine.inOut',
+            ease: "sine.inOut",
             onComplete: opts.loop ? undefined : opts.onComplete,
         });
     },
@@ -118,32 +127,32 @@ const animations: Record<
             y: 0,
             duration: opts.duration,
             stagger: opts.stagger,
-            ease: 'elastic.out(1, 0.4)',
+            ease: "elastic.out(1, 0.4)",
             onComplete: opts.onComplete,
         });
     },
 
     blur: (chars, opts) => {
-        gsap.set(chars, { opacity: 0, filter: 'blur(20px)', x: -20 });
+        gsap.set(chars, { opacity: 0, filter: "blur(20px)", x: -20 });
         return gsap.to(chars, {
             opacity: 1,
-            filter: 'blur(0px)',
+            filter: "blur(0px)",
             x: 0,
             duration: opts.duration,
             stagger: opts.stagger,
-            ease: 'power2.out',
+            ease: "power2.out",
             onComplete: opts.onComplete,
         });
     },
 
     rotate: (chars, opts) => {
-        gsap.set(chars, { opacity: 0, rotateY: 90, transformOrigin: 'center center' });
+        gsap.set(chars, { opacity: 0, rotateY: 90, transformOrigin: "center center" });
         return gsap.to(chars, {
             opacity: 1,
             rotateY: 0,
             duration: opts.duration,
             stagger: opts.stagger,
-            ease: 'power3.out',
+            ease: "power3.out",
             onComplete: opts.onComplete,
         });
     },
@@ -155,7 +164,7 @@ const animations: Record<
             scale: 1,
             duration: opts.duration,
             stagger: opts.stagger,
-            ease: 'back.out(2)',
+            ease: "back.out(2)",
             onComplete: opts.onComplete,
         });
     },
@@ -166,23 +175,21 @@ const animations: Record<
         chars.forEach((char, i) => {
             const charTl = gsap.timeline();
 
-            // Glitch sequence
             for (let j = 0; j < 5; j++) {
                 charTl.to(char, {
                     x: gsap.utils.random(-5, 5),
                     y: gsap.utils.random(-3, 3),
                     opacity: gsap.utils.random(0.5, 1),
-                    color: j % 2 === 0 ? '#ff0055' : '#00ffff',
+                    color: j % 2 === 0 ? "#ff0055" : "#00ffff",
                     duration: 0.05,
                 });
             }
 
-            // Settle
             charTl.to(char, {
                 x: 0,
                 y: 0,
                 opacity: 1,
-                color: 'inherit',
+                color: "inherit",
                 duration: 0.1,
             });
 
@@ -198,162 +205,111 @@ const animations: Record<
             opacity: 1,
             duration: opts.duration,
             stagger: opts.stagger,
-            ease: 'power2.out',
+            ease: "power2.out",
             onComplete: opts.onComplete,
         });
     },
 };
 
-/**
- * Creates letter-by-letter text animations
- *
- * @example
- * ```ts
- * // Basic cascade animation
- * const split = createSplitText('.hero-title', {
- *   animation: 'cascade',
- * });
- *
- * // Wave animation (loops)
- * const split = createSplitText('.title', {
- *   animation: 'wave',
- *   loop: true,
- * });
- *
- * // On scroll
- * const split = createSplitText('.section-title', {
- *   animation: 'spring',
- *   trigger: 'scroll',
- * });
- *
- * // Replay
- * split.replay?.();
- *
- * // Cleanup
- * split.destroy();
- * ```
- */
 export function createSplitText(
     selector: ElementSelector,
     options: SplitTextOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion()) {
+    if (!hasWindow() || !hasDocument() || prefersReducedMotion()) {
         return { destroy: () => {} };
     }
 
-    const opts = { ...defaultOptions, ...options };
-    const elements = resolveElements(selector);
+    // If trigger is hover, skip on non-hover devices
+    if ((options.trigger ?? defaultOptions.trigger) === "hover" && !supportsHover()) {
+        return { destroy: () => {} };
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const opts: ResolvedOpts = { ...defaultOptions, ...options };
+    const elements = resolveElements(selector, opts.root);
+
     const cleanupFns: Array<() => void> = [];
     const charArrays: HTMLSpanElement[][] = [];
-    let currentAnimation: gsap.core.Timeline | gsap.core.Tween | null = null;
+    const originals = new Map<HTMLElement, string>();
+    const createdTriggers: ScrollTrigger[] = [];
 
     const runAnimation = (chars: HTMLSpanElement[]) => {
-        const animationFn = animations[opts.animation];
-        if (animationFn) {
-            currentAnimation = animationFn(chars, opts);
-        }
+        const fn = animations[opts.animation];
+        return fn ? fn(chars, opts) : null;
     };
 
-    elements.forEach((element) => {
+    const schedule = (fn: () => void) => {
+        if (opts.delay <= 0) return fn();
+        window.setTimeout(fn, opts.delay * 1000);
+    };
+
+    let currentAnimation: gsap.core.Timeline | gsap.core.Tween | null = null;
+
+    for (const element of elements) {
         const el = element as HTMLElement;
 
-        // Store original text
-        const originalText = el.textContent || '';
-        el.dataset.originalText = originalText;
+        const originalText = el.textContent ?? "";
+        originals.set(el, originalText);
 
-        // Split into characters
         const chars = splitIntoChars(el, opts.charClass);
         charArrays.push(chars);
 
-        // Set initial hidden state (except wave)
-        if (opts.animation !== 'wave') {
-            gsap.set(chars, { opacity: 0 });
+        if (opts.animation !== "wave") gsap.set(chars, { opacity: 0 });
+
+        if (opts.trigger === "load") {
+            schedule(() => {
+                currentAnimation?.kill();
+                currentAnimation = runAnimation(chars);
+            });
         }
 
-        if (opts.trigger === 'load') {
-            setTimeout(() => runAnimation(chars), opts.delay * 1000);
-        } else if (opts.trigger === 'scroll') {
-            const scrollTrigger = ScrollTrigger.create({
+        if (opts.trigger === "scroll") {
+            const st = ScrollTrigger.create({
                 trigger: el,
                 start: opts.scrollStart,
-                onEnter: () => {
-                    setTimeout(() => runAnimation(chars), opts.delay * 1000);
-                },
                 once: true,
+                onEnter: () => {
+                    schedule(() => {
+                        currentAnimation?.kill();
+                        currentAnimation = runAnimation(chars);
+                    });
+                },
             });
 
-            cleanupFns.push(() => scrollTrigger.kill());
-        } else if (opts.trigger === 'hover') {
-            // Show text initially
-            gsap.set(chars, { opacity: 1 });
-
-            const handleMouseEnter = () => runAnimation(chars);
-            el.addEventListener('mouseenter', handleMouseEnter);
-            cleanupFns.push(() => el.removeEventListener('mouseenter', handleMouseEnter));
+            createdTriggers.push(st);
         }
-    });
+
+        if (opts.trigger === "hover") {
+            gsap.set(chars, { opacity: 1 });
+            const onEnter = () => {
+                currentAnimation?.kill();
+                currentAnimation = runAnimation(chars);
+            };
+            el.addEventListener("mouseenter", onEnter);
+            cleanupFns.push(() => el.removeEventListener("mouseenter", onEnter));
+        }
+    }
 
     return {
         destroy: () => {
-            if (currentAnimation) {
-                currentAnimation.kill();
-            }
-            charArrays.flat().forEach((char) => gsap.killTweensOf(char));
+            currentAnimation?.kill();
+
+            for (const st of createdTriggers) st.kill();
             cleanupFns.forEach((fn) => fn());
 
+            for (const ch of charArrays.flat()) gsap.killTweensOf(ch);
+
             // Restore original text
-            elements.forEach((el) => {
-                const htmlEl = el as HTMLElement;
-                if (htmlEl.dataset.originalText) {
-                    htmlEl.textContent = htmlEl.dataset.originalText;
-                }
-            });
+            for (const [el, text] of originals.entries()) {
+                el.textContent = text;
+            }
         },
         replay: () => {
-            if (currentAnimation) {
-                currentAnimation.kill();
+            currentAnimation?.kill();
+            for (const chars of charArrays) {
+                currentAnimation = runAnimation(chars);
             }
-            charArrays.forEach((chars) => {
-                // Reset and replay
-                const animationFn = animations[opts.animation];
-                if (animationFn) {
-                    currentAnimation = animationFn(chars, opts);
-                }
-            });
-        },
-    };
-}
-
-/**
- * Auto-initialize split text on elements with data-split-text attribute
- *
- * @example
- * ```html
- * <h1 data-split-text data-split-text-animation="cascade">
- *   Hello World
- * </h1>
- * ```
- */
-export function initSplitText(): EffectInstance {
-    const elements = document.querySelectorAll('[data-split-text]');
-    const instances: EffectInstance[] = [];
-
-    elements.forEach((el) => {
-        const options: SplitTextOptions = {
-            animation: (el.getAttribute('data-split-text-animation') as SplitTextAnimation) || 'cascade',
-            duration: parseFloat(el.getAttribute('data-split-text-duration') || '0.8'),
-            stagger: parseFloat(el.getAttribute('data-split-text-stagger') || '0.08'),
-            delay: parseFloat(el.getAttribute('data-split-text-delay') || '0'),
-            trigger: (el.getAttribute('data-split-text-trigger') as AnimationTrigger) || 'load',
-            loop: el.getAttribute('data-split-text-loop') === 'true',
-        };
-
-        instances.push(createSplitText(el, options));
-    });
-
-    return {
-        destroy: () => {
-            instances.forEach((instance) => instance.destroy());
         },
     };
 }

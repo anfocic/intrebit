@@ -4,7 +4,7 @@ export function hasDocument(): boolean {
     return typeof document !== "undefined";
 }
 
-function hasWindow(): boolean {
+export function hasWindow(): boolean {
     return typeof window !== "undefined";
 }
 

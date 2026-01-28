@@ -1,25 +1,45 @@
-import {gsap} from 'gsap';
-import {type EffectInstance, type ElementSelector,} from '../types';
-import {prefersReducedMotion, resolveElements, supportsHover} from "../utils/dom.ts";
+import { gsap } from "gsap";
+import type { EffectInstance, ElementSelector } from "../types";
+import {
+    hasWindow,
+    prefersReducedMotion,
+    resolveElements,
+    supportsHover,
+} from "../utils/dom";
+
+/* -------------------------------------------------------------------------- */
+/*                               Parallax Mouse                               */
+/* -------------------------------------------------------------------------- */
 
 export interface ParallaxMouseOptions {
+    /** Optional root for scoping selector queries (used for targets; containers can also be resolved via root) */
+    root?: ParentNode;
+
     /** Movement strength (0-1, where 0.02 is subtle, 0.1 is strong) */
     strength?: number;
+
     /** Separate X strength (optional) */
     strengthX?: number;
+
     /** Separate Y strength (optional) */
     strengthY?: number;
+
     /** Animation duration for smoothness */
     duration?: number;
+
     /** Easing function */
     ease?: string;
+
     /** Reset position on mouse leave */
     resetOnLeave?: boolean;
+
     /** Duration for reset animation */
     resetDuration?: number;
 }
 
-const defaultOptions: Required<Omit<ParallaxMouseOptions, 'strengthX' | 'strengthY'>> & {
+const defaultParallaxMouseOptions: Required<
+    Omit<ParallaxMouseOptions, "root" | "strengthX" | "strengthY">
+> & {
     strengthX?: number;
     strengthY?: number;
 } = {
@@ -27,34 +47,13 @@ const defaultOptions: Required<Omit<ParallaxMouseOptions, 'strengthX' | 'strengt
     strengthX: undefined,
     strengthY: undefined,
     duration: 0.4,
-    ease: 'power3.out',
+    ease: "power3.out",
     resetOnLeave: true,
     resetDuration: 0.6,
 };
 
 /**
- * Creates a parallax effect where elements follow the mouse cursor
- * The element moves opposite to cursor direction for a depth effect
- *
- * @example
- * ```ts
- * // Basic parallax on hero title
- * const parallax = createParallaxMouse('.hero-inner', '.hero-title');
- *
- * // Stronger effect
- * const parallax = createParallaxMouse('.container', '.floating-element', {
- *   strength: 0.05,
- * });
- *
- * // Different X/Y strength
- * const parallax = createParallaxMouse('.hero', '.title', {
- *   strengthX: 0.03,
- *   strengthY: 0.01,
- * });
- *
- * // Cleanup
- * parallax.destroy();
- * ```
+ * Container listens for mouse movement; target(s) move relative to cursor position within container.
  */
 export function createParallaxMouse(
     containerSelector: ElementSelector,
@@ -65,78 +64,98 @@ export function createParallaxMouse(
         return { destroy: () => {} };
     }
 
-    const opts = { ...defaultOptions, ...options };
-    const containers = resolveElements(containerSelector);
-    const cleanupFns: Array<() => void> = [];
-
+    const opts = { ...defaultParallaxMouseOptions, ...options };
     const strengthX = opts.strengthX ?? opts.strength;
     const strengthY = opts.strengthY ?? opts.strength;
 
-    containers.forEach((container: Element) => {
-        const targets = resolveElements(targetSelector);
+    // Resolve containers (optionally scoped)
+    const containers = resolveElements(containerSelector, opts.root);
+    const cleanupFns: Array<() => void> = [];
 
-        const handleMouseMove = (e: Event) => {
-            const mouseEvent = e as MouseEvent;
-            const rect = (container as HTMLElement).getBoundingClientRect();
-            const x = mouseEvent.clientX - rect.left - rect.width / 2;
-            const y = mouseEvent.clientY - rect.top - rect.height / 2;
+    for (const container of containers) {
+        const containerEl = container as HTMLElement;
 
-            targets.forEach((target: Element) => {
+        // IMPORTANT: resolve targets *within the container* by default.
+        // If user passes actual elements, resolveElements will just use them.
+        const targets =
+            typeof targetSelector === "string"
+                ? resolveElements(targetSelector, containerEl)
+                : resolveElements(targetSelector, opts.root);
+
+        const handleMouseMove = (e: MouseEvent) => {
+            const rect = containerEl.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+
+            for (const target of targets) {
                 gsap.to(target, {
                     x: x * strengthX,
                     y: y * strengthY,
                     duration: opts.duration,
                     ease: opts.ease,
-                    overwrite: true,
+                    overwrite: "auto",
                 });
-            });
+            }
         };
 
         const handleMouseLeave = () => {
             if (!opts.resetOnLeave) return;
 
-            targets.forEach((target) => {
+            for (const target of targets) {
                 gsap.to(target, {
                     x: 0,
                     y: 0,
                     duration: opts.resetDuration,
                     ease: opts.ease,
-                    overwrite: true,
+                    overwrite: "auto",
                 });
-            });
+            }
         };
 
-        container.addEventListener('mousemove', handleMouseMove);
-        container.addEventListener('mouseleave', handleMouseLeave);
+        containerEl.addEventListener("mousemove", handleMouseMove);
+        containerEl.addEventListener("mouseleave", handleMouseLeave);
 
         cleanupFns.push(() => {
-            container.removeEventListener('mousemove', handleMouseMove);
-            container.removeEventListener('mouseleave', handleMouseLeave);
-            targets.forEach((target) => gsap.killTweensOf(target));
+            containerEl.removeEventListener("mousemove", handleMouseMove);
+            containerEl.removeEventListener("mouseleave", handleMouseLeave);
+
+            for (const target of targets) {
+                gsap.killTweensOf(target);
+                gsap.set(target, { clearProps: "x,y" });
+            }
         });
-    });
+    }
 
     return {
-        destroy: () => {
-            cleanupFns.forEach((fn) => fn());
-        },
+        destroy: () => cleanupFns.forEach((fn) => fn()),
     };
 }
 
+/* -------------------------------------------------------------------------- */
+/*                                 Scroll Fade                                */
+/* -------------------------------------------------------------------------- */
+
 export interface ScrollFadeOptions {
+    /** Optional root for scoping selector queries */
+    root?: ParentNode;
+
     /** Fade start scroll position (px) */
     startY?: number;
+
     /** Fully faded at this scroll position (px) */
     endY?: number;
+
     /** Minimum opacity */
     minOpacity?: number;
+
     /** Parallax Y movement multiplier */
     parallaxStrength?: number;
+
     /** Animation duration for smoothness */
     duration?: number;
 }
 
-const defaultScrollFadeOptions: Required<ScrollFadeOptions> = {
+const defaultScrollFadeOptions: Required<Omit<ScrollFadeOptions, "root">> = {
     startY: 0,
     endY: 600,
     minOpacity: 0.85,
@@ -144,36 +163,16 @@ const defaultScrollFadeOptions: Required<ScrollFadeOptions> = {
     duration: 0.3,
 };
 
-/**
- * Creates a scroll-based fade and parallax effect
- * Element fades and moves as user scrolls down
- *
- * @example
- * ```ts
- * // Basic scroll fade
- * const scrollFade = createScrollFade('.hero-inner');
- *
- * // Customized
- * const scrollFade = createScrollFade('.hero-content', {
- *   endY: 400,
- *   minOpacity: 0,
- *   parallaxStrength: 0.1,
- * });
- *
- * // Cleanup
- * scrollFade.destroy();
- * ```
- */
 export function createScrollFade(
     selector: ElementSelector,
     options: ScrollFadeOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion()) {
+    if (!hasWindow() || prefersReducedMotion()) {
         return { destroy: () => {} };
     }
 
     const opts = { ...defaultScrollFadeOptions, ...options };
-    const elements = resolveElements(selector);
+    const elements = resolveElements(selector, opts.root);
     let ticking = false;
 
     const handleScroll = () => {
@@ -182,69 +181,67 @@ export function createScrollFade(
         ticking = true;
         requestAnimationFrame(() => {
             const y = window.scrollY;
+            const denom = Math.max(1, opts.endY - opts.startY);
 
-            elements.forEach((element) => {
-                // Calculate opacity based on scroll position
-                const progress = Math.min(Math.max((y - opts.startY) / (opts.endY - opts.startY), 0), 1);
+            for (const element of elements) {
+                const progress = Math.min(
+                    Math.max((y - opts.startY) / denom, 0),
+                    1
+                );
                 const opacity = 1 - progress * (1 - opts.minOpacity);
 
                 gsap.to(element, {
                     y: y * opts.parallaxStrength,
                     opacity,
                     duration: opts.duration,
-                    overwrite: true,
+                    overwrite: "auto",
                 });
-            });
+            }
 
             ticking = false;
         });
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    // Initial call
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
     return {
         destroy: () => {
-            window.removeEventListener('scroll', handleScroll);
-            elements.forEach((el) => {
+            window.removeEventListener("scroll", handleScroll);
+            for (const el of elements) {
                 gsap.killTweensOf(el);
-                gsap.set(el, { clearProps: 'y,opacity' });
-            });
+                gsap.set(el, { clearProps: "y,opacity" });
+            }
         },
     };
 }
 
-/**
- * Creates a background parallax drift effect
- * Background position shifts slowly in a loop
- *
- * @example
- * ```ts
- * const bgDrift = createBackgroundDrift('.hero-section', {
- *   startPosition: '50% 0%',
- *   endPosition: '50% 12%',
- *   duration: 12,
- * });
- * ```
- */
+/* -------------------------------------------------------------------------- */
+/*                              Background Drift                              */
+/* -------------------------------------------------------------------------- */
+
 export interface BackgroundDriftOptions {
+    /** Optional root for scoping selector queries */
+    root?: ParentNode;
+
     /** Starting background position */
     startPosition?: string;
+
     /** Ending background position */
     endPosition?: string;
+
     /** Duration for one direction */
     duration?: number;
+
     /** Easing function */
     ease?: string;
 }
 
-const defaultBgDriftOptions: Required<BackgroundDriftOptions> = {
-    startPosition: '50% 0%',
-    endPosition: '50% 12%',
+const defaultBgDriftOptions: Required<Omit<BackgroundDriftOptions, "root">> = {
+    startPosition: "50% 0%",
+    endPosition: "50% 12%",
     duration: 12,
-    ease: 'sine.inOut',
+    ease: "sine.inOut",
 };
 
 export function createBackgroundDrift(
@@ -256,76 +253,33 @@ export function createBackgroundDrift(
     }
 
     const opts = { ...defaultBgDriftOptions, ...options };
-    const elements = resolveElements(selector);
+    const elements = resolveElements(selector, opts.root);
     const tweens: gsap.core.Tween[] = [];
 
-    elements.forEach((element) => {
+    for (const element of elements) {
         gsap.set(element, { backgroundPosition: opts.startPosition });
 
-        const tween = gsap.to(element, {
-            backgroundPosition: opts.endPosition,
-            duration: opts.duration,
-            ease: opts.ease,
-            yoyo: true,
-            repeat: -1,
-        });
-
-        tweens.push(tween);
-    });
+        tweens.push(
+            gsap.to(element, {
+                backgroundPosition: opts.endPosition,
+                duration: opts.duration,
+                ease: opts.ease,
+                yoyo: true,
+                repeat: -1,
+            })
+        );
+    }
 
     return {
         destroy: () => {
-            tweens.forEach((tween) => tween.kill());
-            elements.forEach((el) => gsap.set(el, { clearProps: 'backgroundPosition' }));
+            for (const tween of tweens) tween.kill();
+            for (const el of elements) gsap.set(el, { clearProps: "backgroundPosition" });
         },
         pause: () => {
-            tweens.forEach((tween) => tween.pause());
+            for (const tween of tweens) tween.pause();
         },
         resume: () => {
-            tweens.forEach((tween) => tween.resume());
-        },
-    };
-}
-
-/**
- * Auto-initialize parallax effects from data attributes
- */
-export function initParallaxEffects(): EffectInstance {
-    const instances: EffectInstance[] = [];
-
-    // Parallax mouse
-    document.querySelectorAll('[data-parallax-mouse]').forEach((container) => {
-        const targetSelector = container.getAttribute('data-parallax-target') || container.getAttribute('data-parallax-mouse');
-        if (targetSelector) {
-            const options: ParallaxMouseOptions = {
-                strength: parseFloat(container.getAttribute('data-parallax-strength') || '0.02'),
-            };
-            instances.push(createParallaxMouse(container, targetSelector, options));
-        }
-    });
-
-    // Scroll fade
-    document.querySelectorAll('[data-scroll-fade]').forEach((el) => {
-        const options: ScrollFadeOptions = {
-            endY: parseFloat(el.getAttribute('data-scroll-fade-end') || '600'),
-            minOpacity: parseFloat(el.getAttribute('data-scroll-fade-min-opacity') || '0.85'),
-            parallaxStrength: parseFloat(el.getAttribute('data-scroll-fade-parallax') || '0.08'),
-        };
-        instances.push(createScrollFade(el, options));
-    });
-
-    // Background drift
-    document.querySelectorAll('[data-bg-drift]').forEach((el) => {
-        const options: BackgroundDriftOptions = {
-            endPosition: el.getAttribute('data-bg-drift-end') || '50% 12%',
-            duration: parseFloat(el.getAttribute('data-bg-drift-duration') || '12'),
-        };
-        instances.push(createBackgroundDrift(el, options));
-    });
-
-    return {
-        destroy: () => {
-            instances.forEach((i) => i.destroy());
+            for (const tween of tweens) tween.resume();
         },
     };
 }
