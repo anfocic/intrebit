@@ -1,7 +1,9 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { AnimationTrigger, EffectInstance, ElementSelector } from "../types";
-import { prefersReducedMotion, resolveElements, hasWindow, hasDocument, supportsHover } from "../utils/dom";
+import { prefersReducedMotion, resolveElements, supportsHover } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup } from "../utils/instance";
 
 export type SplitTextAnimation =
     | "cascade"
@@ -215,24 +217,22 @@ export function createSplitText(
     selector: ElementSelector,
     options: SplitTextOptions = {}
 ): EffectInstance {
-    if (!hasWindow() || !hasDocument() || prefersReducedMotion()) {
-        return { destroy: () => {} };
-    }
+    const g = guard({
+        requireDocument: true,
+        requireHover:
+            (options.trigger ?? defaultOptions.trigger) === "hover",
+    });
 
-    // If trigger is hover, skip on non-hover devices
-    if ((options.trigger ?? defaultOptions.trigger) === "hover" && !supportsHover()) {
-        return { destroy: () => {} };
-    }
+    if (!g.ok) return g.instance;
 
     gsap.registerPlugin(ScrollTrigger);
 
     const opts: ResolvedOpts = { ...defaultOptions, ...options };
+    const cleanup = createCleanup();
     const elements = resolveElements(selector, opts.root);
 
-    const cleanupFns: Array<() => void> = [];
     const charArrays: HTMLSpanElement[][] = [];
     const originals = new Map<HTMLElement, string>();
-    const createdTriggers: ScrollTrigger[] = [];
 
     const runAnimation = (chars: HTMLSpanElement[]) => {
         const fn = animations[opts.animation];
@@ -277,7 +277,7 @@ export function createSplitText(
                 },
             });
 
-            createdTriggers.push(st);
+            cleanup.add(() => st.kill());
         }
 
         if (opts.trigger === "hover") {
@@ -286,8 +286,7 @@ export function createSplitText(
                 currentAnimation?.kill();
                 currentAnimation = runAnimation(chars);
             };
-            el.addEventListener("mouseenter", onEnter);
-            cleanupFns.push(() => el.removeEventListener("mouseenter", onEnter));
+            cleanup.on(el, "mouseenter", onEnter);
         }
     }
 
@@ -295,15 +294,15 @@ export function createSplitText(
         destroy: () => {
             currentAnimation?.kill();
 
-            for (const st of createdTriggers) st.kill();
-            cleanupFns.forEach((fn) => fn());
+            for (const chars of charArrays.flat()) {
+                gsap.killTweensOf(chars);
+            }
 
-            for (const ch of charArrays.flat()) gsap.killTweensOf(ch);
-
-            // Restore original text
             for (const [el, text] of originals.entries()) {
                 el.textContent = text;
             }
+
+            cleanup.destroy();
         },
         replay: () => {
             currentAnimation?.kill();

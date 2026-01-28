@@ -1,6 +1,8 @@
 import { gsap } from "gsap";
 import type { ElementSelector, EffectInstance } from "../types";
-import { resolveElements, prefersReducedMotion, supportsHover } from "../utils/dom";
+import { resolveElements } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup, noopInstance } from "../utils/instance";
 
 export interface HoverLiftOptions {
     root?: ParentNode;
@@ -12,7 +14,7 @@ export interface HoverLiftOptions {
     durationIn?: number;
     durationOut?: number;
     ease?: string;
-    silent?: boolean;
+    silent?: boolean; // keep for future logging if you want
 }
 
 const defaults: Required<Omit<HoverLiftOptions, "root" | "color" | "silent">> & {
@@ -34,11 +36,15 @@ export function createHoverLift(
     target: ElementSelector,
     options: HoverLiftOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion() || !supportsHover()) return { destroy: () => {} };
+    const g = guard({ requireHover: true });
+    if (!g.ok) return g.instance;
 
     const opts = { ...defaults, ...options };
     const els = resolveElements(target, opts.root);
-    const cleanup: Array<() => void> = [];
+
+    if (!els.length) return noopInstance();
+
+    const c = createCleanup();
 
     for (const el of els) {
         const enter = () => {
@@ -69,15 +75,17 @@ export function createHoverLift(
             gsap.to(el, vars);
         };
 
-        el.addEventListener("mouseenter", enter);
-        el.addEventListener("mouseleave", leave);
+        c.on(el, "mouseenter", enter);
+        c.on(el, "mouseleave", leave);
 
-        cleanup.push(() => {
-            el.removeEventListener("mouseenter", enter);
-            el.removeEventListener("mouseleave", leave);
-            gsap.killTweensOf(el);
-        });
+        // gsap + style cleanup for this element
+        c.add(() => gsap.killTweensOf(el));
+        c.add(() =>
+            gsap.set(el, {
+                clearProps: opts.color ? "transform,color" : "transform",
+            })
+        );
     }
 
-    return { destroy: () => cleanup.forEach((fn) => fn()) };
+    return { destroy: () => c.destroy() };
 }

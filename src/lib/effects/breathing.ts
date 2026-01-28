@@ -1,6 +1,8 @@
 import { gsap } from "gsap";
 import type { EffectInstance, ElementSelector } from "../types";
-import { prefersReducedMotion, resolveElements } from "../utils/dom";
+import { resolveElements } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup, noopInstance } from "../utils/instance";
 
 export interface BreathingOptions {
     /** Optional root for scoping selector queries */
@@ -37,26 +39,25 @@ const defaultOptions: Required<Omit<BreathingOptions, "root" | "xOffset" | "scal
     delay: 0,
 };
 
-/**
- * Creates a subtle breathing/floating animation that loops infinitely.
- *
- * @example
- * ```ts
- * const fx = createBreathing(".hero-title", { yOffset: -2 });
- * // later
- * fx.destroy();
- * ```
- */
 export function createBreathing(
     selector: ElementSelector,
     options: BreathingOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion()) {
-        return { destroy: () => {}, pause: () => {}, resume: () => {} };
+    const g = guard();
+    if (!g.ok) {
+        // breathing is optional; if blocked (SSR / reduced motion), return a noop instance
+        return g.instance;
     }
 
     const opts = { ...defaultOptions, ...options };
     const elements = resolveElements(selector, opts.root);
+
+    if (elements.length === 0) {
+        return noopInstance();
+    }
+
+    const cleanup = createCleanup();
+
     const tweens: gsap.core.Tween[] = [];
 
     for (const element of elements) {
@@ -75,19 +76,19 @@ export function createBreathing(
         tweens.push(gsap.to(element, animProps));
     }
 
-    const clear = () => {
+    cleanup.add(() => {
+        for (const t of tweens) t.kill();
+    });
+
+    cleanup.add(() => {
         for (const el of elements) {
             // Only clear the props we might have set.
             gsap.set(el, { clearProps: "x,y,scale" });
         }
-    };
+    });
 
     return {
-        destroy: () => {
-            for (const t of tweens) t.kill();
-            // Optional: clear inline transforms we applied
-            clear();
-        },
+        destroy: () => cleanup.destroy(),
         pause: () => {
             for (const t of tweens) t.pause();
         },

@@ -1,6 +1,8 @@
 import { gsap } from "gsap";
 import type { EffectInstance } from "../types";
-import { generateId, prefersReducedMotion, hasWindow, hasDocument } from "../utils/dom";
+import { generateId } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup, noopInstance } from "../utils/instance";
 
 export type ParticleType = "dot" | "ring" | "glow" | "mixed";
 export type ParticleMode = "drift" | "follow" | "explode";
@@ -86,16 +88,16 @@ interface Particle {
  * Note: this is global-ish UI. Prefer creating once per page.
  */
 export function createParticles(options: ParticlesOptions = {}): EffectInstance {
-    if (!hasWindow() || !hasDocument() || prefersReducedMotion()) {
-        return { destroy: () => {}, pause: () => {}, resume: () => {} };
-    }
+    const g = guard({ requireDocument: true, allowReducedMotion: false });
+    if (!g.ok) return noopInstance({ pause: () => {}, resume: () => {} });
 
     const opts = { ...defaultOptions, ...options };
+    const cleanup = createCleanup();
 
     // Optional singleton guard
     if (opts.singleton) {
         const existing = document.querySelector(".ambient-particles");
-        if (existing) return { destroy: () => {}, pause: () => {}, resume: () => {} };
+        if (existing) return noopInstance({ pause: () => {}, resume: () => {} });
     }
 
     const particles: Particle[] = [];
@@ -117,7 +119,7 @@ export function createParticles(options: ParticlesOptions = {}): EffectInstance 
     const containerEl = resolveContainer();
     if (!containerEl) {
         console.warn("Particles: Container not found", opts.container);
-        return { destroy: () => {}, pause: () => {}, resume: () => {} };
+        return noopInstance({ pause: () => {}, resume: () => {} });
     }
 
     // Create particle wrapper
@@ -136,6 +138,7 @@ export function createParticles(options: ParticlesOptions = {}): EffectInstance 
   `;
 
     containerEl.appendChild(wrapper);
+    cleanup.add(() => wrapper.remove());
 
     // Determine particle types
     const getParticleType = (index: number): string => {
@@ -258,10 +261,11 @@ export function createParticles(options: ParticlesOptions = {}): EffectInstance 
     };
 
     animate();
+    cleanup.add(() => cancelAnimationFrame(animationId));
 
     if (opts.interactive) {
-        document.addEventListener("mousemove", handleMouseMove);
-        if (opts.mode === "explode") document.addEventListener("click", handleClick);
+        cleanup.on(document, "mousemove", handleMouseMove);
+        if (opts.mode === "explode") cleanup.on(document, "click", handleClick);
     }
 
     // Resize
@@ -271,19 +275,15 @@ export function createParticles(options: ParticlesOptions = {}): EffectInstance 
             if (p.y > window.innerHeight) p.y = window.innerHeight - 50;
         }
     };
-    window.addEventListener("resize", handleResize);
+    cleanup.on(window, "resize", handleResize);
+
+    cleanup.add(() => {
+        for (const p of particles) gsap.killTweensOf(p.el);
+    });
 
     return {
         destroy: () => {
-            cancelAnimationFrame(animationId);
-
-            document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("click", handleClick);
-            window.removeEventListener("resize", handleResize);
-
-            for (const p of particles) gsap.killTweensOf(p.el);
-
-            wrapper.remove();
+            cleanup.destroy();
         },
         pause: () => {
             isPaused = true;
@@ -309,7 +309,7 @@ export function createParticleBurst(
         zIndex: number;
     }> = {}
 ): void {
-    if (!hasWindow() || !hasDocument()) return;
+    if (typeof window === "undefined" || typeof document === "undefined") return;
 
     const {
         count = 12,

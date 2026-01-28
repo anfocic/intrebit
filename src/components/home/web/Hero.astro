@@ -28,9 +28,10 @@ const tagline = "No buzzwords. No nonsense.";
         createRevealSequence,
         onClientReady,
         createSplitText,
-        splitTextPresets,
+        splitTextPresets, createTextScramble,
+        textScramblePresets
     } from "@lib";
-
+    console.log("presets:", textScramblePresets);
     onClientReady(() => {
         document.querySelectorAll("[data-hero]").forEach((root) => {
             createRevealSequence({
@@ -42,6 +43,13 @@ const tagline = "No buzzwords. No nonsense.";
             createSplitText(".hero-title-text", {
                 root,
                 ...splitTextPresets.glitch, // cascade by default
+            });
+
+            createTextScramble(".hero-title", {
+                root,
+                ...textScramblePresets.hacker,
+                // optional override:
+                // text: "Override text if you want"
             });
 
         });

@@ -1,7 +1,9 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { EffectInstance } from "../types";
-import { prefersReducedMotion, hasWindow, hasDocument } from "../utils/dom";
+import { hasWindow } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup, noopInstance } from "../utils/instance";
 
 export type ScrollProgressType = "bar" | "bar-side" | "circle";
 export type ScrollProgressPosition = "top" | "bottom" | "left" | "right";
@@ -61,10 +63,11 @@ const defaultOptions: Required<
     onProgress: undefined,
 };
 
-function ensureScrollTrigger() {
-    if (!hasWindow()) return;
+function ensureScrollTrigger(): boolean {
+    if (!hasWindow()) return false;
     // gsap.registerPlugin is idempotent; safe to call repeatedly
     gsap.registerPlugin(ScrollTrigger);
+    return true;
 }
 
 /** Create the bar progress element */
@@ -200,13 +203,14 @@ function resolveContainer(
 export function createScrollProgress(
     options: ScrollProgressOptions = {}
 ): EffectInstance {
-    if (!hasWindow() || !hasDocument() || prefersReducedMotion()) {
-        return { destroy: () => {} };
-    }
+    const g = guard({ requireDocument: true, allowReducedMotion: false });
+    if (!g.ok) return g.instance;
 
-    ensureScrollTrigger();
+    // ScrollTrigger requires a window; on SSR / non-window envs we noop.
+    if (!ensureScrollTrigger()) return noopInstance();
 
     const opts = { ...defaultOptions, ...options };
+    const cleanup = createCleanup();
 
     const containerEl =
         resolveContainer(opts.container, opts.root) ?? document.body;
@@ -227,6 +231,7 @@ export function createScrollProgress(
     }
 
     document.body.appendChild(element);
+    cleanup.add(() => element.remove());
 
     // Get anim target
     const target =
@@ -246,6 +251,14 @@ export function createScrollProgress(
     }
 
     let tween: gsap.core.Tween | null = null;
+    const killTween = () => {
+        if (!tween) return;
+        const st = tween.scrollTrigger;
+        tween.kill();
+        st?.kill();
+        tween = null;
+    };
+    cleanup.add(killTween);
 
     if (target) {
         const animationProps: gsap.TweenVars = {
@@ -279,15 +292,15 @@ export function createScrollProgress(
 
     return {
         destroy: () => {
-            // Kill only what we created
-            if (tween) {
-                const st = tween.scrollTrigger;
-                tween.kill();
-                st?.kill();
-            }
+            cleanup.destroy();
 
-            if (target) gsap.killTweensOf(target);
-            element.remove();
+            if (target) {
+                gsap.killTweensOf(target);
+                // Ensure no stuck inline styles
+                if (opts.type === "bar") gsap.set(target, { clearProps: "width" });
+                if (opts.type === "bar-side") gsap.set(target, { clearProps: "height" });
+                if (opts.type === "circle") gsap.set(target, { clearProps: "strokeDashoffset,strokeDasharray" });
+            }
         },
     };
 }

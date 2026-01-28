@@ -209,28 +209,3 @@ const pathname = getPathname(Astro.url);
         }
     }
 </style>
-
-<script is:inline>
-    window.addEventListener("DOMContentLoaded", () => {
-        const prefersReduced =
-            window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-
-        if (prefersReduced) return;
-
-        const nav = document.querySelector(".nav");
-        if (!nav) return;
-
-        const threshold = 64; // px before compact mode
-        let last = null;
-
-        const update = () => {
-            const compact = window.scrollY > threshold;
-            if (compact === last) return;
-            last = compact;
-            nav.classList.toggle("nav--compact", compact);
-        };
-
-        update();
-        window.addEventListener("scroll", update, { passive: true });
-    });
-</script>

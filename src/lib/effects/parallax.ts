@@ -1,11 +1,8 @@
 import { gsap } from "gsap";
 import type { EffectInstance, ElementSelector } from "../types";
-import {
-    hasWindow,
-    prefersReducedMotion,
-    resolveElements,
-    supportsHover,
-} from "../utils/dom";
+import { hasWindow, resolveElements } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup, noopInstance } from "../utils/instance";
 
 /* -------------------------------------------------------------------------- */
 /*                               Parallax Mouse                               */
@@ -60,9 +57,8 @@ export function createParallaxMouse(
     targetSelector: ElementSelector,
     options: ParallaxMouseOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion() || !supportsHover()) {
-        return { destroy: () => {} };
-    }
+    const g = guard({ requireHover: true });
+    if (!g.ok) return g.instance;
 
     const opts = { ...defaultParallaxMouseOptions, ...options };
     const strengthX = opts.strengthX ?? opts.strength;
@@ -70,7 +66,7 @@ export function createParallaxMouse(
 
     // Resolve containers (optionally scoped)
     const containers = resolveElements(containerSelector, opts.root);
-    const cleanupFns: Array<() => void> = [];
+    const cleanup = createCleanup();
 
     for (const container of containers) {
         const containerEl = container as HTMLElement;
@@ -112,13 +108,10 @@ export function createParallaxMouse(
             }
         };
 
-        containerEl.addEventListener("mousemove", handleMouseMove);
-        containerEl.addEventListener("mouseleave", handleMouseLeave);
+        cleanup.on(containerEl, "mousemove", handleMouseMove);
+        cleanup.on(containerEl, "mouseleave", handleMouseLeave);
 
-        cleanupFns.push(() => {
-            containerEl.removeEventListener("mousemove", handleMouseMove);
-            containerEl.removeEventListener("mouseleave", handleMouseLeave);
-
+        cleanup.add(() => {
             for (const target of targets) {
                 gsap.killTweensOf(target);
                 gsap.set(target, { clearProps: "x,y" });
@@ -127,7 +120,7 @@ export function createParallaxMouse(
     }
 
     return {
-        destroy: () => cleanupFns.forEach((fn) => fn()),
+        destroy: () => cleanup.destroy(),
     };
 }
 
@@ -167,12 +160,13 @@ export function createScrollFade(
     selector: ElementSelector,
     options: ScrollFadeOptions = {}
 ): EffectInstance {
-    if (!hasWindow() || prefersReducedMotion()) {
-        return { destroy: () => {} };
-    }
+    if (!hasWindow()) return noopInstance();
+    const g = guard();
+    if (!g.ok) return g.instance;
 
     const opts = { ...defaultScrollFadeOptions, ...options };
     const elements = resolveElements(selector, opts.root);
+    const cleanup = createCleanup();
     let ticking = false;
 
     const handleScroll = () => {
@@ -202,17 +196,18 @@ export function createScrollFade(
         });
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
+    cleanup.on(window, "scroll", handleScroll, { passive: true });
     handleScroll();
 
+    cleanup.add(() => {
+        for (const el of elements) {
+            gsap.killTweensOf(el);
+            gsap.set(el, { clearProps: "y,opacity" });
+        }
+    });
+
     return {
-        destroy: () => {
-            window.removeEventListener("scroll", handleScroll);
-            for (const el of elements) {
-                gsap.killTweensOf(el);
-                gsap.set(el, { clearProps: "y,opacity" });
-            }
-        },
+        destroy: () => cleanup.destroy(),
     };
 }
 
@@ -248,33 +243,35 @@ export function createBackgroundDrift(
     selector: ElementSelector,
     options: BackgroundDriftOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion()) {
-        return { destroy: () => {}, pause: () => {}, resume: () => {} };
-    }
+    const g = guard();
+    if (!g.ok) return g.instance;
 
     const opts = { ...defaultBgDriftOptions, ...options };
     const elements = resolveElements(selector, opts.root);
+    const cleanup = createCleanup();
     const tweens: gsap.core.Tween[] = [];
 
     for (const element of elements) {
         gsap.set(element, { backgroundPosition: opts.startPosition });
 
-        tweens.push(
-            gsap.to(element, {
-                backgroundPosition: opts.endPosition,
-                duration: opts.duration,
-                ease: opts.ease,
-                yoyo: true,
-                repeat: -1,
-            })
-        );
+        const tween = gsap.to(element, {
+            backgroundPosition: opts.endPosition,
+            duration: opts.duration,
+            ease: opts.ease,
+            yoyo: true,
+            repeat: -1,
+        });
+
+        tweens.push(tween);
+
+        cleanup.add(() => {
+            tween.kill();
+            gsap.set(element, { clearProps: "backgroundPosition" });
+        });
     }
 
     return {
-        destroy: () => {
-            for (const tween of tweens) tween.kill();
-            for (const el of elements) gsap.set(el, { clearProps: "backgroundPosition" });
-        },
+        destroy: () => cleanup.destroy(),
         pause: () => {
             for (const tween of tweens) tween.pause();
         },

@@ -1,6 +1,8 @@
-import { gsap } from "gsap";
-import type { EffectInstance, ElementSelector } from "../types";
-import { prefersReducedMotion, resolveElements, supportsHover } from "../utils/dom";
+import {gsap} from "gsap";
+import type {EffectInstance, ElementSelector} from "../types";
+import {resolveElements} from "../utils/dom";
+import {guard} from "../utils/guards.ts";
+import {createCleanup, noopInstance} from "../utils/instance.ts";
 
 export interface MagneticOptions {
     /** Optional root for scoping selector queries */
@@ -40,26 +42,19 @@ const defaultOptions: Required<
     returnDuration: 0.6,
 };
 
-/**
- * Creates a magnetic effect on elements that pull toward the cursor.
- *
- * @example
- * ```ts
- * const fx = createMagnetic(".btn", { strength: 0.4 });
- * fx.destroy();
- * ```
- */
+
 export function createMagnetic(
     selector: ElementSelector,
     options: MagneticOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion() || !supportsHover()) {
-        return { destroy: () => {} };
-    }
+    const g = guard({ requireHover: true });
+    if (!g.ok) return g.instance;
 
     const opts = { ...defaultOptions, ...options };
     const elements = resolveElements(selector, opts.root);
-    const cleanupFns: Array<() => void> = [];
+    if (!elements.length) return noopInstance();
+
+    const c = createCleanup();
 
     for (const element of elements) {
         const el = element as HTMLElement;
@@ -112,25 +107,12 @@ export function createMagnetic(
             }
         };
 
-        el.addEventListener("mousemove", handleMouseMove);
-        el.addEventListener("mouseleave", handleMouseLeave);
+        c.on(document, "mousemove", handleMouseMove);
+        c.on(el, "mouseleave", handleMouseLeave);
 
-        cleanupFns.push(() => {
-            el.removeEventListener("mousemove", handleMouseMove);
-            el.removeEventListener("mouseleave", handleMouseLeave);
-
-            gsap.killTweensOf(el);
-            if (inner) gsap.killTweensOf(inner);
-
-            // Optional: clear transforms we applied
-            gsap.set(el, { clearProps: "x,y" });
-            if (inner) gsap.set(inner, { clearProps: "x,y" });
-        });
+        c.add(() => gsap.killTweensOf(el));
+        if (inner) c.add(() => gsap.killTweensOf(inner));
     }
 
-    return {
-        destroy: () => cleanupFns.forEach((fn) => fn()),
-    };
+    return { destroy: () => c.destroy() };
 }
-
-export default createMagnetic;

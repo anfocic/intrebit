@@ -1,6 +1,7 @@
 import { gsap } from "gsap";
 import type { EffectInstance } from "../types";
-import { prefersReducedMotion, supportsHover, hasDocument } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup, noopInstance } from "../utils/instance";
 
 export interface CustomCursorOptions {
     /** Optional root for scoping hover detection (defaults to document) */
@@ -70,19 +71,19 @@ const defaultOptions: Required<
 export function createCustomCursor(
     options: CustomCursorOptions = {}
 ): EffectInstance {
-    if (!hasDocument() || prefersReducedMotion() || !supportsHover()) {
-        return { destroy: () => {} };
-    }
+    const g = guard({ requireHover: true });
+    if (!g.ok) return g.instance;
 
     const opts = { ...defaultOptions, ...options };
     const root: ParentNode = opts.root ?? document;
+    const cleanup = createCleanup();
 
     // Optional singleton guard
     if (opts.singleton) {
         const existingDot = document.querySelector(".custom-cursor-dot");
         const existingRing = document.querySelector(".custom-cursor-ring");
         if (existingDot || existingRing) {
-            return { destroy: () => {} };
+            return noopInstance();
         }
     }
 
@@ -124,6 +125,12 @@ export function createCustomCursor(
 
     document.body.appendChild(dot);
     document.body.appendChild(ring);
+    cleanup.add(() => {
+        gsap.killTweensOf(dot);
+        gsap.killTweensOf(ring);
+        dot.remove();
+        ring.remove();
+    });
 
     // Inject style once
     const styleId = opts.styleId ?? "custom-cursor-styles";
@@ -143,6 +150,12 @@ export function createCustomCursor(
     }
 
     document.body.classList.add("has-custom-cursor");
+    cleanup.add(() => {
+        document.body.classList.remove("has-custom-cursor");
+    });
+    cleanup.add(() => {
+        if (createdStyle) styleEl?.remove();
+    });
 
     // State
     let mouseX = 0;
@@ -215,6 +228,7 @@ export function createCustomCursor(
         animationId = requestAnimationFrame(animateRing);
     };
     animateRing();
+    cleanup.add(() => cancelAnimationFrame(animationId));
 
     // Window enter/leave
     const handleWindowLeave = () => {
@@ -246,35 +260,17 @@ export function createCustomCursor(
         if (target.closest(opts.hoverSelector)) setHoverState(false);
     };
 
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseleave", handleWindowLeave);
-    document.addEventListener("mouseenter", handleWindowEnter);
+    cleanup.on(document, "mousemove", handleMouseMove);
+    cleanup.on(document, "mouseleave", handleWindowLeave);
+    cleanup.on(document, "mouseenter", handleWindowEnter);
 
     // Use capture so it triggers early and works reliably for nested elements
-    (root as Document | Element).addEventListener("pointerover", handlePointerOver, true);
-    (root as Document | Element).addEventListener("pointerout", handlePointerOut, true);
+    cleanup.on(root as Document | Element, "pointerover" as any, handlePointerOver as any, true);
+    cleanup.on(root as Document | Element, "pointerout" as any, handlePointerOut as any, true);
 
     return {
         destroy: () => {
-            cancelAnimationFrame(animationId);
-
-            document.removeEventListener("mousemove", handleMouseMove);
-            document.removeEventListener("mouseleave", handleWindowLeave);
-            document.removeEventListener("mouseenter", handleWindowEnter);
-
-            (root as Document | Element).removeEventListener("pointerover", handlePointerOver, true);
-            (root as Document | Element).removeEventListener("pointerout", handlePointerOut, true);
-
-            document.body.classList.remove("has-custom-cursor");
-
-            // Only remove style element if we created it
-            if (createdStyle) styleEl?.remove();
-
-            gsap.killTweensOf(dot);
-            gsap.killTweensOf(ring);
-
-            dot.remove();
-            ring.remove();
+            cleanup.destroy();
         },
     };
 }

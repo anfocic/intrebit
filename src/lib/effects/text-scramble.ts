@@ -1,236 +1,222 @@
-import {gsap} from 'gsap';
-import {ScrollTrigger} from 'gsap/ScrollTrigger';
-import {type AnimationTrigger, type EffectInstance, type ElementSelector} from '../types';
-import {prefersReducedMotion, resolveElements} from "../utils/dom.ts";
-// Register ScrollTrigger
-if (typeof window !== 'undefined') {
+import {gsap} from "gsap";
+import {ScrollTrigger} from "gsap/ScrollTrigger";
+import type {AnimationTrigger, EffectInstance, ElementSelector} from "../types";
+import {resolveElements} from "../utils/dom";
+import {guard} from "../utils/guards";
+import {createCleanup, noopInstance} from "../utils/instance";
+
+// Register ScrollTrigger once (safe)
+if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
 }
 
 export interface TextScrambleOptions {
+    /** Scope querySelectorAll to a root element/document to avoid collisions */
+    root?: ParentNode;
+
     /** Text to reveal (if not using element's textContent) */
     text?: string;
+
     /** Characters to use for scrambling */
     chars?: string;
+
     /** Animation duration in seconds */
     duration?: number;
-    /** Delay before animation starts */
+
+    /** Delay before animation starts (seconds) */
     delay?: number;
+
     /** When to trigger animation */
     trigger?: AnimationTrigger;
+
     /** ScrollTrigger start position */
     scrollStart?: string;
+
     /** Callback when animation completes */
     onComplete?: () => void;
 }
 
-const defaultChars = '!@#$%^&*()_+-=[]{}|;:,.<>?0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const defaultChars =
+    "!@#$%^&*()_+-=[]{}|;:,.<>?0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-const defaultOptions: Required<Omit<TextScrambleOptions, 'text' | 'onComplete'>> & {
+const defaults: Required<
+    Omit<TextScrambleOptions, "text" | "onComplete" | "root">
+> & {
+    root?: ParentNode;
     text?: string;
     onComplete?: () => void;
 } = {
+    root: undefined,
     text: undefined,
     chars: defaultChars,
     duration: 1.5,
     delay: 0,
-    trigger: 'load',
-    scrollStart: 'top 85%',
+    trigger: "load",
+    scrollStart: "top 85%",
     onComplete: undefined,
 };
 
-/**
- * Scrambles text character by character, revealing the final text progressively
- */
-function scrambleText(
-    element: HTMLElement,
+type ScrambleController = { stop: () => void };
+
+function scrambleRaf(
+    el: HTMLElement,
     finalText: string,
-    duration: number,
+    durationSec: number,
     chars: string,
     onComplete?: () => void
-): { stop: () => void } {
+): ScrambleController {
     const length = finalText.length;
-    let iterations = 0;
-    const maxIterations = duration * 60; // ~60fps
-    const revealPoint = maxIterations * 0.3; // Start revealing at 30%
+    const durationMs = Math.max(0.01, durationSec) * 1000;
+
+    // where “reveal” starts (30% into the animation)
+    const revealStart = 0.3;
+
+    let raf = 0;
     let stopped = false;
+    const start = performance.now();
 
-    element.textContent = '';
-    element.setAttribute('aria-label', finalText);
+    el.setAttribute("aria-label", finalText);
+    el.textContent = "";
 
-    const interval = setInterval(() => {
-        if (stopped) {
-            clearInterval(interval);
-            return;
-        }
+    const tick = (now: number) => {
+        if (stopped) return;
 
-        let result = '';
+        const t = Math.min((now - start) / durationMs, 1); // 0..1
+        const resultChars: string[] = new Array(length);
+
         for (let i = 0; i < length; i++) {
-            const charRevealPoint = revealPoint + (i / length) * (maxIterations - revealPoint);
+            const ch = finalText[i];
+            if (ch === " ") {
+                resultChars[i] = " ";
+                continue;
+            }
 
-            if (iterations > charRevealPoint) {
-                result += finalText[i];
-            } else if (finalText[i] === ' ') {
-                result += ' ';
+            // each char reveals slightly later based on index
+            const charRevealT = revealStart + (i / Math.max(1, length - 1)) * (1 - revealStart);
+
+            if (t >= charRevealT) {
+                resultChars[i] = ch;
             } else {
-                result += chars[Math.floor(Math.random() * chars.length)];
+                resultChars[i] = chars[Math.floor(Math.random() * chars.length)];
             }
         }
 
-        element.textContent = result;
-        iterations++;
+        el.textContent = resultChars.join("");
 
-        if (iterations >= maxIterations) {
-            clearInterval(interval);
-            element.textContent = finalText;
+        if (t >= 1) {
+            el.textContent = finalText;
             onComplete?.();
+            return;
         }
-    }, 1000 / 60);
+
+        raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
 
     return {
         stop: () => {
             stopped = true;
-            clearInterval(interval);
-            element.textContent = finalText;
+            if (raf) cancelAnimationFrame(raf);
+            el.textContent = finalText;
         },
     };
 }
 
-/**
- * Creates a text scramble/decode effect
- *
- * @example
- * ```ts
- * // Basic usage
- * const scramble = createTextScramble('.tagline', {
- *   text: 'No buzzwords. No nonsense.',
- * });
- *
- * // On scroll
- * const scramble = createTextScramble('.headline', {
- *   trigger: 'scroll',
- *   duration: 2,
- * });
- *
- * // On hover
- * const scramble = createTextScramble('.hover-text', {
- *   trigger: 'hover',
- * });
- *
- * // Replay
- * scramble.replay?.();
- *
- * // Cleanup
- * scramble.destroy();
- * ```
- */
 export function createTextScramble(
     selector: ElementSelector,
     options: TextScrambleOptions = {}
 ): EffectInstance {
-    if (prefersReducedMotion()) {
-        // Just show the text immediately
-        const elements = resolveElements(selector);
-        elements.forEach((el) => {
-            const text = options.text || (el as HTMLElement).textContent || '';
-            (el as HTMLElement).textContent = text;
-        });
-        return { destroy: () => {} };
-    }
+    const g = guard({ requireDocument: true, allowReducedMotion: false });
+    if (!g.ok) return g.instance;
 
-    const opts = { ...defaultOptions, ...options };
-    const elements = resolveElements(selector);
-    const cleanupFns: Array<() => void> = [];
-    const activeScrambles: Array<{ stop: () => void }> = [];
+    const opts = { ...defaults, ...options };
+    const elements = resolveElements(selector, opts.root);
 
-    const runScramble = (el: HTMLElement) => {
-        const text = opts.text || el.dataset.text || el.textContent || '';
+    if (!elements.length) return noopInstance();
 
-        // Store original text
-        if (!el.dataset.originalText) {
-            el.dataset.originalText = text;
-        }
+    const c = createCleanup();
+    const active = new Map<HTMLElement, ScrambleController>();
 
-        const scramble = scrambleText(el, text, opts.duration, opts.chars, opts.onComplete);
-        activeScrambles.push(scramble);
-        return scramble;
+    const stopFor = (el: HTMLElement) => {
+        active.get(el)?.stop();
+        active.delete(el);
     };
 
-    elements.forEach((element) => {
-        const el = element as HTMLElement;
-        const text = opts.text || el.textContent || '';
+    const getFinalText = (el: HTMLElement) => {
+        // prefer explicit option, then dataset override, then current textContent
+        return opts.text ?? el.dataset.text ?? el.textContent ?? "";
+    };
 
-        // Store text and clear for load/scroll triggers
+    const run = (el: HTMLElement) => {
+        // stop any previous scramble on this element
+        stopFor(el);
+
+        const text = getFinalText(el);
+
+        // store originals once
+        if (!el.dataset.originalText) el.dataset.originalText = text;
         el.dataset.text = text;
 
-        if (opts.trigger === 'load') {
-            el.textContent = '';
-            setTimeout(() => runScramble(el), opts.delay * 1000);
-        } else if (opts.trigger === 'scroll') {
-            el.textContent = '';
+        // start new scramble
+        const ctrl = scrambleRaf(el, text, opts.duration, opts.chars, opts.onComplete);
+        active.set(el, ctrl);
+    };
 
-            const scrollTrigger = ScrollTrigger.create({
+    // Reduced motion: immediately show final state + no listeners/triggers.
+    // (guard already blocks reduced motion; but keeping this is harmless if you later allow it.)
+    // If you want to support reduced motion “show final” instead of noop, change guard() usage.
+
+    for (const node of elements) {
+        const el = node as HTMLElement;
+
+        // Ensure dataset text is present for later triggers
+        el.dataset.text = opts.text ?? el.textContent ?? "";
+
+        if (opts.trigger === "load") {
+            el.textContent = "";
+            const dc = gsap.delayedCall(opts.delay, () => run(el));
+            c.add(() => dc.kill());
+        }
+
+        if (opts.trigger === "scroll") {
+            el.textContent = "";
+            const st = ScrollTrigger.create({
                 trigger: el,
                 start: opts.scrollStart,
                 onEnter: () => {
-                    setTimeout(() => runScramble(el), opts.delay * 1000);
+                    const dc = gsap.delayedCall(opts.delay, () => run(el));
+                    // important: kill delayed calls if destroyed before they run
+                    c.add(() => dc.kill());
                 },
                 once: true,
             });
-
-            cleanupFns.push(() => scrollTrigger.kill());
-        } else if (opts.trigger === 'hover') {
-            // Keep text visible, scramble on hover
-            const handleMouseEnter = () => {
-                runScramble(el);
-            };
-
-            el.addEventListener('mouseenter', handleMouseEnter);
-            cleanupFns.push(() => el.removeEventListener('mouseenter', handleMouseEnter));
+            c.add(() => st.kill());
         }
-    });
+
+        if (opts.trigger === "hover") {
+            const onEnter = () => run(el);
+            // typed helper: your createCleanup().on() supports event maps
+            c.on(el, "mouseenter", onEnter);
+        }
+
+        // always cleanup element-specific controller
+        c.add(() => stopFor(el));
+    }
 
     return {
         destroy: () => {
-            activeScrambles.forEach((s) => s.stop());
-            cleanupFns.forEach((fn) => fn());
+            c.destroy();
+            // optional: restore original text
+            for (const node of elements) {
+                const el = node as HTMLElement;
+                const original = el.dataset.originalText;
+                if (original != null) el.textContent = original;
+            }
         },
         replay: () => {
-            activeScrambles.forEach((s) => s.stop());
-            activeScrambles.length = 0;
-            elements.forEach((el) => runScramble(el as HTMLElement));
-        },
-    };
-}
-
-/**
- * Auto-initialize text scramble on elements with data-text-scramble attribute
- *
- * @example
- * ```html
- * <p data-text-scramble data-text-scramble-trigger="scroll">
- *   This text will scramble in
- * </p>
- * ```
- */
-export function initTextScramble(): EffectInstance {
-    const elements = document.querySelectorAll('[data-text-scramble]');
-    const instances: EffectInstance[] = [];
-
-    elements.forEach((el) => {
-        const options: TextScrambleOptions = {
-            duration: parseFloat(el.getAttribute('data-text-scramble-duration') || '1.5'),
-            delay: parseFloat(el.getAttribute('data-text-scramble-delay') || '0'),
-            trigger: (el.getAttribute('data-text-scramble-trigger') as AnimationTrigger) || 'load',
-            chars: el.getAttribute('data-text-scramble-chars') || defaultChars,
-        };
-
-        instances.push(createTextScramble(el, options));
-    });
-
-    return {
-        destroy: () => {
-            instances.forEach((instance) => instance.destroy());
+            // replay immediately regardless of trigger type (useful for manual testing)
+            for (const node of elements) run(node as HTMLElement);
         },
     };
 }

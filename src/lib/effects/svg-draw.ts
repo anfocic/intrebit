@@ -1,13 +1,9 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { ElementSelector, EffectInstance, AnimationTrigger } from "../types";
-import {
-    prefersReducedMotion,
-    resolveElements,
-    hasWindow,
-    hasDocument,
-    supportsHover,
-} from "../utils/dom";
+import { prefersReducedMotion, resolveElements, hasWindow } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup, noopInstance } from "../utils/instance";
 
 export interface SvgDrawOptions {
     /** Optional root for scoping selector queries */
@@ -77,31 +73,33 @@ export function createSvgDraw(
     selector: ElementSelector,
     options: SvgDrawOptions = {}
 ): EffectInstance {
-    if (!hasWindow() || !hasDocument()) return { destroy: () => {} };
-
     const opts = { ...defaultOptions, ...options };
 
-    // On hover trigger, skip on touch/non-hover devices
-    if (opts.trigger === "hover" && !supportsHover()) {
-        return { destroy: () => {} };
-    }
+    const g = guard({
+        requireDocument: true,
+        requireHover: opts.trigger === "hover",
+        // We handle reduced-motion ourselves (show final state)
+        allowReducedMotion: true,
+    });
+
+    if (!g.ok) return g.instance;
 
     const elements = resolveElements(selector, opts.root);
     const paths = elements.filter(
         (el): el is SVGPathElement => el instanceof SVGPathElement
     );
 
-    if (paths.length === 0) return { destroy: () => {} };
+    if (paths.length === 0) return noopInstance();
 
     // Reduced motion: just show
     if (prefersReducedMotion()) {
         paths.forEach(showPathImmediately);
-        return { destroy: () => {} };
+        return noopInstance();
     }
 
     ensureScrollTrigger();
 
-    const cleanupFns: Array<() => void> = [];
+    const cleanup = createCleanup();
     let currentAnimation: gsap.core.Tween | null = null;
     let st: ScrollTrigger | null = null;
 
@@ -136,7 +134,7 @@ export function createSvgDraw(
                 once: true,
                 onEnter: () => runAnimation(false),
             });
-            cleanupFns.push(() => st?.kill());
+            cleanup.add(() => st?.kill());
         }
     }
 
@@ -148,13 +146,8 @@ export function createSvgDraw(
                 if (opts.reverseOnLeave) runAnimation(true);
             };
 
-            triggerEl.addEventListener("mouseenter", onEnter);
-            triggerEl.addEventListener("mouseleave", onLeave);
-
-            cleanupFns.push(() => {
-                triggerEl.removeEventListener("mouseenter", onEnter);
-                triggerEl.removeEventListener("mouseleave", onLeave);
-            });
+            cleanup.on(triggerEl, "mouseenter", onEnter);
+            cleanup.on(triggerEl, "mouseleave", onLeave);
         }
     }
 
@@ -162,7 +155,7 @@ export function createSvgDraw(
         destroy: () => {
             currentAnimation?.kill();
             st?.kill();
-            cleanupFns.forEach((fn) => fn());
+            cleanup.destroy();
 
             paths.forEach((p) => {
                 gsap.killTweensOf(p);
@@ -199,7 +192,8 @@ export function createSvgUnderline(
     selector: ElementSelector,
     options: SvgUnderlineOptions = {}
 ): EffectInstance {
-    if (!hasWindow() || !hasDocument()) return { destroy: () => {} };
+    const g = guard({ requireDocument: true });
+    if (!g.ok) return g.instance;
 
     const { color, strokeWidth, offsetY, pathD, ...drawOptions } = {
         ...defaultUnderline,
@@ -207,14 +201,25 @@ export function createSvgUnderline(
     };
 
     const elements = resolveElements(selector, drawOptions.root);
+    const cleanup = createCleanup();
     const instances: EffectInstance[] = [];
 
     elements.forEach((element) => {
         const el = element as HTMLElement;
 
-        // container styles
-        if (!el.style.position) el.style.position = "relative";
+        // container styles (restore on destroy)
+        const hadPosition = !!el.style.position;
+        const prevPosition = el.style.position;
+        const prevDisplay = el.style.display;
+
+        if (!hadPosition) el.style.position = "relative";
         el.style.display = "inline-block";
+
+        cleanup.add(() => {
+            // Only revert position if we set it
+            if (!hadPosition) el.style.position = prevPosition;
+            el.style.display = prevDisplay;
+        });
 
         const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         svg.setAttribute("class", "svg-underline");
@@ -249,6 +254,7 @@ export function createSvgUnderline(
         destroy: () => {
             instances.forEach((i) => i.destroy());
             elements.forEach((el) => (el as HTMLElement).querySelector(".svg-underline")?.remove());
+            cleanup.destroy();
         },
         replay: () => instances.forEach((i) => i.replay?.()),
     };

@@ -1,10 +1,8 @@
 import { gsap } from "gsap";
-import {
-    type CleanupFunction,
-    type EffectInstance,
-    type ElementSelector,
-} from "../types";
-import {hasDocument, prefersReducedMotion, resolveElements, supportsHover} from "../utils/dom.ts";
+import { type EffectInstance, type ElementSelector } from "../types";
+import { resolveElements } from "../utils/dom";
+import { guard } from "../utils/guards";
+import { createCleanup } from "../utils/instance";
 
 export interface LetterHoverOptions {
     /** Optional root for scoping selector queries */
@@ -84,14 +82,12 @@ export function createLetterHover(
     selector: ElementSelector,
     options: LetterHoverOptions = {}
 ): EffectInstance {
-    // SSR safety + accessibility constraints
-    if (!hasDocument() || prefersReducedMotion() || !supportsHover()) {
-        return { destroy: () => {} };
-    }
+    const g = guard({ requireHover: true });
+    if (!g.ok) return g.instance;
 
     const opts = { ...defaultLetterHoverOptions, ...options };
     const containers = resolveElements(selector, opts.root);
-    const cleanupFns: CleanupFunction[] = [];
+    const cleanup = createCleanup();
 
     for (const container of containers) {
         const letters = container.querySelectorAll(opts.letterSelector);
@@ -141,19 +137,17 @@ export function createLetterHover(
             gsap.to(letters, animProps);
         };
 
-        container.addEventListener("mouseenter", handleMouseEnter);
-        container.addEventListener("mouseleave", handleMouseLeave);
+        cleanup.on(container, "mouseenter", handleMouseEnter);
+        cleanup.on(container, "mouseleave", handleMouseLeave);
 
-        cleanupFns.push(() => {
-            container.removeEventListener("mouseenter", handleMouseEnter);
-            container.removeEventListener("mouseleave", handleMouseLeave);
+        cleanup.add(() => {
             gsap.killTweensOf(letters);
         });
     }
 
     return {
         destroy: () => {
-            for (const fn of cleanupFns) fn();
+            cleanup.destroy();
         },
     };
 }
