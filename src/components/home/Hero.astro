@@ -1,0 +1,160 @@
+---
+const title = "intrebit";
+const subtitle = "Software, built properly.";
+const tagline = "No buzzwords. No nonsense.";
+---
+
+<section class="hero-section" data-hero aria-label="Hero">
+    <div class="hero-inner">
+        <header class="hero-header">
+            <h1 class="hero-title" data-motion>
+                <span class="hero-title-text" aria-label={title}>
+                    {title}
+                </span>
+            </h1>
+
+            <p class="hero-subtitle" data-motion aria-label={subtitle}>
+                <span class="hero-subtitle-text">{subtitle}</span>
+            </p>
+            <p class="hero-tagline" data-motion aria-label={tagline}>
+                {tagline}
+            </p>
+        </header>
+    </div>
+</section>
+
+<script>
+    import {
+        createRevealSequence,
+        onClientReady,
+        createSplitText,
+        splitTextPresets,
+    } from "@lib";
+    onClientReady(() => {
+        document.querySelectorAll("[data-hero]").forEach((root) => {
+            createRevealSequence({
+                root,
+                title: ".hero-title",
+                text: ".hero-subtitle, .hero-tagline",
+            });
+
+            createSplitText(".hero-title-text", {
+                root,
+                ...splitTextPresets.glitch, // cascade by default
+            });
+
+            createSplitText(".hero-subtitle-text", {
+                root,
+                ...splitTextPresets.glitch, // cascade by default
+            });
+
+            createSplitText(".hero-tagline", {
+                root,
+                ...splitTextPresets.glitch, // cascade by default
+            });
+        });
+    });
+</script>
+
+<style>
+    .hero-section {
+        min-height: calc(95svh - var(--header-height, 72px));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+
+    .hero-inner {
+        text-align: center;
+        width: 100%;
+        max-width: 750px;
+        margin: 0 auto;
+        position: relative;
+    }
+
+    .hero-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 2.5rem;
+    }
+
+    /* ---------- Title ---------- */
+    .hero-title {
+        font-family: var(--font-brand), serif;
+        letter-spacing: 0.04em;
+        font-size: clamp(3rem, 10vw, 5.5rem);
+        font-weight: 750;
+        margin: 0 0 1.5rem;
+        color: var(--text);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        will-change: transform, opacity, clip-path;
+        cursor: default; /* or pointer if it’s a link */
+        transform-origin: center;
+    }
+
+    .hero-title-text {
+        display: inline-flex;
+    }
+
+    /* ---------- Subtitle & Tagline ---------- */
+    .hero-subtitle {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0 0 0.5rem;
+        font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+        font-weight: 600;
+        color: var(--text);
+        line-height: 1.5;
+        will-change: transform, opacity;
+    }
+
+    .hero-tagline {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0;
+        font-size: clamp(1rem, 2vw, 1.15rem);
+        color: var(--text-muted);
+        line-height: 1.5;
+        will-change: transform, opacity;
+    }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 520px) {
+        .hero-section {
+            padding: 3rem 1.25rem 2.5rem;
+            min-height: calc(100svh - 60px);
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 12vw, 3.5rem);
+            margin-bottom: 3rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-tagline {
+            font-size: 0.95rem;
+        }
+
+        .hero-header {
+            margin-bottom: 2rem;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .hero-section {
+            min-height: calc(80svh - 60px);
+            align-items: flex-start; /* Override centering */
+            padding: clamp(3rem, 15vh, 6rem) 1.25rem 0;
+        }
+    }
+</style>

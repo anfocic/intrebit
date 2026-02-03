@@ -225,9 +225,28 @@ a:hover {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    * {
+    [data-motion] {
         animation: none !important;
         transition: none !important;
-        scroll-behavior: auto !important;
+        transform: none !important;
+        filter: none !important;
+        clip-path: none !important;
+    }
+}
+
+.below-hero-content {
+    opacity: 0;
+}
+
+/* Revealed state - triggered after hero animation completes */
+.hero-revealed .below-hero-content {
+    opacity: 1;
+    transition: opacity 0.6s ease-out 0.1s; /* slight delay for smoother handoff */
+}
+
+/* Fallback: if JS fails or takes too long, show content anyway */
+@media (prefers-reduced-motion: reduce) {
+    .below-hero-content {
+        opacity: 1;
     }
 }

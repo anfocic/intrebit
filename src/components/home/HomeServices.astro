@@ -1,0 +1,308 @@
+---
+import Heading from "../shared/Heading.astro";
+const services = [
+    {
+        id: "development",
+        title: "Development",
+        tagline: "Software that fits your business.",
+        description:
+            "Custom software built for your workflow — websites, apps, portals, tools.",
+        icon: `
+      <path d="M10 7 5 12l5 5"/>
+      <path d="M14 7 19 12l-5 5"/>
+    `,
+    },
+    {
+        id: "consulting",
+        title: "Consulting",
+        tagline: "Get a plan before spending money.",
+        description:
+            "We'll look at how your business works, find the bottlenecks, and tell you what's worth fixing — honestly.",
+        icon: `
+      <!-- circle as path -->
+      <path d="M12 2a10 10 0 1 1 0 20a10 10 0 0 1 0-20Z"/>
+      <!-- question mark -->
+      <path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/>
+      <!-- dot (tiny vertical segment, reliable) -->
+      <path d="M12 17.2v.01"/>
+    `,
+    },
+    {
+        id: "automation",
+        title: "Automation",
+        tagline: "Stop doing it manually.",
+        description:
+            "That repetitive task eating your week? We can make it run itself. Invoices, reports, data entry.",
+        icon: `
+      <path d="M12 2v4"/>
+      <path d="M12 18v4"/>
+      <path d="M4.93 4.93l2.83 2.83"/>
+      <path d="M16.24 16.24l2.83 2.83"/>
+      <path d="M2 12h4"/>
+      <path d="M18 12h4"/>
+      <path d="M4.93 19.07l2.83-2.83"/>
+      <path d="M16.24 7.76l2.83-2.83"/>
+    `,
+    },
+];
+---
+
+<section class="services-section" aria-label="What we do">
+    <div class="services-container">
+        <Heading title="What we do " muted=" —  and we're good at it." align="left" mutedPosition="after" />
+
+        <div class="services-grid">
+            {services.map((service, index) => (
+                    <article
+                            class="service-card"
+                            data-service={service.id}
+                            data-card-index={index}
+                    >
+                        <div class="service-card__header">
+                            <div class="service-card__icon" aria-hidden="true">
+                                <svg
+                                        class="service-icon"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="1.75"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        set:html={service.icon}
+                                />
+                            </div>
+                            <h3 class="service-card__title">{service.title}</h3>
+                        </div>
+                        <p class="service-card__tagline">{service.tagline}</p>
+                        <p class="service-card__description">{service.description}</p>
+                    </article>
+            ))}
+        </div>
+    </div>
+</section>
+
+<script>
+    import {createSvgDraw, onClientReady} from "@lib";
+
+    onClientReady(() => {
+        const section = document.querySelector(".services-section");
+        if (!section) return;
+
+        // Draw all icon paths as the section comes into view
+        // Scoping with root prevents collisions if this component is reused.
+        createSvgDraw(".service-icon path", {
+            root: section,
+            trigger: "scroll",
+            scrollStart: "top 75%",
+            duration: 3,
+            stagger: 0.08,
+            ease: "power2.out",
+        });
+    });
+</script>
+
+<style>
+    /* Only apply scroll-animation layout on desktop */
+    @media (min-width: 769px) {
+        .services-section {
+            min-height: 90vh;
+        }
+
+        .services-container {
+            position: sticky;
+            top: 20vh;
+        }
+    }
+
+    .services-container {
+        max-width: var(--container-width, 1100px);
+        margin: 0 auto;
+        padding: 4rem;
+    }
+
+    .services-header {
+        margin-bottom: 2.5rem;
+    }
+
+    .services-eyebrow {
+        margin: 0 0 0.75rem;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+        opacity: 0.7;
+    }
+
+    .service-icon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .services-grid {
+        display: grid;
+        padding-top: 2rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.25rem;
+    }
+
+    .service-card {
+        padding: 1.25rem 1.5rem;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        will-change: transform, opacity;
+        transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+    }
+
+    .service-card:hover {
+        border-color: color-mix(in srgb, var(--text) 15%, var(--border));
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    .service-card__header {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .service-card__icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: color-mix(in srgb, var(--text) 6%, transparent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        flex-shrink: 0;
+        transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .service-card:hover .service-card__icon {
+        color: var(--text);
+        background: color-mix(in srgb, var(--text) 10%, transparent);
+    }
+
+    .service-card__title {
+        margin: 0;
+        font-family: var(--font-brand, sans-serif);
+        font-size: 1.1rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+        color: var(--text);
+    }
+
+    .service-card__tagline {
+        margin: 0 0 0.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-muted);
+    }
+
+    .service-card__description {
+        margin: 0;
+        font-size: 0.85rem;
+        line-height: 1.55;
+        color: var(--text-muted);
+        opacity: 0.85;
+    }
+
+    /* Tablet & Mobile */
+    @media (max-width: 900px) {
+        .services-grid {
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .services-header {
+            text-align: center;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+        .services-section {
+            padding: 3.5rem 1.25rem;
+        }
+
+        .service-card {
+            padding: 1rem 1.25rem;
+        }
+    }
+    /* Light mode */
+    :root[data-theme="light"] .service-card {
+        box-shadow: 0 4px 20px rgba(14, 42, 71, 0.04);
+    }
+
+    :root[data-theme="light"] .service-card:hover {
+        box-shadow: 0 12px 36px rgba(14, 42, 71, 0.08);
+    }
+</style>
+
+<script>
+    import { gsap } from "gsap";
+    import { ScrollTrigger } from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    const isDesktop = window.matchMedia("(min-width: 769px)").matches;
+
+    const section = document.querySelector(".services-section");
+    const cards = gsap.utils.toArray<HTMLElement>(".service-card");
+
+    if (!prefersReduced && section && cards.length) {
+        if (isDesktop) {
+            // Desktop: scrub animation tied to scroll
+            gsap.set(cards, {
+                opacity: 0,
+                y: 50,
+                filter: "blur(8px)"
+            });
+
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: "top 65%",
+                    end: "top 10%",
+                    scrub: 0.6,
+                    once: true
+                }
+            });
+
+            cards.forEach((card, i) => {
+                tl.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    filter: "blur(0px)",
+                    duration: 1,
+                    ease: "power2.out",
+                }, i * 0.5);
+            });
+        } else {
+            // Mobile: simple staggered reveal on scroll into view
+            gsap.set(cards, {
+                opacity: 0,
+                y: 30,
+            });
+
+            cards.forEach((card, i) => {
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    scrollTrigger: {
+                        trigger: card,
+                        start: "top 65%",
+                        toggleActions: "play none none none",
+                    }
+                });
+            });
+        }
+    }
+</script>

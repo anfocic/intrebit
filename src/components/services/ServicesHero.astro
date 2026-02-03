@@ -1,114 +1,113 @@
-<section class="services-hero">
-    <div class="container services-hero__inner">
-        <header class="services-hero__header hero-reveal">
-            <h1 class="title reveal-1">Build it right.</h1>
-            <h1 class="title reveal-2">Keep it running.</h1>
+---
+const title = "Build it once.";
+const titleLine2 = "Keep it working.";
+const subtitle = "You run the business. We build the software that keeps up.";
+const ctaText = "Get in touch";
+const ctaHref = "/contact";
+---
 
-            <p class="subtitle reveal-3">
-                You focus on the business. We'll make sure the software doesn't fall apart.
-            </p>
-        </header>
+<section class="services-hero" data-services-hero>
+    <div class="services-hero__container">
+        <h1 class="services-hero__title" data-reveal="title">
+            {title}<br />{titleLine2}
+        </h1>
+        <p class="services-hero__subtitle" data-reveal="text">{subtitle}</p>
+        <a href={ctaHref} class="services-hero__cta" data-reveal="text">{ctaText}</a>
     </div>
 </section>
 
+<script>
+    import { createRevealSequence, onClientReady } from "@lib";
+
+    onClientReady(() => {
+        const hero = document.querySelector("[data-services-hero]");
+        if (!hero) return;
+
+        createRevealSequence({
+            root: hero,
+            title: "[data-reveal='title']",
+            text: "[data-reveal='text']",
+            titleDuration: 0.7,
+            textDuration: 0.5,
+            stagger: 0.12,
+            yOffset: 20,
+            onComplete: () => {
+                document.documentElement.classList.add('hero-revealed');
+            },
+        });
+    });
+</script>
+
 <style>
     .services-hero {
-        position: relative;
-        padding: 10rem 0;
+        min-height: calc(75vh - var(--header-height, 72px));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 6rem 2rem;
+    }
+
+    .services-hero__container {
+        max-width: var(--container-width, 1100px);
+        width: 100%;
         text-align: center;
-        overflow: hidden;
     }
 
-    .container {
-        max-width: var(--container-width, 1200px);
-        margin: 0 auto;
-        padding: 0 2rem;
-    }
-
-    .services-hero__inner {
-        display: grid;
-        place-items: center;
-    }
-
-    .services-hero__header {
-        max-width: 760px;
-    }
-
-    .title {
-        font-size: clamp(2.1rem, 4vw, 3.2rem);
-        margin: 0;
+    .services-hero__title {
+        margin: 0 0 1.5rem;
+        font-family: var(--font-brand, sans-serif);
+        font-size: clamp(2rem, 6vw, 3.5rem);
+        font-weight: 750;
         letter-spacing: -0.03em;
         line-height: 1.1;
         color: var(--text);
     }
 
-    .subtitle {
-        max-width: 650px;
-        margin: 0 auto;
-        padding-top: 2rem;
-        font-size: 1.15rem;
-        line-height: 1.65;
+    .services-hero__subtitle {
+        margin: 0 0 2rem;
+        font-size: clamp(1rem, 2vw, 1.15rem);
         color: var(--text-muted);
+        line-height: 1.5;
+        max-width: 540px;
+        margin-inline: auto;
     }
 
-    /* =========================================
-       HERO REVEAL — staggered fade up + blur
-       ========================================= */
-
-    .hero-reveal > * {
-        opacity: 0;
-        transform: translateY(14px);
-        filter: blur(12px);
-        animation: heroReveal 700ms cubic-bezier(.2, .8, .2, 1) forwards;
-        will-change: opacity, transform, filter;
+    .services-hero__cta {
+        display: inline-block;
+        padding: 0.875rem 1.75rem;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--bg);
+        background: var(--text);
+        border: none;
+        border-radius: 8px;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    /* Stagger: Title 1 → Title 2 → Subtitle */
-    .hero-reveal .reveal-1 {
-        animation-delay: 100ms;
+    .services-hero__cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     }
 
-    .hero-reveal .reveal-2 {
-        margin-top: 1rem;
-        animation-delay: 1400ms;
+    .services-hero__cta:active {
+        transform: translateY(0);
     }
 
-    .hero-reveal .reveal-3 {
-        animation-delay: 2400ms;
-    }
-
-    @keyframes heroReveal {
-        from {
-            opacity: 0;
-            transform: translateY(14px);
-            filter: blur(12px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-            filter: blur(0);
-        }
-    }
-
-    /* Reduced motion support */
-    @media (prefers-reduced-motion: reduce) {
-        .hero-reveal > * {
-            animation: none !important;
-            opacity: 1 !important;
-            transform: none !important;
-            filter: none !important;
-        }
-    }
-
-    /* --- Responsive --- */
-    @media (max-width: 520px) {
+    @media (max-width: 600px) {
         .services-hero {
-            padding: 5rem 0 3rem;
+            min-height: calc(60vh - var(--header-height, 60px));
+            padding: 3rem 1.25rem;
         }
 
-        .subtitle {
-            font-size: 1.05rem;
-            padding-top: 1.5rem;
+        .services-hero__subtitle {
+            margin-bottom: 1.5rem;
+        }
+
+        .services-hero__cta {
+            padding: 0.75rem 1.5rem;
+            width: 100%;
+            max-width: 280px;
         }
     }
 </style>
