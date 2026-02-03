@@ -22,6 +22,12 @@ import Heading from "../components/shared/Heading.astro";
         align-items: center;
     }
 
+    @media (max-width: 768px) {
+        .heading-wrapper {
+            display: none;
+        }
+    }
+
     .sub-heading {
         margin: 1.5rem auto 0;
         text-align: center;

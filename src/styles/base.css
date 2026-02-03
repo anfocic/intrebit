@@ -100,7 +100,7 @@ a:hover {
     position: relative;
     display: inline-flex;
     width: fit-content;
-    text-decoration: none; !important;
+    text-decoration: none !important;
     color: var(--text-muted);
     transition: color 0.16s var(--ease);
 }
