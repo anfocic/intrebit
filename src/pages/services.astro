@@ -5,23 +5,12 @@ import ServicesCTA from "../components/services/ServicesCTA.astro";
 import ServicesGrid from "../components/services/ServicesGrid.astro";
 import ServicesHero from "../components/services/ServicesHero.astro";
 import HowWeWork from "../components/services/HowWeWork.astro";
-import SectionDivider from "../components/shared/SectionDivider.astro";
 ---
 
 <Layout seo={pageSEO.services}>
-    <main class="services">
-        <ServicesHero/>
-
-        <ServicesGrid/>
-
-        <SectionDivider/>
-
-        <HowWeWork/>
-
-        <SectionDivider/>
-
-        <ServicesCTA/>
-    </main>
-
+    <ServicesHero/>
+    <ServicesGrid/>
+    <HowWeWork/>
+    <ServicesCTA/>
 </Layout>
 

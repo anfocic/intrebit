@@ -1,6 +1,5 @@
 ---
-import Heading from "../../shared/Heading.astro";
-
+import Heading from "../shared/Heading.astro";
 const principles = [
     { label: "Who we are", text: "Millennials done with corporate theatre." },
     { label: "How we work", text: "Few clients. Direct communication. No surprises." },
@@ -9,7 +8,7 @@ const principles = [
 ---
 
 <section class="about" aria-label="About us">
-    <Heading title=" About us"  muted="a bit more — " align="right" mutedPosition="before" />
+    <Heading title=" About us" muted="a bit more — " align="right" mutedPosition="before" />
 
     <div class="principles">
         {principles.map((p) => (
@@ -22,6 +21,12 @@ const principles = [
 </section>
 
 <style>
+    .about {
+        max-width: 1100px;
+        margin-inline: auto;
+        padding: 4rem 2rem;
+    }
+
     .principles {
         display: grid;
         gap: 0.9rem;
@@ -47,5 +52,15 @@ const principles = [
         color: var(--text);
         opacity: 0.9;
         line-height: 1.5;
+    }
+
+    .principle:last-child {
+        border-bottom: none;
+    }
+
+    @media (max-width: 600px) {
+        .about {
+            padding: 3.5rem 1.25rem;
+        }
     }
 </style>

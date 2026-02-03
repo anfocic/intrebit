@@ -1,8 +1,11 @@
 ---
-import {getPathname} from "../../utils/helpers.ts";
 import {navLinks} from "../../config/navLinks.ts";
 import Link from "../shared/Link.astro";
-import MobileMenu from "../shared/MobileMenu.astro";
+import MobileMenu from "./MobileMenu.astro";
+
+function getPathname(url: URL): string {
+    return url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '');
+}
 const pathname = getPathname(Astro.url);
 ---
 

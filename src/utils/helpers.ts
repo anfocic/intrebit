@@ -1,6 +1,4 @@
-export function getPathname(url: URL): string {
-    return url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '');
-}
+
 
 export function formatDate(date: Date | string) {
     const d = typeof date === "string" ? new Date(date) : date;

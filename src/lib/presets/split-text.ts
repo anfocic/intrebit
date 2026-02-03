@@ -101,7 +101,7 @@ export const splitTextPresets = {
     /** Cyber vibe (use rarely) */
     glitch: {
         animation: "glitch",
-        duration: 0.8, // used indirectly
+        duration: 3.8, // used indirectly
         stagger: 0.03,
         delay: 0,
         trigger: "load",

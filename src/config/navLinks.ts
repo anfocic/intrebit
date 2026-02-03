@@ -8,7 +8,6 @@ export const navLinks = [
     { href: "/services", label: "Services" },
     // { href: "/about", label: "About" },
     { href: "/contact" , label: "Contact" },
-    // { path: "/blog", label: "Blog" },
 ];
 
 export const legalLinks: FooterLink[] = [

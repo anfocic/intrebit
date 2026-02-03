@@ -2,358 +2,237 @@
 const services = [
     {
         title: "Build",
-        description: "Custom software. No templates, no shortcuts.",
-        story: "Websites, internal tools, customer portals, you name it - we build it.",
+        description: "Custom software built for how you actually work.",
+        details: "Websites, internal tools, customer portals, mobile apps. We handle the architecture, the code, and the deployment.",
     },
     {
         title: "Fix",
-        description: "Broken systems, slow sites, weird bugs. We sort it.",
-        story: "Something broke and nobody knows why? We dig in and make it behave.",
+        description: "Broken systems, slow sites, inherited messes.",
+        details: "Something's not working and nobody knows why? We dig in, find the root cause, and make it reliable.",
     },
     {
         title: "Automate",
-        description: "Less manual work. More time for actual work.",
-        story: "If you're doing it twice, we can probably automate it.",
+        description: "Turn repetitive tasks into background processes.",
+        details: "Data entry, report generation, invoice handling—if you're doing it twice a week, we can probably make it run itself.",
     },
 ];
 ---
 
-<section class="services" id="services" data-services-section>
-    <div class="container services__layout">
-        <!-- LEFT -->
-        <div class="services__intro">
-            <h2 class="services__title" data-letters>
-                What we do
-            </h2>
+<section class="services below-hero-content" id="services" data-services-section>
+    <div class="services__container">
+        <div class="services__layout">
+            <header class="services__intro">
+                <h2 class="services__title">What we do</h2>
+            </header>
 
-            <p class="services__punchline">
-                Or at least what we tell ourselves to sleep easier at night.
-            </p>
-        </div>
+            <div class="services__list" data-services>
+                {services.map((service, i) => (
+                        <article class="service" data-service data-index={i}>
+                            <button
+                                    class="service__trigger"
+                                    type="button"
+                                    data-trigger
+                                    aria-expanded="false"
+                                    aria-controls={`panel-${i}`}
+                            >
+                                <div class="service__meta">
+                                    <h3 class="service__title">{service.title}</h3>
+                                    <p class="service__description">{service.description}</p>
+                                </div>
+                                <span class="service__chevron" aria-hidden="true">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                    <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                            </button>
 
-        <!-- RIGHT -->
-        <div class="services__list" data-services>
-            {services.map((service, i) => (
-                    <article class="service" data-service data-step={i + 1}>
-                        <button class="service__trigger" type="button" data-trigger aria-expanded="false">
-                            <div class="service__meta">
-                                <h3>{service.title}</h3>
-                                <p>{service.description}</p>
+                            <div class="service__panel" id={`panel-${i}`} data-panel>
+                                <p class="service__details">{service.details}</p>
                             </div>
-
-                            <span class="service__chevron" aria-hidden="true">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                                <path
-                                        d="M6 9l6 6 6-6"
-                                        stroke="currentColor"
-                                        stroke-width="2"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                />
-                            </svg>
-                        </span>
-                        </button>
-
-                        <div class="service__panel" data-panel>
-                            <div class="service__content">
-                                <p class="service__story">{service.story}</p>
-                            </div>
-                        </div>
-                    </article>
-            ))}
+                        </article>
+                ))}
+            </div>
         </div>
     </div>
 </section>
 
 <script>
-    // Letter animation split
-    const splitLetters = () => {
-        const titles = document.querySelectorAll("[data-letters]");
-        titles.forEach((title) => {
-            if (title.querySelector('.char')) return; // Already split
-            const text = title.textContent || "";
-            title.innerHTML = text
-                .split("")
-                .map((char) => {
-                    if (char === " ") return `<span class="char">&nbsp;</span>`;
-                    return `<span class="char">${char}</span>`;
-                })
-                .join("");
+    document.querySelectorAll("[data-trigger]").forEach((trigger) => {
+        trigger.addEventListener("click", () => {
+            const service = trigger.closest("[data-service]");
+            if (!service) return;
+
+            const isOpen = service.getAttribute("data-open") === "true";
+            service.setAttribute("data-open", String(!isOpen));
+            trigger.setAttribute("aria-expanded", String(!isOpen));
         });
-    };
-
-    // Accordion functionality
-    const setupAccordions = () => {
-        const services = document.querySelectorAll("[data-service]");
-
-        services.forEach((service) => {
-            const trigger = service.querySelector("[data-trigger]");
-            if (!trigger) return;
-
-            trigger.addEventListener("click", () => {
-                const isOpen = service.getAttribute("data-open") === "true";
-
-                services.forEach((s) => {
-                    s.setAttribute("data-open", "false");
-                    const btn = s.querySelector("[data-trigger]");
-                    if (btn) btn.setAttribute("aria-expanded", "false");
-                });
-
-                if (!isOpen) {
-                    service.setAttribute("data-open", "true");
-                    trigger.setAttribute("aria-expanded", "true");
-                }
-            });
-        });
-    };
-
-    const init = () => {
-        splitLetters();
-        setupAccordions();
-    };
-
-    document.addEventListener("astro:page-load", init);
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-    } else {
-        init();
-    }
+    });
 </script>
 
 <style>
-    /* =========================================================
-       Layout
-       ========================================================= */
     .services {
-        padding: 6rem 0;
+        padding: 5rem 0;
     }
 
-    .container {
-        max-width: var(--container-width);
+    .services__container {
+        max-width: var(--container-width, 1100px);
         margin: 0 auto;
         padding: 0 2rem;
     }
 
     .services__layout {
         display: grid;
-        grid-template-columns: 1fr 1.4fr;
+        grid-template-columns: 1fr 1.5fr;
         gap: 4rem;
         align-items: start;
     }
 
     .services__intro {
         position: sticky;
-        top: 7rem;
-        align-self: start;
-        max-width: 34ch;
-    }
-
-    .services__intro h2 {
-        margin: 0 0 1.25rem;
-        font-size: clamp(2.8rem, 5vw, 4rem);
-        line-height: 1;
-        letter-spacing: -0.04em;
-        font-weight: 750;
-        color: var(--text);
-    }
-
-    .services__intro p {
-        margin: 0;
-        font-size: clamp(1.15rem, 1.4vw, 1.35rem);
-        line-height: 1.6;
-        color: var(--text-muted);
-        max-width: 30ch;
+        top: 6rem;
     }
 
     .services__title {
-        margin: 0 0 1rem;
-        font-size: clamp(2.2rem, 3.8vw, 3rem);
-        line-height: 1.05;
+        margin: 0;
+        font-family: var(--font-brand, sans-serif);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 750;
         letter-spacing: -0.03em;
-    }
-
-    .services__punchline {
-        margin: 1.25rem 0 0.85rem;
-        font-size: clamp(1.15rem, 1.4vw, 1.35rem);
-        font-weight: 650;
-        letter-spacing: -0.02em;
-        line-height: 1.35;
+        line-height: 1.1;
         color: var(--text);
-        opacity: 0.92;
     }
 
     .services__list {
         display: grid;
-        gap: 1.5rem;
+        gap: 1rem;
     }
 
-    /* =========================================================
-       Service items (accordion)
-       ========================================================= */
+    /* Service card */
     .service {
-        padding: 1.5rem 1.5rem;
+        padding: 1.25rem 1.5rem;
         border: 1px solid var(--border);
         border-radius: 12px;
-        background: rgba(255, 255, 255, 0.02);
+        transition: border-color 0.2s ease;
     }
 
-    /* =========================================================
-       Trigger button
-       ========================================================= */
+    .service:hover {
+        border-color: color-mix(in srgb, var(--text) 15%, var(--border));
+    }
+
+    /* Trigger */
     .service__trigger {
         width: 100%;
         background: transparent;
         border: 0;
         padding: 0;
         cursor: pointer;
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 1.25rem;
-        align-items: start;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 1rem;
         text-align: left;
         color: inherit;
     }
 
-    .service__meta h3 {
-        font-size: clamp(1.2rem, 2vw, 1.4rem);
-        margin: 0 0 0.4rem;
-        font-weight: 650;
-        letter-spacing: -0.02em;
+    .service__meta {
+        flex: 1;
+    }
+
+    .service__title {
+        margin: 0 0 0.35rem;
+        font-family: var(--font-brand, sans-serif);
+        font-size: 1.15rem;
+        font-weight: 700;
         color: var(--text);
     }
 
-    .service__meta p {
+    .service__description {
         margin: 0;
-        font-size: 0.95rem;
+        font-size: 0.9rem;
         color: var(--text-muted);
-        max-width: 68ch;
-        line-height: 1.55;
+        line-height: 1.5;
     }
 
     /* Chevron */
     .service__chevron {
-        width: 40px;
-        height: 40px;
-        border-radius: 10px;
-        display: grid;
-        place-items: center;
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: var(--text-muted);
-        transition: transform 300ms ease, background 300ms ease, color 300ms ease;
+        flex-shrink: 0;
+        transition: transform 0.25s ease, color 0.2s ease, background 0.2s ease;
     }
 
-    .service__trigger:hover .service__chevron {
+    .service:hover .service__chevron {
         color: var(--text);
     }
 
     .service[data-open="true"] .service__chevron {
         transform: rotate(180deg);
         color: var(--text);
-        background: rgba(255, 255, 255, 0.06);
+        background: color-mix(in srgb, var(--text) 8%, transparent);
     }
 
-    /* =========================================================
-       Panel (accordion content)
-       ========================================================= */
+    /* Panel */
     .service__panel {
-        overflow: hidden;
-        max-height: 0;
+        display: grid;
+        grid-template-rows: 0fr;
         opacity: 0;
-        transform: translateY(-6px);
-        transition:
-                max-height 320ms ease,
-                opacity 320ms ease,
-                transform 320ms ease;
+        transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
     }
 
     .service[data-open="true"] .service__panel {
-        max-height: 400px;
+        grid-template-rows: 1fr;
         opacity: 1;
-        transform: translateY(0);
     }
 
-    .service__content {
-        padding-top: 1.25rem;
-        border-top: 1px solid var(--border);
-        margin-top: 1.25rem;
-    }
-
-    .service__story {
+    .service__details {
+        overflow: hidden;
         margin: 0;
+        font-size: 0.9rem;
         color: var(--text-muted);
-        font-size: 0.95rem;
-        line-height: 1.65;
-        max-width: 72ch;
+        line-height: 1.6;
     }
 
-    /* =========================================================
-       Responsive
-       ========================================================= */
-    @media (max-width: 900px) {
+    .service[data-open="true"] .service__details {
+        padding-top: 1rem;
+        margin-top: 1rem;
+        border-top: 1px solid var(--border);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
         .services {
-            padding: 4rem 0;
+            padding: 3.5rem 0;
         }
 
-        .container {
+        .services__container {
             padding: 0 1.25rem;
         }
 
         .services__layout {
             grid-template-columns: 1fr;
-            gap: 2.5rem;
+            gap: 2rem;
         }
 
         .services__intro {
-            position: relative;
-            top: 0;
-            padding: 0;
+            position: static;
             text-align: center;
-            max-width: none;
-        }
-
-        .services__intro p {
-            max-width: none;
         }
 
         .service {
-            padding: 1.25rem 1rem;
-        }
-
-        .service__trigger {
-            gap: 0.75rem;
-        }
-
-        .service__chevron {
-            width: 36px;
-            height: 36px;
-        }
-
-        .service__meta h3 {
-            font-size: 1.1rem;
-        }
-
-        .service__meta p {
-            font-size: 0.9rem;
+            padding: 1rem 1.25rem;
         }
     }
 
-    /* =========================================================
-       Light mode
-       ========================================================= */
-    :global(:root[data-theme="light"]) .service {
-        background: rgba(0, 0, 0, 0.02);
-    }
-
-    :global(:root[data-theme="light"]) .service[data-open="true"] .service__chevron {
-        background: rgba(0, 0, 0, 0.05);
-    }
-
-    /* =========================================================
-       Reduced motion
-       ========================================================= */
+    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
         .service__panel,
         .service__chevron {
-            transition: none !important;
+            transition: none;
         }
     }
 </style>

@@ -28,10 +28,8 @@ const tagline = "No buzzwords. No nonsense.";
         createRevealSequence,
         onClientReady,
         createSplitText,
-        splitTextPresets, createTextScramble,
-        textScramblePresets
+        splitTextPresets,
     } from "@lib";
-    console.log("presets:", textScramblePresets);
     onClientReady(() => {
         document.querySelectorAll("[data-hero]").forEach((root) => {
             createRevealSequence({
@@ -45,32 +43,22 @@ const tagline = "No buzzwords. No nonsense.";
                 ...splitTextPresets.glitch, // cascade by default
             });
 
-            createTextScramble(".hero-title", {
+            createSplitText(".hero-subtitle-text", {
                 root,
-                ...textScramblePresets.hacker,
-                // optional override:
-                // text: "Override text if you want"
+                ...splitTextPresets.glitch, // cascade by default
             });
 
+            createSplitText(".hero-tagline", {
+                root,
+                ...splitTextPresets.glitch, // cascade by default
+            });
         });
     });
 </script>
 
 <style>
-
-    .hero-mark {
-        margin: 1rem auto 1.25rem;
-        width: min(360px, 80%);
-        opacity: 0.9;
-    }
-
-    .hero-mark-svg {
-        width: 100%;
-        height: auto;
-        color: var(--text-muted);
-    }
     .hero-section {
-        min-height: calc(100svh - var(--header-height, 72px));
+        min-height: calc(95svh - var(--header-height, 72px));
         display: flex;
         align-items: center;
         justify-content: center;
@@ -145,11 +133,12 @@ const tagline = "No buzzwords. No nonsense.";
 
         .hero-title {
             font-size: clamp(2.5rem, 12vw, 3.5rem);
-            margin-bottom: 1.25rem;
+            margin-bottom: 3rem;
         }
 
         .hero-subtitle {
             font-size: 1.05rem;
+            margin-bottom: 0.75rem;
         }
 
         .hero-tagline {
@@ -158,6 +147,14 @@ const tagline = "No buzzwords. No nonsense.";
 
         .hero-header {
             margin-bottom: 2rem;
+        }
+    }
+
+    @media (max-width: 520px) {
+        .hero-section {
+            min-height: calc(80svh - 60px);
+            align-items: flex-start; /* Override centering */
+            padding: clamp(3rem, 15vh, 6rem) 1.25rem 0;
         }
     }
 </style>

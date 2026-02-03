@@ -1,20 +1,15 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import {pageSEO} from "../config/seo.pages.ts";
-import HomeMobile from "../components/home/HomeMobile.astro";
-import HomeDesktop from "../components/home/HomeDesktop.astro";
+import Hero from "../components/home/Hero.astro";
+import HomeServices from "../components/home/HomeServices.astro";
+import ContactHero from "../components/contact/ContactHero.astro";
+import HomeAbout from "../components/home/HomeAbout.astro";
 ---
 
 <Layout seo={pageSEO.home}>
-    <main class="coming">
-
-        <div class="desktop-only">
-          <HomeDesktop/>
-        </div>
-
-        <div class="mobile-only">
-            <HomeMobile/>
-        </div>
-
-    </main>
+    <Hero/>
+    <HomeServices/>
+    <HomeAbout/>
+    <ContactHero/>
 </Layout>
