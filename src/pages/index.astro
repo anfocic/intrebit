@@ -5,9 +5,10 @@ import Hero from "../components/home/Hero.astro";
 import HomeServices from "../components/home/HomeServices.astro";
 import ContactHero from "../components/contact/ContactHero.astro";
 import HomeAbout from "../components/home/HomeAbout.astro";
+import {homeSchemas} from "../config/schema.ts";
 ---
 
-<Layout seo={pageSEO.home}>
+<Layout seo={pageSEO.home} schemas={homeSchemas}>
     <Hero/>
     <HomeServices/>
     <HomeAbout/>

@@ -8,15 +8,16 @@ import Footer from "../components/footer/Footer.astro";
 import Header from "../components/header/Header.astro";
 import {buildSEO, type SEOOverrides} from "../config/seo.ts";
 
-
 interface Props {
     title?: string;
     seo?: SEOOverrides;
+    schemas?: object[];
 }
 
 const {
     title,
     seo: seoOverrides = {},
+    schemas = [],
 } = Astro.props;
 
 const seo = buildSEO(Astro.url, {
@@ -30,6 +31,7 @@ const seo = buildSEO(Astro.url, {
 <head>
     <script is:inline src="/scripts/theme.js"/>
     <script is:inline src="/scripts/mobile-nav.js" defer/>
+
     <!-- Favicons -->
     <link rel="icon" href="/favicons/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
@@ -44,6 +46,8 @@ const seo = buildSEO(Astro.url, {
     <!-- Meta -->
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="author" content="intrebit"/>
+    <meta name="generator" content={Astro.generator}/>
 
     <title>{seo.title}</title>
     <meta name="description" content={seo.description}/>
@@ -60,13 +64,16 @@ const seo = buildSEO(Astro.url, {
     <meta property="og:title" content={seo.title}/>
     <meta property="og:description" content={seo.description}/>
     <meta property="og:url" content={seo.canonical}/>
+    <meta property="og:locale" content="en_US"/>
     <meta property="og:image" content={seo.image.url}/>
-    {seo.image.width &&
-            <meta property="og:image:width" content={seo.image.width.toString()}/>}
-    {seo.image.height &&
-            <meta property="og:image:height" content={seo.image.height.toString()}/>}
-    {seo.image.alt &&
-            <meta property="og:image:alt" content={seo.image.alt}/>}
+    {seo.image.width && <meta property="og:image:width" content={seo.image.width.toString()}/>}
+    {seo.image.height && <meta property="og:image:height" content={seo.image.height.toString()}/>}
+    {seo.image.alt && <meta property="og:image:alt" content={seo.image.alt}/>}
+
+    <!-- Structured Data -->
+    {schemas.map((schema) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)}/>
+    ))}
 </head>
 
 <body>

@@ -23,7 +23,7 @@ export const services = [
         id: "automation",
         title: "Automation",
         description:
-            "That repetitive task eating your week? We can make it run itself. Invoices, reports, data entry.",
+            "Repetitive task eating your week?  We can make it run itself. Invoices, reports, data entry.",
         icon: `
       <path d="M12 2v4"/>
       <path d="M12 18v4"/>
@@ -45,7 +45,6 @@ type FooterLink = {
 
 export const navLinks = [
     { href: "/services", label: "Services" },
-    // { href: "/about", label: "About" },
     { href: "/contact" , label: "Contact" },
 ];
 

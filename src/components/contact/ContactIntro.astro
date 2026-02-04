@@ -2,29 +2,53 @@
     <h2 class="contact-intro__title">Let's talk.</h2>
 
     <div class="contact-intro__about">
-        <section class="contact-intro__block" aria-label="Contact">
-            <h3 class="contact-intro__about-label">CONTACT</h3>
+        <section class="contact-intro__block" aria-label="Get in touch">
+            <div class="contact-intro__label-row">
+                <svg class="contact-intro__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <h3 class="contact-intro__about-label">GET IN TOUCH</h3>
+            </div>
             <p>
-                Tell us what’s broken — or what you want built.<br />
-                We’ll reply with a straight answer.
+                Tell us what's broken — or what you want built.<br/>
+                We'll reply with a straight answer.
             </p>
         </section>
 
-        <section class="contact-intro__block" aria-label="What to say">
-            <h3 class="contact-intro__about-label">WHAT TO SAY</h3>
+        <section class="contact-intro__block" aria-label="What to include">
+            <div class="contact-intro__label-row">
+                <svg class="contact-intro__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+                <h3 class="contact-intro__about-label">WHAT TO INCLUDE</h3>
+            </div>
             <p>
-                If you’ve got a deadline, say it.<br />
-                If you’ve got a budget range, even better.
+                If you've got a deadline, say it.<br/>
+                If you've got a budget range, even better.
             </p>
         </section>
 
         <section class="contact-intro__block" aria-label="What happens next">
-            <h3 class="contact-intro__about-label">WHAT HAPPENS NEXT</h3>
+            <div class="contact-intro__label-row">
+                <svg class="contact-intro__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 11 12 14 22 4"/>
+                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                </svg>
+                <h3 class="contact-intro__about-label">WHAT HAPPENS NEXT</h3>
+            </div>
             <p>
-                We’ll ask a couple of questions, then propose a plan.<br />
-                If we’re not a fit, we’ll tell you fast.
+                We'll ask a couple of questions, then propose a plan.<br/>
+                If we're not a fit, we'll tell you fast.
             </p>
         </section>
+
+        <p class="contact-intro__note">
+            No spam. No sales calls. Just a conversation.
+        </p>
+
     </div>
 </div>
 
@@ -40,43 +64,64 @@
         font-weight: 750;
         letter-spacing: -0.03em;
         line-height: 1.15;
-        margin: 0 0 1.25rem;
-        padding-bottom: 2rem;
+        margin: 0;
+        padding-bottom: 1.75rem;
         color: var(--text);
     }
 
-    /* Turn it into 3 clear blocks */
     .contact-intro__about {
         display: flex;
         flex-direction: column;
-        gap: 1.35rem; /* spacing BETWEEN blocks */
-        margin-bottom: 2.5rem;
-        padding-bottom: 4.5rem;
+        gap: 1.5rem;
     }
 
     .contact-intro__block {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem; /* spacing BETWEEN label and text (closer) */
+        gap: 0.4rem;
+    }
+
+    .contact-intro__label-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .contact-intro__icon {
+        width: 18px;
+        height: 18px;
+        color: var(--text-muted);
+        flex-shrink: 0;
     }
 
     .contact-intro__about-label {
         margin: 0;
-        font-size: 1rem;
-        letter-spacing: 0.1em;
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        color: var(--text-muted);
+    }
+
+    .contact-intro__note {
+        margin-top: 1.5rem;
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        font-style: italic;
+        text-align: center;
     }
 
     .contact-intro__block p {
         margin: 0;
-        font-size: 1rem;
-        line-height: 1.6;
+        font-size: 0.95rem;
+        line-height: 1.55;
+        color: var(--text-muted); /* Changed from var(--text) */
+        padding-left: 1.625rem;
     }
 
-    /* Slight breathing room between sentences */
     .contact-intro__block p br {
         content: "";
         display: block;
-        margin-top: 0.35rem;
+        margin-top: 0.25rem;
     }
 
     /* Mobile */
@@ -84,11 +129,45 @@
         .contact-intro {
             position: static;
         }
+
+        .contact-intro__about {
+            gap: 1.25rem;
+        }
     }
 
     @media (max-width: 520px) {
         .contact-intro__title {
             font-size: 1.75rem;
         }
+
+        .contact-intro__block p {
+            padding-left: 0;
+        }
+
+        .contact-intro__icon {
+            display: none;
+        }
+    }
+    .contact-intro__block + .contact-intro__block {
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border);
     }
 </style>
+
+<script>
+    import { createSvgDraw, onClientReady } from "@lib";
+
+    onClientReady(() => {
+        const intro = document.querySelector(".contact-intro");
+        if (!intro) return;
+
+        createSvgDraw(".contact-intro__icon path, .contact-intro__icon polyline, .contact-intro__icon line", {
+            root: intro,
+            trigger: "scroll",
+            scrollStart: "top 80%",
+            duration: 1.5,
+            stagger: 0.15,
+            ease: "power2.out",
+        });
+    });
+</script>

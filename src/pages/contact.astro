@@ -3,35 +3,9 @@ import Layout from "../layouts/Layout.astro";
 
 import ContactHero from "../components/contact/ContactHero.astro";
 import {pageSEO} from "../config/seo.ts";
-import Heading from "../components/shared/Heading.astro";
+import {contactSchemas} from "../config/schema.ts";
 ---
 
-<Layout seo={pageSEO.contact}>
-    <div class="heading-wrapper">
-        <Heading  title="Drop us a line" align="center"/>
-        <p class="sub-heading">No sales pitch, just a conversation.</p>
-    </div>
+<Layout seo={pageSEO.contact} schemas={contactSchemas}>
     <ContactHero/>
 </Layout>
-
-<style>
-    .heading-wrapper {
-        margin: 5rem 0 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-
-    @media (max-width: 768px) {
-        .heading-wrapper {
-            display: none;
-        }
-    }
-
-    .sub-heading {
-        margin: 1.5rem auto 0;
-        text-align: center;
-        max-width: 38ch;
-        color: var(--text-muted);
-    }
-</style>

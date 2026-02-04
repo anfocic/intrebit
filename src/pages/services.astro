@@ -5,9 +5,10 @@ import ServicesCTA from "../components/services/ServicesCTA.astro";
 import ServicesGrid from "../components/services/ServicesGrid.astro";
 import ServicesHero from "../components/services/ServicesHero.astro";
 import HowWeWork from "../components/services/HowWeWork.astro";
+import {servicesSchemas} from "../config/schema.ts";
 ---
 
-<Layout seo={pageSEO.services}>
+<Layout seo={pageSEO.services} schemas={servicesSchemas}>
     <ServicesHero/>
     <ServicesGrid/>
     <HowWeWork/>
