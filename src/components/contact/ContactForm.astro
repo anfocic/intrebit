@@ -49,7 +49,7 @@
 
         <div class="contact-form__footer">
             <p class="contact-form__note">
-                You can also email us at <br>
+                You can also email us at
                 <a href="mailto:hello@intrebit.com">hello@intrebit.com</a>
             </p>
             <button class="contact-form__submit" type="submit">
@@ -70,11 +70,16 @@
         background: var(--surface);
     }
 
-    /* Labels — use tokens, not rgba(white/black) */
-    .contact-form__label {
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: color-mix(in srgb, var(--text) 70%, transparent); /* stronger than --text-muted */
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--s-4);
+    }
+
+    .contact-form__field {
+        display: flex;
+        flex-direction: column;
+        gap: var(--s-2);
     }
 
     /* Inputs */
@@ -131,7 +136,7 @@
     }
 
     .contact-form__footer {
-        margin-top: var(--s-5);
+        margin-top: var(--s-2); /* Reduced since form gap adds space */
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -166,6 +171,12 @@
         outline-offset: 3px;
     }
 
+    .contact-form__label {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: color-mix(in srgb, var(--text) 70%, transparent);
+    }
+
     .contact-form__status {
         margin-top: 1rem;
         font-size: 0.9rem;
@@ -192,8 +203,5 @@
         cursor: not-allowed;
     }
 </style>
+
 <script src="/scripts/contact.js" defer></script>
-
-<script>
-
-</script>

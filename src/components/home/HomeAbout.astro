@@ -2,7 +2,7 @@
 import Heading from "../shared/Heading.astro";
 const principles = [
     { label: "How we think", text: "Clear thinking over corporate performance." },
-    { label: "How we work", text: "Few clients. Direct communication. No surprises." },
+    { label: "How we work", text: "Few clients. Direct communication." },
     { label: "Where we are", text: "Europe-based. Timezone-flexible." },
 ];
 ---
@@ -29,6 +29,7 @@ const principles = [
 
     .principles {
         display: grid;
+        padding-top: 1rem;
         gap: 0.9rem;
     }
 
@@ -36,21 +37,20 @@ const principles = [
         display: grid;
         gap: 0.25rem;
         padding: 0.85rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: var(--border) 1px solid;
     }
 
     .label {
-        font-size: 0.75rem;
+        font-size: 1rem;
         letter-spacing: 0.12em;
         text-transform: uppercase;
         color: var(--text);
-        opacity: 0.75;
         font-weight: 650;
     }
 
     .value {
         color: var(--text);
-        opacity: 0.9;
+        opacity: 0.7;
         line-height: 1.5;
     }
 

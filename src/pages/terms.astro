@@ -1,30 +1,28 @@
 ---
-// src/pages/terms.astro
-import Layout from "../layouts/Layout.astro"; // adjust path if needed
-
+import Layout from "../layouts/Layout.astro";
 const lastUpdated = "24 Jan 2026";
 ---
 
 <Layout title={`Terms | intrebit`}>
-    <div class="terms">
-        <header class="terms__header">
+    <div class="legal">
+        <header class="legal__header">
             <h1>Terms of Use</h1>
-            <p class="terms__meta">Last updated: {lastUpdated}</p>
+            <p class="legal__meta">Last updated: {lastUpdated}</p>
         </header>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <p>
                 These terms apply to your use of <strong>intrebit.com</strong> (the “Site”). By using the
                 Site, you agree to them.
             </p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>1. Who we are</h2>
             <p>The Site is operated by <strong>Intrebit</strong> (“we”, “us”).</p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>2. What this site is</h2>
             <p>
                 This Site is a portfolio + information site. Content is provided for general information
@@ -32,7 +30,7 @@ const lastUpdated = "24 Jan 2026";
             </p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>3. Acceptable use</h2>
             <p>Please don’t:</p>
             <ul>
@@ -43,7 +41,7 @@ const lastUpdated = "24 Jan 2026";
             <p>We may block access if the Site is being abused.</p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>4. Intellectual property</h2>
             <p>
                 Unless stated otherwise, the text, visuals, and branding on the Site belong to Intrebit (or
@@ -52,27 +50,30 @@ const lastUpdated = "24 Jan 2026";
             </p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>5. Open source</h2>
             <p>
                 Some parts of this website are open source and available publicly on Codeberg. If a license
                 is included in the repository, that license applies.
             </p>
             <p>
-                <a class="terms__link" href="https://codeberg.org/intrebit/intrebit-web" target="_blank" rel="noopener noreferrer">
+                <a
+                        class="legal__link"
+                        href="https://codeberg.org/intrebit/intrebit-web"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                >
                     View source on Codeberg
                 </a>
             </p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>6. Links to other sites</h2>
-            <p>
-                We may link to third-party websites. We’re not responsible for their content or policies.
-            </p>
+            <p>We may link to third-party websites. We’re not responsible for their content or policies.</p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>7. Disclaimer</h2>
             <p>
                 We do our best to keep the Site accurate and available, but we don’t guarantee it will be
@@ -80,7 +81,7 @@ const lastUpdated = "24 Jan 2026";
             </p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>8. Limitation of liability</h2>
             <p>
                 To the maximum extent permitted by law, Intrebit is not liable for any loss or damages
@@ -88,92 +89,19 @@ const lastUpdated = "24 Jan 2026";
             </p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>9. Changes</h2>
             <p>
                 We may update these terms from time to time. The “Last updated” date will change when we do.
             </p>
         </section>
 
-        <section class="terms__section">
+        <section class="legal__section">
             <h2>10. Contact</h2>
             <p>
                 Questions? Reach us at{" "}
-                <a class="terms__link" href="mailto:hello@intrebit.com">hello@intrebit.com</a>.
+                <a class="legal__link" href="mailto:hello@intrebit.com">hello@intrebit.com</a>.
             </p>
         </section>
     </div>
 </Layout>
-
-<style>
-    .terms {
-        max-width: 780px;
-        margin: 0 auto;
-        padding: 4.5rem 1.25rem 5rem;
-        color: var(--text);
-    }
-
-    .terms__header h1 {
-        font-size: clamp(2rem, 3.4vw, 2.75rem);
-        letter-spacing: -0.03em;
-        line-height: 1.1;
-        margin: 0 0 0.5rem;
-        font-weight: 750;
-        font-family: var(--font-brand, var(--font-sans));
-    }
-
-    .terms__meta {
-        margin: 0;
-        color: var(--text-muted);
-        font-size: var(--text-sm);
-    }
-
-    .terms__section {
-        margin-top: 2rem;
-    }
-
-    .terms__section h2 {
-        margin: 0 0 0.65rem;
-        font-size: 1.1rem;
-        letter-spacing: -0.01em;
-        font-weight: 700;
-    }
-
-    .terms__section p {
-        margin: 0.75rem 0 0;
-        color: var(--text-muted);
-        line-height: 1.75;
-        font-size: var(--text-base, 1rem);
-    }
-
-    .terms__section p:first-child {
-        margin-top: 0;
-    }
-
-    .terms__section ul {
-        margin: 0.75rem 0 0;
-        padding-left: 1.1rem;
-        color: var(--text-muted);
-        line-height: 1.75;
-    }
-
-    .terms__section li {
-        margin: 0.25rem 0;
-    }
-
-    .terms__link {
-        color: var(--text);
-        text-decoration: none;
-        border-bottom: 1px solid color-mix(in srgb, var(--text) 35%, transparent);
-    }
-
-    .terms__link:hover {
-        border-bottom-color: color-mix(in srgb, var(--text) 60%, transparent);
-    }
-
-    @media (max-width: 520px) {
-        .terms {
-            padding-top: 3.5rem;
-        }
-    }
-</style>

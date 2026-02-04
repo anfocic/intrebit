@@ -1,3 +1,24 @@
+const title = (page: string) => `intrebit — ${page}`;
+
+export const pageSEO: Record<string, SEOOverrides> = {
+    home: {
+        title: title("software, built properly."),
+        description:
+            "Software that works. We build digital infrastructure, interfaces, and systems without corporate BS.",
+    },
+
+    services: {
+        title: title("Services"),
+        description:
+            "Custom software development, outsourcing, infrastructure, and consulting — built right, not rushed.",
+    },
+    contact: {
+        title: title("Contact"),
+        description:
+            "Got a project? A wild idea? Or just want to complain about corporate life? Let’s talk.",
+    },
+};
+
 // src/config/seo.ts
 
 export type SeoImage = {
@@ -15,12 +36,6 @@ export type SEOOverrides = {
     type?: "website" | "article";
     robots?: string;
     noindex?: boolean;
-
-    // Optional for article pages
-    publishedTime?: string;
-    modifiedTime?: string;
-    author?: string;
-    tags?: string[];
 };
 
 type SiteSEOConfig = {
@@ -29,7 +44,6 @@ type SiteSEOConfig = {
     defaultTitle: string;
     defaultDescription: string;
     defaultImage: SeoImage;
-    twitterHandle?: string;
 };
 
 const SITE: SiteSEOConfig = {
@@ -44,7 +58,6 @@ const SITE: SiteSEOConfig = {
         height: 630,
         alt: "Intrebit",
     },
-    twitterHandle: "@intrebit",
 };
 
 export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
@@ -82,19 +95,6 @@ export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
         description,
         type,
         image,
-        robots,
-        article:
-            type === "article"
-                ? {
-                    publishedTime: overrides.publishedTime,
-                    modifiedTime: overrides.modifiedTime,
-                    author: overrides.author,
-                    tags: overrides.tags ?? [],
-                }
-                : null,
-        twitter: {
-            card: "summary_large_image",
-            handle: SITE.twitterHandle,
-        },
+        robots
     };
 }

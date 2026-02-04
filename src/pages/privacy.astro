@@ -1,145 +1,73 @@
 ---
-// src/pages/privacy.astro
-import Layout from "../layouts/Layout.astro"; // adjust if your layout path differs
+import Layout from "../layouts/Layout.astro";
 
 const lastUpdated = "24 Jan 2026";
 ---
 
 <Layout title={`Privacy | intrebit`}>
-    <header class="privacy__header">
-        <h1>Privacy Policy</h1>
-        <p class="privacy__meta">Last updated: {lastUpdated}</p>
-    </header>
+    <div class="legal">
+        <header class="legal__header">
+            <h1>Privacy Policy</h1>
+            <p class="legal__meta">Last updated: {lastUpdated}</p>
+        </header>
 
-    <section class="privacy__section">
-        <p>
-            We keep things simple. We don’t sell data, we don’t run creepy trackers, and we only collect
-            what we need to run this website.
-        </p>
-    </section>
+        <section class="legal__section">
+            <p>
+                We keep things simple. We don’t sell data, we don’t run creepy trackers, and we only collect
+                what we need to run this website.
+            </p>
+        </section>
 
-    <section class="privacy__section">
-        <h2>What we collect</h2>
-        <p>
-            When you visit <strong>intrebit.com</strong>, our hosting provider (Cloudflare) may
-            automatically collect basic technical information such as:
-        </p>
-        <ul>
-            <li>IP address (usually in logs)</li>
-            <li>browser type + device info</li>
-            <li>pages visited + approximate location (based on IP)</li>
-            <li>performance and security signals</li>
-        </ul>
-        <p>This data helps keep the site fast, secure, and working properly.</p>
-    </section>
+        <section class="legal__section">
+            <h2>What we collect</h2>
+            <p>
+                When you visit <strong>intrebit.com</strong>, our hosting provider (Cloudflare) may
+                automatically collect basic technical information such as:
+            </p>
+            <ul>
+                <li>IP address (usually in logs)</li>
+                <li>browser type + device info</li>
+                <li>pages visited + approximate location (based on IP)</li>
+                <li>performance and security signals</li>
+            </ul>
+            <p>This data helps keep the site fast, secure, and working properly.</p>
+        </section>
 
-    <section class="privacy__section">
-        <h2>What we don’t do</h2>
-        <ul>
-            <li>No advertising trackers</li>
-            <li>No selling or renting personal data</li>
-            <li>No user profiles</li>
-            <li>No “follow you around the internet” stuff</li>
-        </ul>
-    </section>
+        <section class="legal__section">
+            <h2>What we don’t do</h2>
+            <ul>
+                <li>No advertising trackers</li>
+                <li>No selling or renting personal data</li>
+                <li>No user profiles</li>
+                <li>No “follow you around the internet” stuff</li>
+            </ul>
+        </section>
 
-    <section class="privacy__section">
-        <h2>Cookies</h2>
-        <p>
-            We don’t use cookies for marketing or tracking. Cloudflare may use essential cookies
-            strictly for security and performance.
-        </p>
-    </section>
+        <section class="legal__section">
+            <h2>Cookies</h2>
+            <p>
+                We don’t use cookies for marketing or tracking. Cloudflare may use essential cookies
+                strictly for security and performance.
+            </p>
+        </section>
 
-    <section class="privacy__section">
-        <h2>Third-party services</h2>
-        <p>
-            Right now we don’t embed third-party tracking tools. If we ever add something like analytics
-            or a booking tool, we’ll update this page.
-        </p>
-    </section>
+        <section class="legal__section">
+            <h2>Third-party services</h2>
+            <p>
+                Right now we don’t embed third-party tracking tools. If we ever add something like analytics
+                or a booking tool, we’ll update this page.
+            </p>
+        </section>
 
-    <section class="privacy__section">
-        <h2>Contact</h2>
-        <p>
-            If you email us, we’ll only use your message to reply. We don’t add you to mailing lists
-            unless you explicitly ask.
-        </p>
-        <p>
-            <a class="privacy__link" href="mailto:hello@intrebit.com">hello@intrebit.com</a>
-        </p>
-    </section>
+        <section class="legal__section">
+            <h2>Contact</h2>
+            <p>
+                If you email us, we’ll only use your message to reply. We don’t add you to mailing lists
+                unless you explicitly ask.
+            </p>
+            <p>
+                <a class="legal__link" href="mailto:hello@intrebit.com">hello@intrebit.com</a>
+            </p>
+        </section>
+    </div>
 </Layout>
-
-<style>
-    .privacy {
-        max-width: 780px;
-        margin: 0 auto;
-        padding: 4.5rem 1.25rem 5rem;
-        color: var(--text);
-    }
-
-    .privacy__header h1 {
-        font-size: clamp(2rem, 3.4vw, 2.75rem);
-        letter-spacing: -0.03em;
-        line-height: 1.1;
-        margin: 0 0 0.5rem;
-        font-weight: 750;
-        font-family: var(--font-brand, var(--font-sans));
-    }
-
-    .privacy__meta {
-        margin: 0;
-        color: var(--text-muted);
-        font-size: var(--text-sm);
-    }
-
-    .privacy__section {
-        margin-top: 2rem;
-    }
-
-    .privacy__section h2 {
-        margin: 0 0 0.65rem;
-        font-size: 1.1rem;
-        letter-spacing: -0.01em;
-        font-weight: 700;
-    }
-
-    .privacy__section p {
-        margin: 0.75rem 0 0;
-        color: var(--text-muted);
-        line-height: 1.75;
-        font-size: var(--text-base, 1rem);
-    }
-
-    .privacy__section p:first-child {
-        margin-top: 0;
-    }
-
-    .privacy__section ul {
-        margin: 0.75rem 0 0;
-        padding-left: 1.1rem;
-        color: var(--text-muted);
-        line-height: 1.75;
-    }
-
-    .privacy__section li {
-        margin: 0.25rem 0;
-    }
-
-    .privacy__link {
-        color: var(--text);
-        text-decoration: none;
-        border-bottom: 1px solid color-mix(in srgb, var(--text) 35%, transparent);
-    }
-
-    .privacy__link:hover {
-        border-bottom-color: color-mix(in srgb, var(--text) 60%, transparent);
-    }
-
-    @media (max-width: 520px) {
-        .privacy {
-            padding-top: 3.5rem;
-        }
-    }
-</style>

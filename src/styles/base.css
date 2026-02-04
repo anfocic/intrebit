@@ -1,6 +1,3 @@
-/* =========================================================
-   CSS VARIABLES & RESET
-   ========================================================= */
 :root {
     --header-height: 84px;
     --radius-input: 16px;
@@ -248,5 +245,76 @@ a:hover {
 @media (prefers-reduced-motion: reduce) {
     .below-hero-content {
         opacity: 1;
+    }
+}
+
+.legal {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 4.5rem 1.25rem 5rem;
+    color: var(--text);
+}
+
+.legal__header h1 {
+    font-size: clamp(2rem, 3.4vw, 2.75rem);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+    font-weight: 750;
+    font-family: var(--font-brand, var(--font-sans));
+}
+
+.legal__meta {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+}
+
+.legal__section {
+    margin-top: 2rem;
+}
+
+.legal__section h2 {
+    margin: 0 0 0.65rem;
+    font-size: 1.1rem;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+}
+
+.legal__section p {
+    margin: 0.75rem 0 0;
+    color: var(--text-muted);
+    line-height: 1.75;
+    font-size: var(--text-base, 1rem);
+}
+
+.legal__section p:first-child {
+    margin-top: 0;
+}
+
+.legal__section ul {
+    margin: 0.75rem 0 0;
+    padding-left: 1.1rem;
+    color: var(--text-muted);
+    line-height: 1.75;
+}
+
+.legal__section li {
+    margin: 0.25rem 0;
+}
+
+.legal__link {
+    color: var(--text);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--text) 35%, transparent);
+}
+
+.legal__link:hover {
+    border-bottom-color: color-mix(in srgb, var(--text) 60%, transparent);
+}
+
+@media (max-width: 520px) {
+    .legal {
+        padding-top: 3.5rem;
     }
 }
