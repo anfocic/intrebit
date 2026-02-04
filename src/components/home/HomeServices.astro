@@ -105,8 +105,8 @@ import {services} from "../../config/site.ts";
     /* Background icon */
     .service-card__bg-icon {
         position: absolute;
-        bottom: 1rem;
-        right: 1rem;
+        top: 0.3rem;
+        right: .4rem;
         width: 70px;
         height: 70px;
         color: var(--text);
@@ -235,6 +235,29 @@ import {services} from "../../config/site.ts";
         .service-card[data-service="automation"] .service-card__bg-icon {
             animation: none;
         }
+    }
+
+    @media (max-width: 900px) {
+        .service-card {
+            min-height: 160px;
+            justify-content: space-between;
+        }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+        .service-card {
+            min-height: 140px;
+            justify-content: space-between;
+        }
+    }
+
+    .service-card__description {
+        margin: 0;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: var(--text-muted);
+        max-width: calc(100% - 5rem);
     }
 </style>
 
