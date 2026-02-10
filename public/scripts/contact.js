@@ -129,9 +129,25 @@
         const email = data.get("email")?.toString().trim();
         const message = data.get("message")?.toString().trim();
 
-        if (!email || !message) {
+        const MIN_MESSAGE_LEN = 10;
+
+        if (!email) {
             setBusy(false, "Send message");
-            setStatus("Please enter your email and a short message.", "error");
+            setStatus("Please enter your email.", "error");
+            errorFlair();
+            return;
+        }
+
+        if (!message) {
+            setBusy(false, "Send message");
+            setStatus("Please enter a short message.", "error");
+            errorFlair();
+            return;
+        }
+
+        if (message.length < MIN_MESSAGE_LEN) {
+            setBusy(false, "Send message");
+            setStatus(`Message must be at least ${MIN_MESSAGE_LEN} characters.`, "error");
             errorFlair();
             return;
         }
