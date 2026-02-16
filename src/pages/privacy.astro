@@ -1,7 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const lastUpdated = "24 Jan 2026";
+const lastUpdated = "13 Feb 2026";
 ---
 
 <Layout title={`Privacy | intrebit`}>
@@ -21,16 +21,18 @@ const lastUpdated = "24 Jan 2026";
         <section class="legal__section">
             <h2>What we collect</h2>
             <p>
-                When you visit <strong>intrebit.com</strong>, our hosting provider (Cloudflare) may
-                automatically collect basic technical information such as:
+                When you visit <strong>intrebit.com</strong>, we process a small amount of technical data to
+                keep the site secure, prevent abuse, and understand basic usage.
             </p>
             <ul>
-                <li>IP address (usually in logs)</li>
-                <li>browser type + device info</li>
-                <li>pages visited + approximate location (based on IP)</li>
-                <li>performance and security signals</li>
+                <li><strong>Server/security logs (Cloudflare + our servers):</strong> IP address, request metadata, and security signals</li>
+                <li><strong>Basic device + browser info:</strong> device type, browser, and screen size (coarse)</li>
+                <li><strong>Page-level usage:</strong> pages visited and referrer domain (where you came from)</li>
+                <li><strong>Approximate location:</strong> country-level location derived from IP address</li>
             </ul>
-            <p>This data helps keep the site fast, secure, and working properly.</p>
+            <p>
+                We do not use this information to identify you personally, and we don’t sell it.
+            </p>
         </section>
 
         <section class="legal__section">
@@ -46,25 +48,78 @@ const lastUpdated = "24 Jan 2026";
         <section class="legal__section">
             <h2>Cookies</h2>
             <p>
-                We don’t use cookies for marketing or tracking. Cloudflare may use essential cookies
-                strictly for security and performance.
+                We do not use advertising or marketing cookies. Our website may use <strong>strictly necessary</strong>
+                cookies for security and basic functionality (for example, Cloudflare protection features).
             </p>
         </section>
 
         <section class="legal__section">
-            <h2>Third-party services</h2>
+            <h2>Analytics</h2>
             <p>
-                Right now we don’t embed third-party tracking tools. If we ever add something like analytics
-                or a booking tool, we’ll update this page.
+                We use simple, first-party analytics to understand how the website is used and to improve it.
+                Our analytics records <strong>page views</strong> and <strong>basic engagement</strong> (time on page and scroll depth)
+                along with coarse device information (device type, browser, screen size), referrer domain, and country.
+            </p>
+            <p>
+                We <strong>do not</strong> use cross-site tracking, advertising IDs, fingerprinting, or third-party analytics scripts.
+                We do not build user profiles.
+            </p>
+            <p>
+                <strong>Identifiers:</strong> we do not store persistent identifiers such as a long-lived visitor ID.
+                Event IDs are generated per request for de-duplication/debugging and are not used to track you across visits.
+            </p>
+        </section>
+
+        <section class="legal__section">
+            <h2>Legal bases (EEA/UK)</h2>
+            <p>
+                Where GDPR applies, we process:
+            </p>
+            <ul>
+                <li><strong>Site security and reliability data</strong> on the basis of <strong>legitimate interests</strong>.</li>
+                <li><strong>Contact messages</strong> to take steps at your request / to respond (<strong>performance of a contract</strong> or <strong>legitimate interests</strong> depending on context).</li>
+            </ul>
+        </section>
+
+        <section class="legal__section">
+            <h2>Retention</h2>
+            <p>
+                We keep data only for as long as needed:
+            </p>
+            <ul>
+                <li><strong>Analytics:</strong> stored in aggregate where possible; raw event data is kept for a limited period and then deleted or aggregated.</li>
+                <li><strong>Security logs:</strong> retained for a limited period for security and troubleshooting.</li>
+                <li><strong>Contact messages:</strong> retained only as long as needed to respond and for reasonable follow-up.</li>
+            </ul>
+        </section>
+
+        <section class="legal__section">
+            <h2>Sharing and processors</h2>
+            <p>
+                We use service providers to run the site (for example, Cloudflare for CDN and security). They process
+                data on our behalf under appropriate safeguards.
+            </p>
+        </section>
+
+        <section class="legal__section">
+            <h2>Your rights</h2>
+            <p>
+                Depending on your location, you may have rights to access, correct, delete, or object to our processing.
+                To make a request, email us.
             </p>
         </section>
 
         <section class="legal__section">
             <h2>Contact</h2>
             <p>
-                If you email us, we’ll only use your message to reply. We don’t add you to mailing lists
-                unless you explicitly ask.
+                If you contact us (by email or contact form), we process the information you provide (such as your
+                email address, name, and message) so we can respond.
             </p>
+            <ul>
+                <li>We use your message only to reply and handle your request.</li>
+                <li>We do not add you to marketing lists unless you explicitly ask.</li>
+                <li>We keep contact messages only as long as needed to respond and for a short period afterward for follow-up.</li>
+            </ul>
             <p>
                 <a class="legal__link" href="mailto:hello@intrebit.com">hello@intrebit.com</a>
             </p>

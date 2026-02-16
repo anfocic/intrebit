@@ -1,6 +1,6 @@
 (() => {
-    const API_BASE = "https://api.intrebit.com";
-    const ENDPOINT = "/contact";
+    const API_BASE = "https://api.intrebit.com/public";
+    const ENDPOINT = "/lead";
 
     const form = document.getElementById("contact-form");
     const status = document.getElementById("contact-status");
@@ -129,6 +129,23 @@
         const email = data.get("email")?.toString().trim();
         const message = data.get("message")?.toString().trim();
 
+        // Honeypot (spam trap) — if filled, silently succeed
+        // const companyTrap = data.get("company")?.toString().trim();
+        // if (companyTrap) {
+        //     console.log('honey trap')
+        //     console.log(data)
+        //     setStatus("Sent — I’ll reply soon.", "success");
+        //     successFlair();
+        //     form.reset();
+        //     setBusy(true, "Sent ✓");
+        //     setTimeout(() => setBusy(false, "Send message"), 2200);
+        //     return;
+        // }
+
+        // Helpful context for backend email routing/logging
+        const pageUrl = window.location?.href;
+        const userAgent = navigator?.userAgent;
+
         const MIN_MESSAGE_LEN = 10;
 
         if (!email) {
@@ -155,7 +172,11 @@
         const payload = {
             name: name || "Website form",
             email,
+            // Explicit field many backends map to the email header `Reply-To`
+            replyTo: email,
             message,
+            pageUrl,
+            userAgent,
         };
 
         try {
