@@ -1,0 +1,38 @@
+# intrebit
+
+> Software development agency based in the EU. Custom software, infrastructure, and consulting.
+
+## About
+
+intrebit builds custom software for businesses. We handle architecture, code, and deployment — you run the business.
+
+Clear thinking over corporate performance. Few clients, direct communication. Europe-based, timezone-flexible.
+
+## Services
+
+### Build
+Custom software built for how you actually work. Websites, internal tools, customer portals, mobile apps. We handle the architecture, the code, and the deployment.
+
+### Fix
+Broken systems, slow sites, inherited messes. Something's not working and nobody knows why? We dig in, find the root cause, and make it reliable.
+
+### Automate
+Turn repetitive tasks into background processes. Data entry, report generation, invoice handling — if you're doing it twice a week, we can probably make it run itself.
+
+## Links
+
+- [Services](https://intrebit.com/services)
+- [Pricing](https://intrebit.com/pricing)
+- [Contact](https://intrebit.com/contact)
+- [Privacy Policy](https://intrebit.com/privacy)
+- [Terms of Service](https://intrebit.com/terms)
+
+## Pricing
+
+- Free: EUR 0 — 2 users, 100 contacts, 4 modules, community support
+- Pro: EUR 19/user/mo — 10 users, 5,000 contacts, 10 modules, email support, API access
+- Enterprise: EUR 49/user/mo — unlimited users and contacts, all 14 modules, priority support, webhooks, white-label
+
+## Location
+
+EU-based. Data hosted in Germany. GDPR-compliant.
