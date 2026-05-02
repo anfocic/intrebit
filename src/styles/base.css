@@ -62,20 +62,12 @@ em {
     font-feature-settings: "ss01";
 }
 
-.serif {
-    font-family: var(--font-display);
-}
-
 .label {
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-3);
-}
-
-.rule {
-    border-top: 1px solid var(--rule);
 }
 
 .honeypot {
