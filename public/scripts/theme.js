@@ -3,46 +3,46 @@ document.documentElement.classList.add("js");
     const storageKey = "theme";
     const doc = document.documentElement;
 
-    const getInitialTheme = () => {
+    const sysPrefersDark = () =>
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    const getInitial = () => {
         const stored = localStorage.getItem(storageKey);
         if (stored === "light" || stored === "dark") return stored;
-
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
+        return sysPrefersDark() ? "dark" : "light";
     };
 
-    const setTheme = (theme) => {
+    const apply = (theme) => {
         doc.dataset.theme = theme;
+        document.querySelectorAll("[data-theme-toggle]").forEach((root) => {
+            root.querySelectorAll("[data-theme-option]").forEach((btn) => {
+                const active = btn.dataset.themeOption === theme;
+                btn.classList.toggle("is-active", active);
+                btn.setAttribute("aria-checked", active ? "true" : "false");
+            });
+        });
+    };
+
+    const set = (theme) => {
         localStorage.setItem(storageKey, theme);
-
-        // keep toggles accessible + in sync
-        document.querySelectorAll(".theme-toggle").forEach((btn) => {
-            btn.setAttribute("aria-label", theme);
-            btn.setAttribute("data-theme", theme); // optional if you ever want styling
-        });
+        apply(theme);
     };
 
-    const toggleTheme = () => {
-        const current = doc.dataset.theme || "light";
-        setTheme(current === "dark" ? "light" : "dark");
-    };
+    /* run before paint */
+    apply(getInitial());
 
-    // ✅ Set ASAP before paint
-    doc.dataset.theme = getInitialTheme();
-
-    // ✅ Bind click handlers once DOM is ready
     document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".theme-toggle").forEach((btn) => {
-            btn.addEventListener("click", toggleTheme);
-            btn.setAttribute("aria-label", doc.dataset.theme);
+        document.querySelectorAll("[data-theme-toggle]").forEach((root) => {
+            root.querySelectorAll("[data-theme-option]").forEach((btn) => {
+                btn.addEventListener("click", () => set(btn.dataset.themeOption));
+            });
         });
+        apply(doc.dataset.theme);
     });
 
-    // ✅ Sync with OS changes only if user hasn't picked manually
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
         if (!localStorage.getItem(storageKey)) {
-            setTheme(e.matches ? "dark" : "light");
+            apply(e.matches ? "dark" : "light");
         }
     });
 })();

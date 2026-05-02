@@ -16,27 +16,7 @@ const ctaHref = "/contact";
     </div>
 </section>
 
-<script>
-    import { createRevealSequence, onClientReady } from "@lib";
 
-    onClientReady(() => {
-        const hero = document.querySelector("[data-services-hero]");
-        if (!hero) return;
-
-        createRevealSequence({
-            root: hero,
-            title: "[data-reveal='title']",
-            text: "[data-reveal='text']",
-            titleDuration: 0.7,
-            textDuration: 0.5,
-            stagger: 0.12,
-            yOffset: 20,
-            onComplete: () => {
-                document.documentElement.classList.add('hero-revealed');
-            },
-        });
-    });
-</script>
 
 <style>
     .services-hero {

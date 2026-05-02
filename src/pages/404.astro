@@ -2,8 +2,8 @@
 import Layout from "../layouts/Layout.astro";
 ---
 
-<Layout title={`404 | intrebit`}>
-    <div class="notfound">
+<Layout title={`404 | intrebit`} seo={{ noindex: true }}>
+    <div class="notfound" role="main" aria-label="Page not found">
         <div class="notfound__card">
             <h1 class="notfound__title">That page doesn’t exist.</h1>
             <p class="notfound__copy">
@@ -31,15 +31,6 @@ import Layout from "../layouts/Layout.astro";
         border-radius: 18px;
         padding: 2rem;
         box-shadow: var(--shadow-soft);
-    }
-
-    .notfound__kicker {
-        margin: 0 0 0.75rem;
-        font-weight: 750;
-        letter-spacing: 0.12em;
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        text-transform: uppercase;
     }
 
     .notfound__title {

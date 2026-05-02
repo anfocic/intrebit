@@ -1,18 +1,4 @@
-@font-face {
-    font-family: "Inter";
-    src: url("/fonts/inter/InterVariable.woff2") format("woff2");
-    font-weight: 100 900;
-    font-style: normal;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: "Inter";
-    src: url("/fonts/inter/InterVariable-Italic.woff2") format("woff2");
-    font-weight: 100 900;
-    font-style: italic;
-    font-display: swap;
-}
+/* Space Grotesk — sole font family for the site, self-hosted. */
 
 @font-face {
     font-family: "Space Grotesk";
@@ -26,7 +12,6 @@
     U+A720-A7FF;
 }
 
-/* latin */
 @font-face {
     font-family: "Space Grotesk";
     font-style: normal;

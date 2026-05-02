@@ -1,54 +1,67 @@
 export const services = [
-    {
-        id: "development",
-        title: "Development",
-        description:
-            "Custom software built for your workflow — websites, apps, portals and internal tools.",
-        icon: `
-      <path d="M10 7 5 12l5 5"/>
-      <path d="M14 7 19 12l-5 5"/>
-    `,
-    },
-    {
-        id: "consulting",
-        title: "Consulting",
-        description: "We analyze how your business works, find the bottlenecks, and tell you what's worth fixing.",
-        icon: `
-      <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/>
-      <path d="M9 18h6"/>
-      <path d="M10 22h4"/>
-    `,
-    },
-    {
-        id: "automation",
-        title: "Automation",
-        description:
-            "Repetitive task eating your week?  We can make it run itself. Invoices, reports, data entry.",
-        icon: `
-      <path d="M12 2v4"/>
-      <path d="M12 18v4"/>
-      <path d="M4.93 4.93l2.83 2.83"/>
-      <path d="M16.24 16.24l2.83 2.83"/>
-      <path d="M2 12h4"/>
-      <path d="M18 12h4"/>
-      <path d="M4.93 19.07l2.83-2.83"/>
-      <path d="M16.24 7.76l2.83-2.83"/>
-    `,
-    },
+  {
+    id: "build",
+    n: "S/01",
+    title: "Build",
+    outcome: "Ship the thing your team actually needs.",
+    forWho: "Solo founder, small agency, fill this later",
+    examples: [
+      "Customer portals & member areas",
+      "Internal dashboards & admin tools",
+      "Marketing sites that convert",
+      "Booking, billing & subscription flows",
+    ],
+    timeline: "4–10 weeks",
+    from: "from €8k",
+  },
+  {
+    id: "fix",
+    n: "S/02",
+    title: "Fix",
+    outcome: "Make the slow, broken or fragile thing reliable.",
+    forWho:
+      "Teams stuck with a product nobody understands, or losing customers to bugs.",
+    examples: [
+      "Performance audits & speed-ups",
+      "Reliability & uptime fixes",
+      "Security reviews",
+      "Rescue projects from previous vendors",
+    ],
+    timeline: "1–4 weeks",
+    from: "from €3k",
+  },
+  {
+    id: "automate",
+    n: "S/03",
+    title: "Automate",
+    outcome: "Let the boring work run itself.",
+    forWho:
+      "Teams drowning in manual reports, copy-paste, and tools that won't talk.",
+    examples: [
+      "Invoicing, reporting & reconciliation",
+      "CRM ↔ tooling integrations",
+      "Lead routing & data syncs",
+      "Scheduled jobs that actually work",
+    ],
+    timeline: "2–6 weeks",
+    from: "from €5k",
+  },
 ];
 
 type FooterLink = {
-    label: string;
-    href: string;
-    external?: boolean;
+  label: string;
+  href: string;
+  external?: boolean;
 };
 
 export const navLinks = [
-    { href: "/services", label: "Services" },
-    { href: "/contact" , label: "Contact" },
+  { href: "/#services", label: "Services" },
+  { href: "/#work", label: "Work" },
+  { href: "/#studio", label: "Studio" },
+  { href: "/contact", label: "Contact" },
 ];
 
 export const legalLinks: FooterLink[] = [
-    { label: "Privacy", href: "/privacy" },
-    { label: "Terms", href: "/terms" },
+  { label: "Privacy", href: "/privacy" },
+  { label: "Terms", href: "/terms" },
 ];

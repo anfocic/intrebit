@@ -1,165 +1,108 @@
 ---
-import ContactIntro from "./ContactIntro.astro";
-import ContactForm from "./ContactForm.astro";
+import AsteriskGlyph from "../shared/glyphs/AsteriskGlyph.astro";
 ---
 
-<section id="contact" class="contact-section" aria-label="Contact">
-    <div class="contact-container">
-        <header class="contact-header-mobile">
-            <h2 class="contact-title">Let's talk.</h2>
-            <p class="contact-subtitle">Tell us what you need. We'll reply fast.</p>
-        </header>
-
-        <div class="contact-grid">
-            <div class="desktop-only">
-                <ContactIntro />
-            </div>
-            <ContactForm />
+<section class="chero" aria-label="Contact">
+    <div class="chero__inner">
+        <div class="chero__glyph" aria-hidden="true">
+            <AsteriskGlyph size={200}/>
         </div>
+
+        <p class="label chero__eyebrow">
+            <span class="chero__dot">●</span>
+            Replies within a day · No sales calls
+        </p>
+
+        <h1 class="chero__title">
+            Tell us what's broken<br/>
+            <em>— or what you want built.</em>
+        </h1>
+
+        <p class="chero__lead">
+            Drop us a line. We'll ask a couple of questions, then send back
+            a straight answer — a proposal, or an honest no. No spam. No drip
+            campaigns. No &ldquo;just circling back.&rdquo;
+        </p>
     </div>
 </section>
 
 <style>
-    .contact-section {
+    .chero {
         position: relative;
-        padding: 6rem 0 3rem;
+        overflow: hidden;
+        padding: 80px var(--section-pad-x) 40px;
     }
 
-    .contact-container {
-        max-width: var(--container-width, 1100px);
+    .chero__inner {
+        max-width: var(--container-width);
         margin: 0 auto;
-        padding: 0 2rem;
+        position: relative;
     }
 
-    .contact-header-mobile {
-        display: none;
-        text-align: center;
-        margin-bottom: 2rem;
+    .chero__glyph {
+        position: absolute;
+        top: -10px;
+        right: 0;
+        color: var(--ink);
+        opacity: 0.85;
+        pointer-events: none;
     }
 
-    .contact-title {
-        font-family: var(--font-brand, sans-serif);
-        font-size: clamp(1.8rem, 5vw, 2.5rem);
-        font-weight: 750;
-        color: var(--text);
+    .chero__eyebrow {
+        margin: 0 0 32px;
+    }
+
+    .chero__dot {
+        color: var(--accent);
+    }
+
+    .chero__title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(48px, 11vw, 132px);
+        line-height: 0.92;
+        letter-spacing: -0.04em;
         margin: 0;
+        max-width: 1100px;
+        text-wrap: balance;
+        position: relative;
+        color: var(--ink);
     }
 
-    .contact-subtitle {
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        margin: 0.5rem 0 0;
+    .chero__title em {
+        font-style: italic;
+        color: var(--accent);
     }
 
-    .contact-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 6rem;
-        align-items: start;
+    .chero__lead {
+        font-family: var(--font-sans);
+        font-size: 20px;
+        line-height: 1.4;
+        color: var(--ink-2);
+        margin: 40px 0 0;
+        max-width: 640px;
+        text-wrap: pretty;
     }
 
     @media (max-width: 900px) {
-        .contact-header-mobile {
-            display: block;
+        .chero {
+            padding: 32px var(--section-pad-x-mobile) 24px;
         }
 
-        .desktop-only {
-            display: none;
+        .chero__glyph {
+            opacity: 0.5;
+            top: 20px;
+            right: -40px;
         }
 
-        .contact-grid {
-            grid-template-columns: 1fr;
-            gap: 0;
-        }
-    }
-
-    @media (max-width: 520px) {
-        .contact-section {
-            padding: 4rem 0 5rem;
+        .chero__title {
+            font-size: 48px;
+            line-height: 0.95;
         }
 
-        .contact-container {
-            padding: 0 1.25rem;
+        .chero__lead {
+            font-size: 15px;
+            margin-top: 20px;
         }
-    }
-
-    .contact-intro,
-    .contact-card,
-    .contact-form__field {
-        will-change: transform, opacity, filter;
     }
 </style>
-
-<script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const prefersReduced =
-        window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-
-    if (!prefersReduced) {
-        const section = document.querySelector(".contact-section");
-        const intro = document.querySelector(".contact-intro");
-        const card = document.querySelector(".contact-card");
-        const fields = gsap.utils.toArray(".contact-form__field");
-        const btn = document.querySelector(".contact-form__submit");
-
-        if (section) {
-            // Base states
-            if (intro) gsap.set(intro, { opacity: 0, y: 18, filter: "blur(6px)" });
-            if (card) gsap.set(card, { opacity: 0, y: 22, filter: "blur(8px)" });
-
-            // Section reveal
-            const tl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: section,
-                    start: "top 80%",
-                    once: true,
-                },
-                defaults: { ease: "power2.out" },
-            });
-
-            if (intro) {
-                tl.to(intro, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.9 }, 0);
-            }
-
-            if (card) {
-                tl.to(card, { opacity: 1, y: 0, filter: "blur(0px)", duration: 0.95 }, 0.12);
-            }
-
-            if (fields.length) {
-                tl.fromTo(
-                    fields,
-                    { opacity: 0, y: 10 },
-                    { opacity: 1, y: 0, duration: 0.5, stagger: 0.08 },
-                    0.35
-                );
-            }
-        }
-
-        // Button micro-feedback (only on hover-capable devices)
-        if (btn && window.matchMedia?.("(hover: hover)")?.matches) {
-            btn.addEventListener("mouseenter", () => {
-                gsap.to(btn, { y: -2, duration: 0.18, ease: "power2.out", overwrite: "auto" });
-            });
-            btn.addEventListener("mouseleave", () => {
-                gsap.to(btn, { y: 0, duration: 0.24, ease: "power2.out", overwrite: "auto" });
-            });
-            btn.addEventListener("mousedown", () => {
-                gsap.to(btn, { scale: 0.98, duration: 0.08, overwrite: "auto" });
-            });
-            btn.addEventListener("mouseup", () => {
-                gsap.to(btn, { scale: 1, duration: 0.12, overwrite: "auto" });
-            });
-        }
-    } else {
-        // Reduced motion: ensure everything is visible
-        gsap.set([".contact-intro", ".contact-card", ".contact-form__field"], {
-            opacity: 1,
-            y: 0,
-            filter: "none",
-        });
-    }
-</script>

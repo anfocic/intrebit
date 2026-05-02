@@ -1,19 +1,31 @@
-# intrebit
+# intrebit frontend
 
-This repo contains the **intrebit** website, built with **Astro** and deployed on **Cloudflare Pages**.
+Astro marketing site for `intrebit.com`.
 
-## Links
-- **Website:** https://www.intrebit.com
-- **Backend API (Rust):** https://codeberg.org/intrebit/intrebit-api
+## Repo Relationship
+
+This is its own git repo. In the shared local workspace it usually sits beside
+the separate backend repo at `../backend`.
+
+The site itself is static, but public browser scripts currently talk to the
+deployed API at `https://api.intrebit.com/public`.
 
 ## Stack
-- **Framework:** Astro
-- **Hosting:** Cloudflare Pages
-- **DNS / CDN:** Cloudflare
-- **Backend:** Rust API (`intrebit-api`)
-- **Contact form:** handled by the backend service
+
+- Astro 5
+- TypeScript
+- `@astrojs/sitemap`
+- Cloudflare Pages
+
+## Commands
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run deploy
+```
 
 ## Notes
-- No tracking junk.
-- Minimal dependencies.
-- Built to be fast.
+
+- Contact form and analytics scripts live under `public/scripts/`.

@@ -244,34 +244,3 @@ const icons: Record<string, string> = {
     }
 </style>
 
-<script>
-    import { gsap } from "gsap";
-    import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-    gsap.registerPlugin(ScrollTrigger);
-
-    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-
-    if (!prefersReduced) {
-        const steps = gsap.utils.toArray<HTMLElement>(".step");
-
-        if (steps.length) {
-            gsap.set(steps, { opacity: 0, y: 20 });
-
-            ScrollTrigger.create({
-                trigger: ".process__timeline",
-                start: "top 75%",
-                once: true,
-                onEnter: () => {
-                    gsap.to(steps, {
-                        opacity: 1,
-                        y: 0,
-                        duration: 0.5,
-                        stagger: 0.1,
-                        ease: "power2.out",
-                    });
-                },
-            });
-        }
-    }
-</script>

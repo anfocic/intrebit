@@ -1,16 +1,19 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import {pageSEO} from "../config/seo.ts";
+import {homeSchemas} from "../config/schema.ts";
+
 import Hero from "../components/home/Hero.astro";
 import HomeServices from "../components/home/HomeServices.astro";
-import ContactHero from "../components/contact/ContactHero.astro";
-import HomeAbout from "../components/home/HomeAbout.astro";
-import {homeSchemas} from "../config/schema.ts";
+import RecentWork from "../components/home/RecentWork.astro";
+import Studio from "../components/home/Studio.astro";
+import HomeCTA from "../components/home/HomeCTA.astro";
 ---
 
 <Layout seo={pageSEO.home} schemas={homeSchemas}>
     <Hero/>
     <HomeServices/>
-    <HomeAbout/>
-    <ContactHero/>
+    <RecentWork/>
+    <Studio/>
+    <HomeCTA/>
 </Layout>

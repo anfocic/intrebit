@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@lib": ["src/lib/index.ts"]
-    }
+    "baseUrl": "."
   },
   "extends": "astro/tsconfigs/strict",
   "include": [

@@ -1,214 +1,165 @@
 ---
 import {navLinks} from "../../config/site.ts";
-import Link from "../shared/Link.astro";
 import MobileMenu from "./MobileMenu.astro";
-
-function getPathname(url: URL): string {
-    return url.pathname === '/' ? '/' : url.pathname.replace(/\/$/, '');
-}
-const pathname = getPathname(Astro.url);
 ---
 
-<nav class="nav" aria-label="Primary navigation">
-    <div class="nav__content">
-        <a href="/" class="nav__logo" aria-label="intrebit home">intrebit</a>
+<header class="nav" aria-label="Primary navigation">
+    <div class="nav__inner">
+        <a href="/" class="nav__brand" aria-label="intrebit home">
+            <span class="nav__brand-mark" aria-hidden="true"></span>
+            <span class="nav__brand-text">intrebit</span>
+        </a>
 
-        <!-- Desktop nav links -->
-        <div class="nav__right nav__right--desktop">
-            <ul class="nav__links">
-                {navLinks.map(({ href, label }) => {
-                    const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
-                    return (
-                            <Link
-                                    path={href}
-                                    label={label}
-                                    className={isActive ? "u-link nav__link nav__link--active" : "u-link nav__link"}
-                            />
-                    );
-                })}
-            </ul>
-        </div>
+        <nav class="nav__links" aria-label="Primary">
+            {navLinks.map(({href, label}) => (
+                <a href={href} class="nav__link">{label}</a>
+            ))}
+        </nav>
 
-        <!-- Right side: CTA + Hamburger -->
-        <div class="nav__actions">
-            <button
-                    class="nav__hamburger"
-                    data-mobile-open
-                    aria-label="Open menu"
-                    aria-expanded="false"
-            >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-        </div>
+        <a href="/contact" class="nav__cta">
+            <span>Start a project</span><span class="nav__cta-arrow">→</span>
+        </a>
+
+        <button
+            class="nav__hamburger"
+            data-mobile-open
+            aria-label="Open menu"
+            aria-expanded="false"
+        >
+            <span aria-hidden="true">≡</span>
+        </button>
     </div>
-</nav>
+    <span class="nav__progress" data-scroll-progress aria-hidden="true"></span>
+</header>
 
-<MobileMenu />
+<MobileMenu/>
 
 <style>
-    .nav__logo {
-        text-decoration: none;
-        font-family: var(--font-brand), serif;
-        letter-spacing: 0.05em;
-        font-weight: 750;
-        margin: 0;
-        padding-left: 1rem;
-        font-size: 1.75rem;
-        color: var(--text);
-        flex: 0 0 auto;
-    }
-
-    .nav__right--desktop {
-        flex: 1;                 /* take remaining space */
-        justify-content: flex-end; /* push links to the right */
-    }
-
-    .nav {
-        background-color: transparent;
-        border-bottom: 1px solid var(--border);
-        backdrop-filter: blur(12px);
-    }
-
-    .nav__content {
-        max-width: var(--container-width);
-        margin: 0 auto;
-        padding: 1.25rem 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 2rem;
-    }
-
-    .nav__right {
-        display: flex;
-        align-items: center;
-        gap: 1.25rem;
-    }
-
-    .nav__links {
-        display: flex;
-        gap: 1.75rem;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    :global(.nav__link) {
-        font-weight: 600;
-        font-size: var(--text-sm);
-    }
-
-    /* active link: keep underline always visible */
-    :global(.nav__link--active) {
-        color: var(--text);
-    }
-
-
-    :global(.nav__link--active::after) {
-        transform: scaleX(1);      /* force u-link underline to show */
-        opacity: 1;
-    }
-
-    /* Right actions: CTA + hamburger */
-    .nav__actions {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-
-    /* Hamburger - hidden on desktop */
-    .nav__hamburger {
-        display: none;
-        width: 44px;
-        height: 44px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        background: transparent;
-        color: var(--text);
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        -webkit-tap-highlight-color: transparent;
-    }
-
-    /* Mobile */
-    @media (max-width: 768px) {
-        .nav__right--desktop {
-            display: none;
-        }
-
-        .nav__hamburger {
-            display: flex;
-        }
-
-        .nav__content {
-            padding: 1rem 1.25rem;
-        }
-
-        .nav__cta {
-            padding: 0.55rem 0.85rem;
-            font-size: 0.9rem;
-        }
-    }
-
-    @media (max-width: 400px) {
-        .nav__cta span {
-            display: none;
-        }
-    }
-
-    /* Smooth transition (keep it subtle) */
-    .nav .nav__content,
-    .nav .nav__logo,
-    .nav .nav__hamburger {
-        transition:
-                padding 220ms var(--ease, ease),
-                font-size 220ms var(--ease, ease),
-                transform 220ms var(--ease, ease);
-    }
-
-    /* Compact state */
-    .nav--compact .nav__content {
-        padding: 0.75rem 2rem; /* was 1.25rem 2rem */
-    }
-
-    .nav--compact .nav__logo {
-        font-size: 1.5rem; /* was 1.75rem */
-        transform: translateY(-1px);
-    }
-
-    .nav--compact .nav__hamburger {
-        transform: scale(0.96);
-    }
-
-    /* Mobile: keep your mobile sizing consistent */
-    @media (max-width: 768px) {
-        .nav--compact .nav__content {
-            padding: 0.75rem 1.25rem; /* slightly smaller than 1rem 1.25rem */
-        }
-
-        .nav--compact .nav__logo {
-            font-size: 1.6rem; /* don’t shrink too much on mobile */
-            transform: none;
-        }
-    }
-
     .nav {
         position: sticky;
         top: 0;
         z-index: 50;
+        background: var(--bg);
+        border-bottom: 1px solid var(--rule);
     }
 
-    /* Reduced motion: no transitions */
-    @media (prefers-reduced-motion: reduce) {
-        .nav .nav__content,
-        .nav .nav__logo,
-        .nav .nav__hamburger {
-            transition: none !important;
+    .nav__inner {
+        max-width: var(--container-width);
+        margin: 0 auto;
+        padding: 20px var(--section-pad-x);
+        display: flex;
+        align-items: center;
+        gap: 28px;
+    }
+
+    .nav__brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        text-decoration: none;
+        color: var(--ink);
+    }
+
+    .nav__brand-mark {
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 2px;
+        display: inline-block;
+    }
+
+    .nav__brand-text {
+        font-family: var(--font-mono);
+        font-size: 13px;
+        letter-spacing: 0.02em;
+        font-weight: 500;
+    }
+
+    .nav__links {
+        display: flex;
+        gap: 28px;
+        margin: 0 auto;
+    }
+
+    .nav__link {
+        font-family: var(--font-mono);
+        font-size: 12px;
+        color: var(--ink-2);
+        text-decoration: none;
+        transition: color 0.2s var(--ease);
+    }
+
+    .nav__link:hover {
+        color: var(--ink);
+    }
+
+    .nav__cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-family: var(--font-mono);
+        font-size: 12px;
+        background: var(--ink);
+        color: var(--bg);
+        padding: 8px 14px;
+        border-radius: 999px;
+        text-decoration: none;
+        transition: transform 0.25s var(--ease);
+    }
+
+    .nav__cta:hover {
+        transform: translateY(-2px);
+    }
+
+    .nav__cta-arrow {
+        display: inline-block;
+        transition: transform 0.3s var(--ease);
+    }
+
+    .nav__cta:hover .nav__cta-arrow {
+        transform: translateX(4px);
+    }
+
+    .nav__hamburger {
+        display: none;
+        width: 36px;
+        height: 36px;
+        border: 1px solid var(--rule-2);
+        background: transparent;
+        color: var(--ink);
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 18px;
+        line-height: 1;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .nav__progress {
+        position: absolute;
+        left: 0;
+        bottom: -1px;
+        height: 1px;
+        width: 0;
+        background: var(--accent);
+        pointer-events: none;
+    }
+
+    @media (max-width: 768px) {
+        .nav__inner {
+            padding: 14px var(--section-pad-x-mobile);
+            gap: 16px;
+        }
+
+        .nav__links,
+        .nav__cta {
+            display: none;
+        }
+
+        .nav__hamburger {
+            display: inline-flex;
+            margin-left: auto;
         }
     }
 </style>

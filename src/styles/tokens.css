@@ -1,31 +1,24 @@
 :root {
-    --brand-navy: #0e2a47;
-    --brand-navy-deep: #071826;
-    --brand-ivory: #f6f4ef;
+    /* ---------- layout ---------- */
+    --container-width: 1280px;
+    --section-pad-x: 40px;
+    --section-pad-x-mobile: 22px;
 
-    /* ---------------------------
-       Layout / geometry
-       --------------------------- */
-    --container-width: 1100px;
-
-    --radius-soft: 14px;
+    --radius-soft: 0;
     --radius-round: 999px;
 
-    /* Shadows */
-    --shadow-soft: 0 12px 30px rgba(0, 0, 0, 0.06);
-    --shadow-card: 0 18px 55px rgba(0, 0, 0, 0.06);
+    --shadow-soft: none;
+    --shadow-card: none;
 
-    /* Motion */
-    --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+    --ease: cubic-bezier(.2,.7,.2,1);
 
-    /* ---------------------------
-       Typography
-       --------------------------- */
-    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-    --font-brand: "Space Grotesk", var(--font-sans);
-    --font-display: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    /* ---------- typography ---------- */
+    --font-sans: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-display: var(--font-sans);
+    --font-brand: var(--font-sans);
+    --font-mono: var(--font-sans);
 
-    /* Fluid type scale */
+    /* fluid scale for legacy components */
     --text-xs: clamp(0.75rem, 0.7rem + 0.2vw, 0.85rem);
     --text-sm: clamp(0.875rem, 0.83rem + 0.2vw, 0.95rem);
     --text-base: clamp(1rem, 0.95rem + 0.3vw, 1.1rem);
@@ -34,7 +27,7 @@
     --text-2xl: clamp(1.7rem, 1.45rem + 1.3vw, 2.25rem);
     --text-3xl: clamp(2.1rem, 1.7rem + 1.8vw, 3rem);
 
-    /* spacing scale */
+    /* ---------- spacing ---------- */
     --s-0: 0;
     --s-1: 0.25rem;
     --s-2: 0.5rem;
@@ -48,19 +41,14 @@
     --s-10: 2.75rem;
     --s-11: 3rem;
 
-    /* page/layout spacing */
-    --page-pad-x: 3.5rem;
+    --page-pad-x: var(--section-pad-x);
     --page-pad-top: 2.25rem;
     --page-pad-bottom: 3rem;
-
-    /* common gaps */
     --stack-gap: 1.75rem;
+}
 
-    @media (max-width: 420px) {
-        :root {
-            --page-pad-x: 1.25rem;
-            --page-pad-top: 2rem;
-            --page-pad-bottom: 2.75rem;
-        }
+@media (max-width: 768px) {
+    :root {
+        --page-pad-x: var(--section-pad-x-mobile);
     }
 }

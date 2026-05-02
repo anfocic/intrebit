@@ -1,101 +1,82 @@
+/* ---------- light theme (default) — navy on warm ivory ---------- */
+:root,
+:root[data-theme="light"] {
+    --brand-navy: #0e2a47;
+    --brand-navy-deep: #071826;
+    --brand-ivory: #f6f4ef;
 
+    --bg: #f6f4ef;
+    --bg-2: #ece8e1;
+    --bg-3: #e0dbd2;
 
-:root {
-    /* Default theme = light */
-    --bg: var(--brand-ivory);
+    --ink: #0e2a47;
+    --ink-2: #34527a;
+    --ink-3: #6b80a0;
 
-    /* Surface system */
-    --surface: rgba(255, 255, 255, 0.72);
-    --surface-strong: rgba(255, 255, 255, 0.86);
+    --rule: rgba(14, 42, 71, 0.10);
+    --rule-2: rgba(14, 42, 71, 0.22);
 
-    /* Text */
-    --text: var(--brand-navy);
-    --text-muted: rgba(14, 42, 71, 0.82);
+    --accent: #c2410c;
+    --accent-ink: #ffffff;
+    --ok: #356b3c;
 
-    /* Borders */
-    --border: rgba(14, 42, 71, 0.12);
+    /* legacy aliases */
+    --surface: var(--bg);
+    --surface-strong: var(--bg-2);
+    --text: var(--ink);
+    --text-muted: var(--ink-2);
+    --border: var(--rule);
 
-    /* Accent */
-
-    /* Browser UI hint */
     color-scheme: light;
 }
 
+/* ---------- dark theme — ivory on deep navy ---------- */
 :root[data-theme="dark"] {
-    --bg: var(--brand-navy-deep);
+    --bg: #071826;
+    --bg-2: #0e2a47;
+    --bg-3: #16365b;
 
-    --surface: rgba(255, 255, 255, 0.06);
-    --surface-strong: rgba(255, 255, 255, 0.09);
+    --ink: #f6f4ef;
+    --ink-2: rgba(246, 244, 239, 0.86);
+    --ink-3: rgba(246, 244, 239, 0.55);
 
-    --text: var(--brand-ivory);
-    --text-muted: rgba(246, 244, 239, 0.8);
+    --rule: rgba(246, 244, 239, 0.10);
+    --rule-2: rgba(246, 244, 239, 0.22);
 
-    --border: rgba(246, 244, 239, 0.12);
+    --accent: #e85d2a;
+    --accent-ink: #071826;
 
-    --accent-soft: rgba(178, 223, 219, 0.25);
+    --surface: var(--bg);
+    --surface-strong: var(--bg-2);
+    --text: var(--ink);
+    --text-muted: var(--ink-2);
+    --border: var(--rule);
 
     color-scheme: dark;
 }
 
-.theme-toggle {
-    width: 34px;
-    height: 34px;
-    border-radius: 10px;
-    border: 1px solid transparent;
-    background: transparent;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    color: var(--text-muted);
-    transition: background 0.15s var(--ease), color 0.15s var(--ease);
-    position: relative;
-}
-
-.theme-toggle:hover {
-    background: color-mix(in srgb, var(--text) 6%, transparent);
-    color: var(--text);
-}
-
-.theme-toggle__icon {
-    width: 18px;
-    height: 18px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    position: absolute;
-    opacity: 0;
-    transform: scale(0.9);
-    transition: opacity 0.15s var(--ease), transform 0.15s var(--ease);
-}
-
-/* Show only the correct icon */
-:root[data-theme="dark"] .theme-toggle__icon--sun {
-    opacity: 1;
-    transform: scale(1);
-}
-
-:root[data-theme="light"] .theme-toggle__icon--moon {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* OS preference if user has NOT chosen manually */
+/* ---------- OS preference if user has not picked ---------- */
 @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
-        --bg: var(--brand-navy-deep);
+        --bg: #071826;
+        --bg-2: #0e2a47;
+        --bg-3: #16365b;
 
-        --surface: rgba(255, 255, 255, 0.06);
-        --surface-strong: rgba(255, 255, 255, 0.09);
+        --ink: #f6f4ef;
+        --ink-2: rgba(246, 244, 239, 0.86);
+        --ink-3: rgba(246, 244, 239, 0.55);
 
-        --text: var(--brand-ivory);
-        --text-muted: rgba(246, 244, 239, 0.8);
+        --rule: rgba(246, 244, 239, 0.10);
+        --rule-2: rgba(246, 244, 239, 0.22);
 
-        --border: rgba(246, 244, 239, 0.12);
+        --accent: #e85d2a;
+        --accent-ink: #071826;
 
-        --accent-soft: rgba(178, 223, 219, 0.25);
+        --surface: var(--bg);
+        --surface-strong: var(--bg-2);
+        --text: var(--ink);
+        --text-muted: var(--ink-2);
+        --border: var(--rule);
 
         color-scheme: dark;
     }

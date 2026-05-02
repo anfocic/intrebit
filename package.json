@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "npm run build && wrangler pages deploy dist --project-name intrebit"
+    "deploy": "set -a && [ -f .env.local ] && . .env.local; set +a && npm run build && : \"${CLOUDFLARE_ACCOUNT_ID:?Set CLOUDFLARE_ACCOUNT_ID}\" && wrangler pages deploy dist --project-name intrebit --branch main --commit-dirty=true"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",

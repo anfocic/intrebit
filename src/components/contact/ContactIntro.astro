@@ -154,20 +154,3 @@
     }
 </style>
 
-<script>
-    import { createSvgDraw, onClientReady } from "@lib";
-
-    onClientReady(() => {
-        const intro = document.querySelector(".contact-intro");
-        if (!intro) return;
-
-        createSvgDraw(".contact-intro__icon path, .contact-intro__icon polyline, .contact-intro__icon line", {
-            root: intro,
-            trigger: "scroll",
-            scrollStart: "top 80%",
-            duration: 1.5,
-            stagger: 0.15,
-            ease: "power2.out",
-        });
-    });
-</script>

@@ -3,204 +3,136 @@
     const ENDPOINT = "/lead";
 
     const form = document.getElementById("contact-form");
-    const status = document.getElementById("contact-status");
-    if (!form || !status) return;
+    const success = document.getElementById("cform-success");
+    if (!form || !success) return;
 
-    const btn = form.querySelector(".contact-form__submit");
-    const card = form.closest(".contact-card");
-
-    // --- helpers
-    const prefersReduced = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-
-    const animate = (el, keyframes, options) => {
-        if (!el || prefersReduced || !el.animate) return null;
-        return el.animate(keyframes, options);
+    const fields = {
+        name: form.querySelector("#cf-name"),
+        email: form.querySelector("#cf-email"),
+        company: form.querySelector("#cf-company"),
+        kind: form.querySelector("#cf-kind"),
+        budget: form.querySelector("#cf-budget"),
+        timeline: form.querySelector("#cf-timeline"),
+        message: form.querySelector("#cf-message"),
+        honeypot: form.querySelector('input[name="company_hp"]'),
     };
 
-    const setBusy = (busy, label) => {
-        if (!btn) return;
-        btn.disabled = !!busy;
-        btn.setAttribute("aria-disabled", busy ? "true" : "false");
-        btn.dataset.loading = busy ? "true" : "false";
-        if (label) btn.textContent = label;
+    const submitBtn = form.querySelector(".cform__submit");
+    const submitLabel = form.querySelector("[data-submit-label]");
+    const charCount = form.querySelector("[data-char-count]");
+    const errs = {
+        name: form.querySelector('[data-err-for="name"]'),
+        email: form.querySelector('[data-err-for="email"]'),
+        message: form.querySelector('[data-err-for="message"]'),
     };
 
-    const setStatus = (msg, type = "info") => {
-        status.textContent = msg;
-        status.classList.remove("status--success", "status--error", "status--info");
-        status.classList.add(`status--${type}`);
-
-        // status entrance
-        animate(
-            status,
-            [
-                { opacity: 0, transform: "translateY(6px)", filter: "blur(6px)" },
-                { opacity: 1, transform: "translateY(0)", filter: "blur(0px)" },
-            ],
-            { duration: 260, easing: "cubic-bezier(.2,.8,.2,1)", fill: "both" }
-        );
-    };
-
-    const successFlair = () => {
-        // Confirm "pop" on card
-        animate(
-            card,
-            [
-                { transform: "translateY(0) scale(1)" },
-                { transform: "translateY(-2px) scale(1.01)" },
-                { transform: "translateY(0) scale(1)" },
-            ],
-            { duration: 360, easing: "cubic-bezier(.2,.8,.2,1)" }
-        );
-
-        // Button ticks to success briefly
-        if (btn) {
-            animate(
-                btn,
-                [
-                    { transform: "scale(1)" },
-                    { transform: "scale(1.02)" },
-                    { transform: "scale(1)" },
-                ],
-                { duration: 220, easing: "cubic-bezier(.2,.8,.2,1)" }
-            );
-        }
-    };
-
-    const errorFlair = () => {
-        // Shake status
-        animate(
-            status,
-            [
-                { transform: "translateX(0)" },
-                { transform: "translateX(-6px)" },
-                { transform: "translateX(6px)" },
-                { transform: "translateX(-4px)" },
-                { transform: "translateX(4px)" },
-                { transform: "translateX(0)" },
-            ],
-            { duration: 320, easing: "ease-out" }
-        );
-
-        // Small "nope" on button
-        animate(
-            btn,
-            [
-                { transform: "translateX(0)" },
-                { transform: "translateX(-4px)" },
-                { transform: "translateX(4px)" },
-                { transform: "translateX(0)" },
-            ],
-            { duration: 220, easing: "ease-out" }
-        );
-    };
-
-    // Button micro "commit" press
-    if (btn && window.matchMedia?.("(hover: hover)")?.matches) {
-        btn.addEventListener("mousedown", () => {
-            btn.dataset.pressed = "true";
-            btn.style.transformOrigin = "center";
-            btn.style.transform = "scale(0.98)";
+    const chips = form.querySelectorAll(".cform__chip");
+    chips.forEach((chip) => {
+        chip.addEventListener("click", () => {
+            chips.forEach((c) => {
+                c.classList.remove("is-selected");
+                c.setAttribute("aria-checked", "false");
+            });
+            chip.classList.add("is-selected");
+            chip.setAttribute("aria-checked", "true");
+            fields.kind.value = chip.dataset.kind || "";
         });
+    });
 
-        const release = () => {
-            if (!btn.dataset.pressed) return;
-            delete btn.dataset.pressed;
-            btn.style.transform = "";
-        };
+    const updateCount = () => {
+        if (!charCount || !fields.message) return;
+        charCount.textContent = `${fields.message.value.length} chars`;
+    };
+    fields.message?.addEventListener("input", updateCount);
+    updateCount();
 
-        btn.addEventListener("mouseup", release);
-        btn.addEventListener("mouseleave", release);
-    }
+    const setErr = (key, msg) => {
+        if (!errs[key]) return;
+        errs[key].textContent = msg ? `↳ ${msg}` : "";
+    };
 
-    form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    const validate = () => {
+        const e = {};
+        const name = fields.name.value.trim();
+        const email = fields.email.value.trim();
+        const message = fields.message.value.trim();
 
-        // Clear old status quickly
-        status.textContent = "";
-        status.className = "contact-form__status";
+        if (!name) e.name = "Name is required";
+        if (!email) e.email = "Email is required";
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "That doesn't look right";
 
-        setBusy(true, "Sending…");
-        setStatus("Sending…", "info");
+        if (!message) e.message = "Tell us a little about it";
+        else if (message.length < 20) e.message = "A few more words, please";
 
-        const data = new FormData(form);
+        Object.keys(errs).forEach((k) => setErr(k, e[k] || ""));
+        return Object.keys(e).length === 0;
+    };
 
-        const name = data.get("name")?.toString().trim();
-        const email = data.get("email")?.toString().trim();
-        const message = data.get("message")?.toString().trim();
+    const setBusy = (busy) => {
+        submitBtn.disabled = busy;
+        if (submitLabel) submitLabel.textContent = busy ? "Sending..." : "Send message";
+    };
 
-        // Honeypot (spam trap) — if filled, silently succeed
-        // const companyTrap = data.get("company")?.toString().trim();
-        // if (companyTrap) {
-        //     console.log('honey trap')
-        //     console.log(data)
-        //     setStatus("Sent — I’ll reply soon.", "success");
-        //     successFlair();
-        //     form.reset();
-        //     setBusy(true, "Sent ✓");
-        //     setTimeout(() => setBusy(false, "Send message"), 2200);
-        //     return;
-        // }
+    const showSuccess = (data) => {
+        const firstName = (data.name || "").trim().split(/\s+/)[0] || "friend";
+        const nameSlot = success.querySelector("[data-success-name]");
+        const emailSlot = success.querySelector("[data-success-email]");
+        if (nameSlot) nameSlot.textContent = firstName;
+        if (emailSlot) emailSlot.textContent = data.email;
 
-        // Helpful context for backend email routing/logging
-        const pageUrl = window.location?.href;
-        const userAgent = navigator?.userAgent;
+        form.hidden = true;
+        success.hidden = false;
+        success.scrollIntoView({behavior: "smooth", block: "start"});
+    };
 
-        const MIN_MESSAGE_LEN = 10;
+    const reset = () => {
+        form.reset();
+        chips.forEach((c, i) => {
+            c.classList.toggle("is-selected", i === 0);
+            c.setAttribute("aria-checked", i === 0 ? "true" : "false");
+        });
+        fields.kind.value = "build";
+        Object.keys(errs).forEach((k) => setErr(k, ""));
+        updateCount();
+        success.hidden = true;
+        form.hidden = false;
+    };
 
-        if (!email) {
-            setBusy(false, "Send message");
-            setStatus("Please enter your email.", "error");
-            errorFlair();
-            return;
-        }
+    const sendAnotherBtn = success.querySelector("[data-send-another]");
+    sendAnotherBtn?.addEventListener("click", reset);
 
-        if (!message) {
-            setBusy(false, "Send message");
-            setStatus("Please enter a short message.", "error");
-            errorFlair();
-            return;
-        }
+    form.addEventListener("submit", async (ev) => {
+        ev.preventDefault();
 
-        if (message.length < MIN_MESSAGE_LEN) {
-            setBusy(false, "Send message");
-            setStatus(`Message must be at least ${MIN_MESSAGE_LEN} characters.`, "error");
-            errorFlair();
-            return;
-        }
+        if (fields.honeypot && fields.honeypot.value) return;
+        if (!validate()) return;
 
         const payload = {
-            name: name || "Website form",
-            email,
-            // Explicit field many backends map to the email header `Reply-To`
-            replyTo: email,
-            message,
-            pageUrl,
-            userAgent,
+            name: fields.name.value.trim(),
+            email: fields.email.value.trim(),
+            company: fields.company.value.trim(),
+            kind: fields.kind.value,
+            budget: fields.budget.value,
+            timeline: fields.timeline.value,
+            message: fields.message.value.trim(),
         };
+
+        setBusy(true);
 
         try {
             const res = await fetch(`${API_BASE}${ENDPOINT}`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(payload),
             });
 
-            if (!res.ok) throw new Error(`Request failed (${res.status})`);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
-            setStatus("Sent — I’ll reply soon.", "success");
-            successFlair();
-
-            form.reset();
-            setBusy(true, "Sent ✓");
-
-            // Restore button after a moment
-            setTimeout(() => setBusy(false, "Send message"), 2200);
+            showSuccess(payload);
         } catch (err) {
-            console.error(err);
-            setBusy(false, "Try again");
-            setStatus("Something went wrong. Try again.", "error");
-            errorFlair();
+            setErr("message", "Something went wrong. Try again or email hello@intrebit.com.");
+        } finally {
+            setBusy(false);
         }
     });
 })();

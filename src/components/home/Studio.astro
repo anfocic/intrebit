@@ -1,0 +1,290 @@
+---
+import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
+import GridGlyph from "../shared/glyphs/GridGlyph.astro";
+
+const steps = [
+    {step: "01", title: "Talk", time: "30 min", body: "You explain the problem. We ask questions until we actually get it. No NDAs, no slide decks."},
+    {step: "02", title: "Scope", time: "1–3 days", body: "A clear scope, fixed price, fixed date. You see it before you sign anything."},
+    {step: "03", title: "Ship", time: "2–10 weeks", body: "We build, deploy, and stay around to fix anything that breaks. Weekly updates, no surprises."},
+];
+
+
+---
+
+<section id="studio" class="studio" aria-label="The studio" data-reveal>
+    <div class="studio__glyph studio__glyph--orb" aria-hidden="true">
+        <OrbGlyph size={280}/>
+    </div>
+    <div class="studio__glyph studio__glyph--grid" aria-hidden="true">
+        <GridGlyph size={80}/>
+    </div>
+
+    <div class="studio__inner">
+        <!-- 1. who we are -->
+        <header class="studio__header">
+            <div>
+                <p class="label">— The studio</p>
+                <h2 class="studio__heading">
+                    Small team.<br/>
+                    <em>Few clients.</em><br/>
+                    Direct work.
+                </h2>
+            </div>
+            <div class="studio__intro">
+                <p class="studio__intro-body">
+                    intrebit is a small studio. No project managers, no account execs,
+                    no &ldquo;we'll get back to you.&rdquo; You talk to the people writing the
+                    code &mdash; from the first call through to the thing going live.
+                </p>
+                <p class="mono studio__intro-meta">
+                    <span>Europe-based</span>
+                    <span aria-hidden="true">·</span>
+                    <span>2&ndash;4 active clients at a time</span>
+                    <span aria-hidden="true">·</span>
+                    <span>Founded 2021</span>
+                </p>
+            </div>
+        </header>
+
+        <!-- 2. how we work -->
+        <div class="studio__steps">
+            <div class="studio__steps-head">
+                <span class="mono studio__steps-label">— How we work</span>
+                <span class="mono studio__steps-meta">3 steps · ~4 weeks typical</span>
+            </div>
+            <div class="studio__steps-grid">
+                {steps.map((s, i, arr) => (
+                    <div class="studio__step">
+                        <div class="studio__step-head">
+                            <span class="mono studio__step-n">{s.step}</span>
+                            <span class="mono studio__step-time">{s.time}</span>
+                        </div>
+                        <h3 class="studio__step-title">{s.title}.</h3>
+                        <p class="studio__step-body">{s.body}</p>
+                        {i < arr.length - 1 && (
+                            <span class="mono studio__step-arrow" aria-hidden="true">→</span>
+                        )}
+                    </div>
+                ))}
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<style>
+    .studio {
+        position: relative;
+        overflow: hidden;
+        padding: 120px var(--section-pad-x) 100px;
+        background: var(--bg-2);
+        border-top: 1px solid var(--rule);
+    }
+
+    .studio__glyph {
+        position: absolute;
+        color: var(--ink);
+        pointer-events: none;
+    }
+
+    .studio__glyph--orb {
+        right: -60px;
+        top: -40px;
+        opacity: 0.5;
+    }
+
+    .studio__glyph--grid {
+        left: 32px;
+        bottom: 32px;
+        opacity: 0.6;
+    }
+
+    .studio__inner {
+        max-width: var(--container-width);
+        margin: 0 auto;
+        position: relative;
+    }
+
+    /* ---- 1. header ---- */
+    .studio__header {
+        display: grid;
+        grid-template-columns: 1.1fr 1fr;
+        gap: 80px;
+        align-items: end;
+        margin-bottom: 72px;
+    }
+
+    .studio__heading {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(48px, 7vw, 88px);
+        line-height: 0.92;
+        margin: 12px 0 0;
+        letter-spacing: -0.04em;
+        color: var(--ink);
+    }
+
+    .studio__heading em {
+        font-style: italic;
+        color: var(--accent);
+    }
+
+    .studio__intro {
+        padding-bottom: 12px;
+    }
+
+    .studio__intro-body {
+        font-size: 18px;
+        line-height: 1.5;
+        color: var(--ink-2);
+        margin: 0;
+        max-width: 460px;
+        text-wrap: pretty;
+    }
+
+    .studio__intro-meta {
+        font-size: 11px;
+        color: var(--ink-3);
+        margin: 24px 0 0;
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+        padding-top: 16px;
+        border-top: 1px dashed var(--rule-2);
+    }
+
+    /* ---- 2. steps ---- */
+    .studio__steps {
+        border: 1px solid var(--ink);
+        background: var(--bg);
+        position: relative;
+    }
+
+    .studio__steps-head {
+        padding: 16px 24px;
+        border-bottom: 1px solid var(--rule);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .studio__steps-label {
+        font-size: 10px;
+        color: var(--ink-3);
+        text-transform: uppercase;
+        letter-spacing: 0.14em;
+    }
+
+    .studio__steps-meta {
+        font-size: 10px;
+        color: var(--ink-3);
+    }
+
+    .studio__steps-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .studio__step {
+        padding: 36px 32px;
+        border-right: 1px solid var(--rule);
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-height: 220px;
+        position: relative;
+    }
+
+    .studio__step:last-child {
+        border-right: none;
+    }
+
+    .studio__step-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+    }
+
+    .studio__step-n,
+    .studio__step-time {
+        font-size: 11px;
+        color: var(--ink-3);
+    }
+
+    .studio__step-title {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(36px, 4vw, 48px);
+        margin: 0;
+        letter-spacing: -0.025em;
+        line-height: 1;
+        color: var(--ink);
+    }
+
+    .studio__step-body {
+        font-size: 14px;
+        line-height: 1.55;
+        color: var(--ink-2);
+        margin: auto 0 0;
+        padding-top: 10px;
+    }
+
+    .studio__step-arrow {
+        position: absolute;
+        right: -7px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--bg);
+        padding: 2px 0;
+        font-size: 14px;
+        color: var(--accent);
+    }
+
+    @media (max-width: 900px) {
+        .studio {
+            padding: 64px var(--section-pad-x-mobile) 56px;
+        }
+
+        .studio__glyph--orb {
+            opacity: 0.3;
+            right: -100px;
+        }
+
+        .studio__glyph--grid {
+            display: none;
+        }
+
+        .studio__header {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .studio__intro {
+            padding-bottom: 0;
+        }
+
+        .studio__intro-meta {
+            gap: 12px;
+        }
+
+        .studio__steps-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .studio__step {
+            border-right: none;
+            border-bottom: 1px solid var(--rule);
+            padding: 24px 22px;
+            min-height: 0;
+        }
+
+        .studio__step:last-child {
+            border-bottom: none;
+        }
+
+        .studio__step-arrow {
+            display: none;
+        }
+    }
+</style>
