@@ -10,6 +10,7 @@ export const onRequestGet: PagesFunction = async () => {
     headers: {
       "content-type": "application/javascript",
       "cache-control": "public, max-age=86400",
+      "access-control-allow-origin": "*",
     },
   });
 };
