@@ -1,5 +1,4 @@
 ---
-import ThemeToggle from "../shared/ThemeToggle.astro";
 import {legalLinks} from "../../config/site.ts";
 import {header, footer} from "../../config/copy.ts";
 
@@ -18,8 +17,6 @@ const {socials} = footer;
                 </>
             ))}
         </span>
-
-        <ThemeToggle/>
 
         <span class="mono footer__social">
             {socials.map((s, i) => (
@@ -70,8 +67,18 @@ const {socials} = footer;
     @media (max-width: 720px) {
         .footer__inner {
             padding: 24px var(--section-pad-x-mobile);
+            flex-direction: column;
             justify-content: center;
             text-align: center;
+            gap: 12px;
+        }
+
+        .footer__social {
+            order: 1;
+        }
+
+        .footer__copy {
+            order: 2;
         }
     }
 </style>
