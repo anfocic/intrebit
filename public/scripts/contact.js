@@ -9,10 +9,6 @@
     const fields = {
         name: form.querySelector("#cf-name"),
         email: form.querySelector("#cf-email"),
-        company: form.querySelector("#cf-company"),
-        kind: form.querySelector("#cf-kind"),
-        budget: form.querySelector("#cf-budget"),
-        timeline: form.querySelector("#cf-timeline"),
         message: form.querySelector("#cf-message"),
         honeypot: form.querySelector('input[name="company_hp"]'),
     };
@@ -25,19 +21,6 @@
         email: form.querySelector('[data-err-for="email"]'),
         message: form.querySelector('[data-err-for="message"]'),
     };
-
-    const chips = form.querySelectorAll(".cform__chip");
-    chips.forEach((chip) => {
-        chip.addEventListener("click", () => {
-            chips.forEach((c) => {
-                c.classList.remove("is-selected");
-                c.setAttribute("aria-checked", "false");
-            });
-            chip.classList.add("is-selected");
-            chip.setAttribute("aria-checked", "true");
-            fields.kind.value = chip.dataset.kind || "";
-        });
-    });
 
     const updateCount = () => {
         if (!charCount || !fields.message) return;
@@ -62,7 +45,7 @@
         else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "That doesn't look right";
 
         if (!message) e.message = "Tell us a little about it";
-        else if (message.length < 20) e.message = "A few more words, please";
+        else if (message.length < 10) e.message = "A few more words, please";
 
         Object.keys(errs).forEach((k) => setErr(k, e[k] || ""));
         return Object.keys(e).length === 0;
@@ -87,11 +70,6 @@
 
     const reset = () => {
         form.reset();
-        chips.forEach((c, i) => {
-            c.classList.toggle("is-selected", i === 0);
-            c.setAttribute("aria-checked", i === 0 ? "true" : "false");
-        });
-        fields.kind.value = "build";
         Object.keys(errs).forEach((k) => setErr(k, ""));
         updateCount();
         success.hidden = true;
@@ -110,10 +88,6 @@
         const payload = {
             name: fields.name.value.trim(),
             email: fields.email.value.trim(),
-            company: fields.company.value.trim(),
-            kind: fields.kind.value,
-            budget: fields.budget.value,
-            timeline: fields.timeline.value,
             message: fields.message.value.trim(),
         };
 

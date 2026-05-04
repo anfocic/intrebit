@@ -1,123 +1,107 @@
 ---
-import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
+import { contact } from "../../config/copy.ts";
+
+const { form } = contact;
+const f = form.fields;
 ---
 
 <section class="cform" aria-label="Contact form" data-reveal>
     <div class="cform__inner">
-        <aside class="cform__side">
-            <p class="label">— Form</p>
-            <h2 class="cform__side-title">
-                Or just <em>email</em>.
-            </h2>
-            <p class="cform__side-body">If forms aren't your thing —</p>
-            <a class="mono cform__email" href="mailto:hello@intrebit.com">hello@intrebit.com</a>
-            <div class="cform__avail">
-                <p class="cform__avail-head"># availability</p>
-                <p class="cform__avail-body">
-                    <span class="cform__avail-dot">●</span>
-                    2 client slots open · Q3 2026
-                </p>
-            </div>
-        </aside>
-
-        <form class="cform__form" id="contact-form" novalidate>
+        <form class="cform__form" id="contact-form" method="post" novalidate>
             <label class="honeypot" aria-hidden="true">
                 Do not fill
-                <input type="text" name="company_hp" tabindex="-1" autocomplete="off"/>
+                <input
+                    type="text"
+                    name="company_hp"
+                    tabindex="-1"
+                    autocomplete="off"
+                />
             </label>
 
             <div class="cform__row cform__row--two">
                 <div class="cform__field">
-                    <label class="cform__label" for="cf-name">Name</label>
-                    <input class="cform__input" id="cf-name" name="name" placeholder="Jane Doe" autocomplete="name"/>
+                    <label class="cform__label" for="cf-name"
+                        >{f.name.label}</label
+                    >
+                    <input
+                        class="cform__input"
+                        id="cf-name"
+                        name="name"
+                        placeholder={f.name.placeholder}
+                        autocomplete="name"
+                    />
                     <div class="cform__err" data-err-for="name"></div>
                 </div>
                 <div class="cform__field">
-                    <label class="cform__label" for="cf-email">Email</label>
-                    <input class="cform__input" id="cf-email" name="email" type="email" placeholder="jane@company.com" autocomplete="email"/>
+                    <label class="cform__label" for="cf-email"
+                        >{f.email.label}</label
+                    >
+                    <input
+                        class="cform__input"
+                        id="cf-email"
+                        name="email"
+                        type="email"
+                        placeholder={f.email.placeholder}
+                        autocomplete="email"
+                    />
                     <div class="cform__err" data-err-for="email"></div>
                 </div>
             </div>
 
             <div class="cform__field">
-                <label class="cform__label" for="cf-company">Company (optional)</label>
-                <input class="cform__input" id="cf-company" name="company" placeholder="Acme Co." autocomplete="organization"/>
-            </div>
-
-            <div class="cform__field">
-                <label class="cform__label">What kind of project?</label>
-                <div class="cform__chips" role="radiogroup" aria-label="Project kind">
-                    <button type="button" class="cform__chip is-selected" data-kind="build" role="radio" aria-checked="true">Build something new</button>
-                    <button type="button" class="cform__chip" data-kind="fix" role="radio" aria-checked="false">Fix something broken</button>
-                    <button type="button" class="cform__chip" data-kind="automate" role="radio" aria-checked="false">Automate something</button>
-                    <button type="button" class="cform__chip" data-kind="other" role="radio" aria-checked="false">Not sure / something else</button>
-                </div>
-                <input type="hidden" name="kind" id="cf-kind" value="build"/>
-            </div>
-
-            <div class="cform__row cform__row--two">
-                <div class="cform__field">
-                    <label class="cform__label" for="cf-budget">Budget range (optional)</label>
-                    <select class="cform__input cform__select" id="cf-budget" name="budget">
-                        <option value="">— select —</option>
-                        <option>Under €5k</option>
-                        <option>€5k – €15k</option>
-                        <option>€15k – €40k</option>
-                        <option>€40k+</option>
-                        <option>Not sure yet</option>
-                    </select>
-                </div>
-                <div class="cform__field">
-                    <label class="cform__label" for="cf-timeline">Timeline (optional)</label>
-                    <select class="cform__input cform__select" id="cf-timeline" name="timeline">
-                        <option value="">— select —</option>
-                        <option>ASAP</option>
-                        <option>Next month</option>
-                        <option>This quarter</option>
-                        <option>Flexible</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="cform__field">
-                <label class="cform__label" for="cf-message">What's the project?</label>
+                <label class="cform__label" for="cf-message"
+                    >{f.message.label}</label
+                >
                 <textarea
                     class="cform__input cform__textarea"
                     id="cf-message"
                     name="message"
-                    placeholder="A few sentences on what you need, what you've tried, and any constraints we should know about."
-                ></textarea>
+                    placeholder={f.message.placeholder}></textarea>
                 <div class="cform__row cform__row--meta">
                     <div class="cform__err" data-err-for="message"></div>
-                    <span class="mono cform__count" data-char-count>0 chars</span>
+                    <span class="mono cform__count" data-char-count
+                        >0 chars</span
+                    >
                 </div>
             </div>
 
             <div class="cform__footer">
-                <span class="mono cform__note">
-                    We reply within 1 business day · GDPR-friendly · No newsletter signup
-                </span>
-                <button type="submit" class="cform__submit">
-                    <span data-submit-label>Send message</span>
+                <div class="cform__contact">
+                    <a class="cform__email mono" href={`mailto:${form.email}`}
+                        >{form.email}</a
+                    >
+                    <span class="cform__reply mono"
+                        >We reply within one business day.</span
+                    >
+                </div>
+                <button
+                    type="submit"
+                    class="cform__submit"
+                    transition:name="cta-button"
+                >
+                    <span data-submit-label>{form.submit}</span>
                     <span class="cform__submit-arrow">→</span>
                 </button>
             </div>
         </form>
 
         <div class="cform__success" id="cform-success" hidden>
-            <div class="cform__success-glyph" aria-hidden="true">
-                <OrbGlyph size={260}/>
-            </div>
-            <p class="label cform__success-label">✓ Message sent</p>
+            <p class="label cform__success-label">{form.success.label}</p>
             <h2 class="cform__success-title">
-                Got it, <span data-success-name>friend</span>.<br/>
-                <em>We'll be in touch.</em>
+                {form.success.titleStart}
+                <span data-success-name>friend</span>.<br />
+                <Fragment set:html={form.success.titleEnd} />
             </h2>
             <p class="cform__success-body">
-                We'll reply to <span class="mono cform__success-email" data-success-email>you</span> within a day.
-                Usually faster.
+                {form.success.body.split("{email}")[0]}
+                <span class="mono cform__success-email" data-success-email
+                    >you</span
+                >
+                {form.success.body.split("{email}")[1]}
             </p>
-            <button type="button" class="cform__again" data-send-another>← Send another</button>
+            <button type="button" class="cform__again" data-send-another
+                >{form.success.again}</button
+            >
         </div>
     </div>
 </section>
@@ -129,69 +113,9 @@ import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
     }
 
     .cform__inner {
-        max-width: var(--container-width);
+        max-width: 760px;
         margin: 0 auto;
-        display: grid;
-        grid-template-columns: 1fr 2fr;
-        gap: 80px;
-        align-items: start;
         position: relative;
-    }
-
-    .cform__side {
-        position: sticky;
-        top: calc(var(--header-height) + 24px);
-    }
-
-    .cform__side-title {
-        font-family: var(--font-display);
-        font-weight: 400;
-        font-size: clamp(40px, 5vw, 56px);
-        line-height: 1;
-        margin: 12px 0 24px;
-        letter-spacing: -0.03em;
-    }
-
-    .cform__side-title em {
-        font-style: italic;
-        color: var(--accent);
-    }
-
-    .cform__side-body {
-        font-size: 15px;
-        line-height: 1.55;
-        color: var(--ink-2);
-        margin: 0;
-    }
-
-    .cform__email {
-        display: inline-block;
-        margin-top: 12px;
-        font-size: 14px;
-        border-bottom: 1px solid var(--ink);
-        padding-bottom: 2px;
-        text-decoration: none;
-        color: var(--ink);
-    }
-
-    .cform__avail {
-        margin-top: 32px;
-        padding: 14px 16px;
-        background: var(--bg-2);
-        border: 1px solid var(--rule);
-        font-family: var(--font-mono);
-        font-size: 11px;
-        color: var(--ink-2);
-        line-height: 1.6;
-    }
-
-    .cform__avail-head {
-        color: var(--ink-3);
-        margin: 0;
-    }
-
-    .cform__avail-body {
-        margin: 4px 0 0;
     }
 
     .cform__avail-dot {
@@ -219,38 +143,35 @@ import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
         flex-direction: column;
     }
 
-    .cform__field + .cform__field,
-    .cform__row + .cform__field,
-    .cform__field + .cform__row,
-    .cform__row + .cform__row {
+    .cform__form > .cform__field + .cform__field,
+    .cform__form > .cform__row + .cform__field,
+    .cform__form > .cform__field + .cform__row,
+    .cform__form > .cform__row + .cform__row {
         margin-top: 32px;
-    }
-
-    .cform__form > .cform__field:first-of-type,
-    .cform__form > .cform__row:first-of-type {
-        margin-top: 0;
     }
 
     .cform__label {
         font-family: var(--font-mono);
-        font-size: 11px;
+        font-size: 13px;
         color: var(--ink-3);
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        margin-bottom: 8px;
+        margin-bottom: 12px;
+        transition: color 0.2s var(--ease);
     }
 
     .cform__input {
         width: 100%;
-        padding: 14px 0;
+        padding: 16px 0;
         border: none;
         border-bottom: 1px solid var(--rule-2);
         background: transparent;
         font-family: var(--font-sans);
-        font-size: 17px;
+        font-size: 20px;
         color: var(--ink);
         outline: none;
         border-radius: 0;
+        transition: border-bottom-color 0.2s var(--ease);
     }
 
     .cform__input::placeholder {
@@ -258,7 +179,11 @@ import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
     }
 
     .cform__input:focus {
-        border-bottom-color: var(--ink);
+        border-bottom-color: var(--accent);
+    }
+
+    .cform__field:focus-within .cform__label {
+        color: var(--accent);
     }
 
     .cform__select {
@@ -306,7 +231,10 @@ import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
         font-family: var(--font-mono);
         font-size: 12px;
         cursor: pointer;
-        transition: background 0.2s var(--ease), color 0.2s var(--ease), border-color 0.2s var(--ease);
+        transition:
+            background 0.2s var(--ease),
+            color 0.2s var(--ease),
+            border-color 0.2s var(--ease);
     }
 
     .cform__chip.is-selected {
@@ -320,27 +248,45 @@ import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
         justify-content: space-between;
         align-items: center;
         margin-top: 48px;
-        gap: 16px;
+        gap: 24px;
         flex-wrap: wrap;
     }
 
-    .cform__note {
+    .cform__contact {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .cform__email {
+        font-size: 14px;
+        color: var(--ink);
+        text-decoration: none;
+        border-bottom: 1px solid var(--ink);
+        padding-bottom: 1px;
+        align-self: flex-start;
+    }
+
+    .cform__reply {
         font-size: 11px;
         color: var(--ink-3);
+        letter-spacing: 0.02em;
     }
 
     .cform__submit {
         display: inline-flex;
         align-items: center;
-        gap: 16px;
+        gap: 12px;
         background: var(--ink);
         color: var(--bg);
-        padding: 18px 28px;
+        padding: 12px 20px;
         border: none;
         cursor: pointer;
         font-family: var(--font-mono);
-        font-size: 14px;
-        transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+        font-size: 13px;
+        transition:
+            transform 0.25s var(--ease),
+            opacity 0.25s var(--ease);
     }
 
     .cform__submit:hover {
@@ -432,15 +378,6 @@ import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
     @media (max-width: 900px) {
         .cform {
             padding: 40px var(--section-pad-x-mobile);
-        }
-
-        .cform__inner {
-            grid-template-columns: 1fr;
-            gap: 32px;
-        }
-
-        .cform__side {
-            position: static;
         }
 
         .cform__row--two {
