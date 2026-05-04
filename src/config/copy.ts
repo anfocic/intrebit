@@ -107,7 +107,7 @@ export const home = {
   },
 
   studio: {
-    heading: "We build software that actually <em>ships</em>.",
+    heading: "New <em>shop</em> in town.",
     article: {
       lede:
         "ntrebit started in 2025 in Dublin, after a few years inside a " +
