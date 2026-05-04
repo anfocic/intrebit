@@ -1,9 +1,15 @@
+---
+import {services} from "../../config/copy.ts";
+
+const c = services.cta;
+---
+
 <section class="cta">
     <div class="container">
         <div class="cta-card">
-            <h2>Let's figure out what you need.</h2>
-            <p>We'll get back to you within a day.</p>
-            <a class="btn btn--primary" href="/contact">Talk to us</a>
+            <h2>{c.heading}</h2>
+            <p>{c.body}</p>
+            <a class="btn btn--primary" href={c.button.href}>{c.button.label}</a>
         </div>
     </div>
 </section>

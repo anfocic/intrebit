@@ -1,28 +1,12 @@
 ---
-import AsteriskGlyph from "../shared/glyphs/AsteriskGlyph.astro";
+import {contact} from "../../config/copy.ts";
+
+const {hero} = contact;
 ---
 
 <section class="chero" aria-label="Contact">
     <div class="chero__inner">
-        <div class="chero__glyph" aria-hidden="true">
-            <AsteriskGlyph size={200}/>
-        </div>
-
-        <p class="label chero__eyebrow">
-            <span class="chero__dot">●</span>
-            Replies within a day · No sales calls
-        </p>
-
-        <h1 class="chero__title">
-            Tell us what's broken<br/>
-            <em>— or what you want built.</em>
-        </h1>
-
-        <p class="chero__lead">
-            Drop us a line. We'll ask a couple of questions, then send back
-            a straight answer — a proposal, or an honest no. No spam. No drip
-            campaigns. No &ldquo;just circling back.&rdquo;
-        </p>
+        <h1 class="chero__title" transition:name="cta-heading" set:html={hero.title}/>
     </div>
 </section>
 
@@ -30,7 +14,7 @@ import AsteriskGlyph from "../shared/glyphs/AsteriskGlyph.astro";
     .chero {
         position: relative;
         overflow: hidden;
-        padding: 80px var(--section-pad-x) 40px;
+        padding: 56px var(--section-pad-x) 32px;
     }
 
     .chero__inner {
@@ -43,13 +27,13 @@ import AsteriskGlyph from "../shared/glyphs/AsteriskGlyph.astro";
         position: absolute;
         top: -10px;
         right: 0;
+        opacity: 0.7;
         color: var(--ink);
-        opacity: 0.85;
         pointer-events: none;
     }
 
     .chero__eyebrow {
-        margin: 0 0 32px;
+        margin: 0 0 24px;
     }
 
     .chero__dot {
@@ -59,13 +43,12 @@ import AsteriskGlyph from "../shared/glyphs/AsteriskGlyph.astro";
     .chero__title {
         font-family: var(--font-display);
         font-weight: 400;
-        font-size: clamp(48px, 11vw, 132px);
-        line-height: 0.92;
-        letter-spacing: -0.04em;
+        font-size: clamp(40px, 7vw, 80px);
+        line-height: 1.12;
+        letter-spacing: -0.035em;
         margin: 0;
-        max-width: 1100px;
+        max-width: 900px;
         text-wrap: balance;
-        position: relative;
         color: var(--ink);
     }
 
@@ -76,11 +59,11 @@ import AsteriskGlyph from "../shared/glyphs/AsteriskGlyph.astro";
 
     .chero__lead {
         font-family: var(--font-sans);
-        font-size: 20px;
-        line-height: 1.4;
+        font-size: 17px;
+        line-height: 1.5;
         color: var(--ink-2);
-        margin: 40px 0 0;
-        max-width: 640px;
+        margin: 24px 0 0;
+        max-width: 560px;
         text-wrap: pretty;
     }
 
@@ -97,7 +80,7 @@ import AsteriskGlyph from "../shared/glyphs/AsteriskGlyph.astro";
 
         .chero__title {
             font-size: 48px;
-            line-height: 0.95;
+            line-height: 1.15;
         }
 
         .chero__lead {

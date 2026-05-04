@@ -22,6 +22,14 @@ body {
     background: var(--bg);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100dvh;
+}
+
+main {
+    flex: 1 0 auto;
 }
 
 img,
@@ -67,7 +75,7 @@ em {
     font-size: 11px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--accent);
 }
 
 .honeypot {
@@ -154,6 +162,7 @@ em {
     letter-spacing: -0.01em;
     font-weight: 400;
     font-family: var(--font-display);
+    color: var(--accent);
 }
 
 .legal__section p {
@@ -192,4 +201,16 @@ em {
     .legal {
         padding: 3.5rem 1.25rem 4rem;
     }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
 }

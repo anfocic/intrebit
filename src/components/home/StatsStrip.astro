@@ -1,17 +1,11 @@
 ---
-const items = [
-    {stat: "1 day", label: "to first reply", sub: "Real answer — not an auto-responder."},
-    {stat: "4 weeks", label: "average to ship", sub: "From signed scope to live in production."},
-    {stat: "Fixed", label: "price, signed up front", sub: "No hourly meter. No surprise invoices."},
-    {stat: "100%", label: "yours from day one", sub: "Code, accounts, hosting — all in your name."},
-];
+import {home} from "../../config/copy.ts";
+
+const {stats} = home;
+const items = stats.items;
 ---
 
 <section class="strip" aria-label="How we're different" data-reveal data-reveal-stagger>
-    <div class="strip__head">
-        <span class="mono strip__head-label">— How we're different</span>
-        <span class="mono strip__head-deco" aria-hidden="true">◆ ◆ ◆ ◆</span>
-    </div>
 
     <div class="strip__grid">
         {items.map((it, i) => (

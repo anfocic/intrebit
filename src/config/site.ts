@@ -3,7 +3,7 @@ export const services = [
     id: "build",
     n: "S/01",
     title: "Build",
-    outcome: "Ship the thing your team actually needs.",
+    outcome: "Ship what your team needs.",
     forWho: "Solo founder, small agency, fill this later",
     examples: [
       "Customer portals & member areas",
@@ -18,7 +18,7 @@ export const services = [
     id: "fix",
     n: "S/02",
     title: "Fix",
-    outcome: "Make the slow, broken or fragile thing reliable.",
+    outcome: "Make slow, broken, fragile reliable.",
     forWho:
       "Teams stuck with a product nobody understands, or losing customers to bugs.",
     examples: [
@@ -34,7 +34,7 @@ export const services = [
     id: "automate",
     n: "S/03",
     title: "Automate",
-    outcome: "Let the boring work run itself.",
+    outcome: "Boring work runs itself.",
     forWho:
       "Teams drowning in manual reports, copy-paste, and tools that won't talk.",
     examples: [

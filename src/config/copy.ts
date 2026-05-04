@@ -84,7 +84,7 @@ export const home = {
       {
         n: "02",
         status: "Ongoing",
-        client: "Confidential client",
+        client: "Client work",
         kind: "Cleaning up old code",
         year: "2025 — now",
         blurb:
