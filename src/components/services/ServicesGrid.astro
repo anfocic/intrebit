@@ -1,32 +1,19 @@
 ---
-const services = [
-    {
-        title: "Build",
-        description: "Custom software built for how you actually work.",
-        details: "Websites, internal tools, customer portals, mobile apps. We handle the architecture, the code, and the deployment.",
-    },
-    {
-        title: "Fix",
-        description: "Broken systems, slow sites, inherited messes.",
-        details: "Something's not working and nobody knows why? We dig in, find the root cause, and make it reliable.",
-    },
-    {
-        title: "Automate",
-        description: "Turn repetitive tasks into background processes.",
-        details: "Data entry, report generation, invoice handling—if you're doing it twice a week, we can probably make it run itself.",
-    },
-];
+import {services as svcCopy} from "../../config/copy.ts";
+
+const {grid} = svcCopy;
+const items = grid.items;
 ---
 
 <section class="services below-hero-content" id="services" data-services-section>
     <div class="services__container">
         <div class="services__layout">
             <header class="services__intro">
-                <h2 class="services__title">What we do</h2>
+                <h2 class="services__title">{grid.title}</h2>
             </header>
 
             <div class="services__list" data-services>
-                {services.map((service, i) => (
+                {items.map((service, i) => (
                         <article class="service" data-service data-index={i}>
                             <button
                                     class="service__trigger"
@@ -152,7 +139,7 @@ const services = [
         justify-content: center;
         color: var(--text-muted);
         flex-shrink: 0;
-        transition: transform 0.25s ease, color 0.2s ease, background 0.2s ease;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s ease, background 0.2s ease;
     }
 
     .service:hover .service__chevron {
@@ -170,26 +157,28 @@ const services = [
         display: grid;
         grid-template-rows: 0fr;
         opacity: 0;
-        transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
+        transition:
+            grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .service[data-open="true"] .service__panel {
         grid-template-rows: 1fr;
         opacity: 1;
+        transition:
+            grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+            opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1) 0.08s;
     }
 
     .service__details {
         overflow: hidden;
         margin: 0;
-        font-size: 0.9rem;
-        color: var(--text-muted);
-        line-height: 1.6;
-    }
-
-    .service[data-open="true"] .service__details {
         padding-top: 1rem;
         margin-top: 1rem;
         border-top: 1px solid var(--border);
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        line-height: 1.6;
     }
 
     /* Responsive */
