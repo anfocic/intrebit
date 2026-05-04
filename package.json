@@ -4,15 +4,15 @@
   "version": "1.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "og": "node scripts/build-og.mjs",
+    "build": "node scripts/build-og.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "set -a && [ -f .env.local ] && . .env.local; set +a && npm run build && : \"${CLOUDFLARE_ACCOUNT_ID:?Set CLOUDFLARE_ACCOUNT_ID}\" && wrangler pages deploy dist --project-name intrebit --branch main --commit-dirty=true"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
-    "astro": "^5.16.3",
-    "gsap": "^3.14.2"
+    "astro": "^6.2.1"
   },
   "devDependencies": {
     "wrangler": "^4.35.0"

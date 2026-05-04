@@ -68,6 +68,13 @@ const seo = buildSEO(Astro.url, {
     {seo.image.height && <meta property="og:image:height" content={seo.image.height.toString()}/>}
     {seo.image.alt && <meta property="og:image:alt" content={seo.image.alt}/>}
 
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content={seo.title}/>
+    <meta name="twitter:description" content={seo.description}/>
+    <meta name="twitter:image" content={seo.image.url}/>
+    {seo.image.alt && <meta name="twitter:image:alt" content={seo.image.alt}/>}
+
     <!-- Structured Data -->
     {schemas.map((schema) => (
         <script type="application/ld+json" set:html={JSON.stringify(schema)}/>

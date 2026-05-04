@@ -53,10 +53,10 @@ const SITE: SiteSEOConfig = {
     defaultDescription:
         "Software development, outsourcing, infrastructure, and consulting — without the corporate BS.",
     defaultImage: {
-        url: "",
+        url: "/og/default.png",
         width: 1200,
         height: 630,
-        alt: "Intrebit",
+        alt: "intrebit — software, built properly.",
     },
 };
 
