@@ -27,3 +27,5 @@ pnpm-debug.log*
 .idea/
 !/src/content/blog.md
 !/src/content/
+
+.claude/
