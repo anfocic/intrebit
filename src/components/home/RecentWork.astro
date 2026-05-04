@@ -1,74 +1,64 @@
 ---
-const items = [
-    {
-        n: "W/01",
-        client: "Helix Logistics",
-        kind: "Internal tool",
-        year: "2026",
-        blurb: "Replaced 4 spreadsheets with a single dispatching dashboard. Cut admin time by 60%.",
-        tag1: "Build",
-        tag2: "Internal dashboard",
-    },
-    {
-        n: "W/02",
-        client: "Marsala Coffee Co.",
-        kind: "E-commerce",
-        year: "2025",
-        blurb: "Rebuilt the storefront and subscription flow. 3× faster checkout, fewer abandoned carts.",
-        tag1: "Build",
-        tag2: "Subscriptions",
-    },
-    {
-        n: "W/03",
-        client: "Kestrel Lab",
-        kind: "Automation",
-        year: "2025",
-        blurb: "Automated weekly reporting across three CRMs. Saved ~12 hours per week.",
-        tag1: "Automate",
-        tag2: "Reporting",
-    },
-    {
-        n: "W/04",
-        client: "Bramble & Co.",
-        kind: "Performance",
-        year: "2025",
-        blurb: "Audited and fixed a slow legacy site. Page loads from 4.1s to 380ms.",
-        tag1: "Fix",
-        tag2: "Performance",
-    },
-];
+import {home} from "../../config/copy.ts";
 
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "-");
+const {work} = home;
+const items = work.items;
+const values = work.values;
 ---
 
-<section id="work" class="work" aria-label="Recent work" data-reveal>
+<section id="work" class="work" aria-label="Work" data-reveal>
     <div class="work__inner">
-        <header class="work__header">
-            <div>
-                <p class="label">— Recent work</p>
-                <h2 class="work__heading">A few recent <em>builds</em>.</h2>
-            </div>
-            <a href="/#work" class="mono work__see-all">See all work →</a>
-        </header>
+        <div class="work__layout">
+            <div class="work__left">
+                <header class="work__header">
+                    <h2 class="work__heading" set:html={work.heading}/>
+                </header>
 
-        <div class="work__rows">
-            {items.map((w) => (
-                <a href="/#work" class="work__row">
-                    <span class="mono work__n">{w.n}</span>
-                    <div class="work__client">
-                        <p class="work__client-name">{w.client}</p>
-                        <p class="mono work__client-meta">{w.kind} · {w.year}</p>
-                    </div>
-                    <div class="work__tags">
-                        <span class="mono tag tag--solid">{w.tag1}</span>
-                        <span class="mono tag tag--outline">{w.tag2}</span>
-                    </div>
-                    <p class="work__blurb">{w.blurb}</p>
-                    <div class="work__thumb">
-                        <span class="mono work__thumb-label">[ {slug(w.client)}.png ]</span>
-                    </div>
-                </a>
-            ))}
+                <ol class="work__rows" role="list">
+                    {items.map((w) => {
+                        const isLink = !!w.href;
+                        const linkProps = isLink
+                            ? {href: w.href, ...(w.external ? {target: "_blank", rel: "noopener"} : {})}
+                            : {};
+                        const yearMatch = w.year.match(/\d{4}/);
+                        const yearAttr = yearMatch ? yearMatch[0] : undefined;
+                        return (
+                            <li class="work__item">
+                                <article class:list={["work__row", {"work__row--link": isLink}]}>
+                                    {isLink ? <a class="work__link" {...linkProps} aria-labelledby={`work-${w.n}-name`}/> : null}
+                                    <header class="work__client">
+                                        <div class="work__client-head">
+                                            <span class:list={["mono", "work__status", `work__status--${w.status.toLowerCase().replace(/\s+/g, "-")}`]}>
+                                                <span class="work__dot" aria-hidden="true"></span>
+                                                <span class="sr-only">Status: </span>
+                                                {w.status}
+                                            </span>
+                                            <h3 class="work__client-name" id={`work-${w.n}-name`}>{w.client}</h3>
+                                        </div>
+                                        <p class="mono work__client-meta">
+                                            {w.kind} · <time datetime={yearAttr}>{w.year}</time>
+                                        </p>
+                                    </header>
+                                    <p class="work__blurb">{w.blurb}</p>
+                                    <span class="mono work__cta" aria-hidden="true">{isLink ? "→" : ""}</span>
+                                </article>
+                            </li>
+                        );
+                    })}
+                </ol>
+            </div>
+
+            <aside class="work__right">
+                <h3 class="work__values-heading">{values.heading}</h3>
+                <ul class="work__values">
+                    {values.points.map((p) => (
+                        <li class="work__value">
+                            <p class="work__value-title">{p.title}</p>
+                            <p class="work__value-body">{p.body}</p>
+                        </li>
+                    ))}
+                </ul>
+            </aside>
         </div>
     </div>
 </section>
@@ -84,19 +74,22 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "-");
         margin: 0 auto;
     }
 
+    .work__layout {
+        display: grid;
+        grid-template-columns: 1.6fr 1fr;
+        gap: 80px;
+        align-items: start;
+    }
+
     .work__header {
-        display: flex;
-        justify-content: space-between;
-        align-items: baseline;
-        margin-bottom: 48px;
-        gap: 24px;
+        margin-bottom: 40px;
     }
 
     .work__heading {
         font-family: var(--font-display);
         font-weight: 400;
-        font-size: clamp(40px, 6vw, 64px);
-        line-height: 1;
+        font-size: clamp(36px, 4.6vw, 56px);
+        line-height: 0.98;
         margin: 12px 0 0;
         letter-spacing: -0.03em;
     }
@@ -106,44 +99,121 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "-");
         color: var(--accent);
     }
 
-    .work__see-all {
-        font-size: 12px;
-        color: var(--ink);
-        border-bottom: 1px solid var(--ink);
-        padding-bottom: 2px;
-        text-decoration: none;
-    }
-
     .work__rows {
+        list-style: none;
+        padding: 0;
+        margin: 0;
         border-top: 1px solid var(--rule);
     }
 
+    .work__item {
+        list-style: none;
+    }
+
     .work__row {
+        position: relative;
         display: grid;
-        grid-template-columns: 60px 1.4fr 1fr 1.6fr 200px;
+        grid-template-columns: 1fr 1.4fr 24px;
         align-items: center;
-        gap: 24px;
-        padding: 28px 0;
+        gap: 18px;
+        padding: 22px 0;
         border-bottom: 1px solid var(--rule);
-        text-decoration: none;
         color: inherit;
-        transition: background 0.25s var(--ease), padding 0.25s var(--ease);
+        transition: padding 0.25s var(--ease), background 0.25s var(--ease);
     }
 
-    .work__row:hover {
+    .work__client-head {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .work__link {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        text-decoration: none;
+    }
+
+    .work__link:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: -2px;
+    }
+
+    .work__row--link:hover {
         background: var(--bg-2);
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: 12px;
+        padding-right: 12px;
     }
 
-    .work__n {
-        font-size: 11px;
-        color: var(--ink-3);
+    .work__row--link:hover .work__cta {
+        color: var(--accent);
+        transform: translateX(4px);
+    }
+
+    .work__status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        padding: 4px 10px 4px 8px;
+        border: 1px solid var(--rule-2);
+        border-radius: 999px;
+        justify-self: start;
+    }
+
+    .work__dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        flex-shrink: 0;
+    }
+
+    .work__status--ongoing .work__dot,
+    .work__status--building .work__dot,
+    .work__status--coming-soon .work__dot {
+        animation: workPulse 1.8s ease-in-out infinite;
+        box-shadow: 0 0 0 0 var(--accent);
+    }
+
+    @keyframes workPulse {
+        0%, 100% {
+            box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent);
+            opacity: 1;
+        }
+        50% {
+            box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 0%, transparent);
+            opacity: 0.6;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .work__status--ongoing .work__dot,
+        .work__status--building .work__dot,
+        .work__status--coming-soon .work__dot {
+            animation: none;
+        }
+    }
+
+    .work__status--shipped {
+        color: var(--ink);
+        border-color: var(--rule-2);
+    }
+
+    .work__status--building,
+    .work__status--ongoing,
+    .work__status--coming-soon {
+        color: var(--accent);
+        border-color: var(--accent);
     }
 
     .work__client-name {
         font-family: var(--font-display);
-        font-size: 28px;
+        font-size: 22px;
         letter-spacing: -0.02em;
         line-height: 1.05;
         margin: 0;
@@ -156,46 +226,83 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "-");
         margin: 4px 0 0;
     }
 
-    .work__tags {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-    }
-
-    .tag {
-        font-size: 11px;
-        padding: 3px 8px;
-    }
-
-    .tag--solid {
-        background: var(--ink);
-        color: var(--bg);
-    }
-
-    .tag--outline {
-        border: 1px solid var(--rule-2);
-        color: var(--ink-2);
-    }
-
     .work__blurb {
         margin: 0;
-        font-size: 14px;
+        font-size: 13px;
         line-height: 1.5;
         color: var(--ink-2);
     }
 
-    .work__thumb {
-        height: 80px;
-        border: 1px solid var(--rule-2);
-        background: repeating-linear-gradient(45deg, var(--bg-2), var(--bg-2) 6px, var(--bg) 6px, var(--bg) 12px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .work__cta {
+        font-size: 16px;
+        color: var(--ink-3);
+        transition: color 0.25s var(--ease), transform 0.25s var(--ease);
+        justify-self: end;
     }
 
-    .work__thumb-label {
-        font-size: 10px;
-        color: var(--ink-3);
+    .work__right {
+        position: sticky;
+        top: 100px;
+        padding-left: 32px;
+        border-left: 1px solid var(--rule);
+    }
+
+    .work__values-heading {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: 24px;
+        letter-spacing: -0.02em;
+        margin: 12px 0 24px;
+        color: var(--ink);
+    }
+
+    .work__values {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .work__value {
+        padding-bottom: 18px;
+        border-bottom: 1px solid var(--rule);
+    }
+
+    .work__value:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+    }
+
+    .work__value-title {
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--ink);
+        margin: 0 0 6px;
+        letter-spacing: -0.01em;
+    }
+
+    .work__value-body {
+        font-size: 13px;
+        line-height: 1.55;
+        color: var(--ink-2);
+        margin: 0;
+    }
+
+    @media (max-width: 1100px) {
+        .work__layout {
+            gap: 48px;
+        }
+
+        .work__row {
+            grid-template-columns: 1fr 24px;
+            gap: 14px;
+        }
+
+        .work__blurb {
+            display: none;
+        }
     }
 
     @media (max-width: 900px) {
@@ -203,25 +310,40 @@ const slug = (s: string) => s.toLowerCase().replace(/[^a-z]/g, "-");
             padding: 56px var(--section-pad-x-mobile) 40px;
         }
 
+        .work__layout {
+            grid-template-columns: 1fr;
+            gap: 48px;
+        }
+
         .work__header {
-            flex-direction: column;
-            gap: 16px;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .work__row {
             grid-template-columns: 1fr;
-            gap: 12px;
+            gap: 10px;
             padding: 20px 0;
         }
 
-        .work__row:hover {
+        .work__row--link:hover {
             padding-left: 0;
             padding-right: 0;
         }
 
-        .work__thumb {
-            height: 100px;
+        .work__blurb {
+            display: block;
+        }
+
+        .work__cta {
+            display: none;
+        }
+
+        .work__right {
+            position: static;
+            padding-left: 0;
+            border-left: none;
+            padding-top: 32px;
+            border-top: 1px solid var(--rule);
         }
     }
 </style>
