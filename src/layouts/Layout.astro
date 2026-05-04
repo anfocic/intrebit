@@ -4,6 +4,7 @@ import "../styles/tokens.css";
 import "../styles/theme.css";
 import "../styles/base.css";
 
+import {ClientRouter} from "astro:transitions";
 import Analytics from "../components/shared/Analytics.astro";
 import Footer from "../components/footer/Footer.astro";
 import Header from "../components/header/Header.astro";
@@ -30,7 +31,7 @@ const seo = buildSEO(Astro.url, {
 <!doctype html>
 <html lang="en">
 <head>
-    <script is:inline src="/scripts/theme.js"></script>
+    <script is:inline src="/scripts/theme.js?v=2"></script>
     <!-- Favicons -->
     <link rel="icon" href="/favicons/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
@@ -73,6 +74,7 @@ const seo = buildSEO(Astro.url, {
     ))}
 
     <Analytics/>
+    <ClientRouter/>
 </head>
 
 <body>
