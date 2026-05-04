@@ -1,4 +1,4 @@
-const UPSTREAM = "https://plausible.fole.dev/js/script.js";
+const UPSTREAM = "https://plausible.fole.dev/js/pa-2mFRy6PsiFSKFQOSuXzuM.js";
 
 export const onRequestGet: PagesFunction = async () => {
     const upstream = await fetch(UPSTREAM, {
