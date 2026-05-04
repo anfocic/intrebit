@@ -221,16 +221,5 @@ export const header = {
 };
 
 export const footer = {
-  socials: [
-    {
-      label: "Mastodon",
-      href: "https://mastodon.social/@intrebit",
-      rel: "me noopener noreferrer",
-    },
-    {
-      label: "LinkedIn",
-      href: "https://www.linkedin.com/company/intrebit",
-      rel: "noopener noreferrer",
-    },
-  ],
+  linkedin: "https://www.linkedin.com/company/intrebit",
 };
