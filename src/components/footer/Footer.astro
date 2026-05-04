@@ -73,7 +73,7 @@ const [emailUser, emailHost] = contact.form.email.split("@");
     .footer__inner {
         max-width: var(--container-width);
         margin: 0 auto;
-        padding: 24px var(--section-pad-x);
+        padding: 36px var(--section-pad-x) 28px;
         font-family: var(--font-mono);
         font-size: 11px;
         color: var(--ink-3);
@@ -90,9 +90,12 @@ const [emailUser, emailHost] = contact.form.email.split("@");
     }
 
     .footer__row--bottom {
-        margin-top: 8px;
-        padding-top: 12px;
-        border-top: 1px solid var(--rule);
+        margin-top: 14px;
+        justify-content: flex-end;
+    }
+
+    .footer__copy {
+        letter-spacing: 0.04em;
     }
 
     .footer__link {
@@ -113,15 +116,16 @@ const [emailUser, emailHost] = contact.form.email.split("@");
     .footer__icons {
         display: inline-flex;
         align-items: center;
-        gap: 4px;
+        gap: 2px;
+        margin-right: -8px;
     }
 
     .footer__icon-link {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         color: var(--ink-3);
         transition: color 0.2s var(--ease);
     }
@@ -132,7 +136,11 @@ const [emailUser, emailHost] = contact.form.email.split("@");
 
     @media (max-width: 720px) {
         .footer__inner {
-            padding: 20px var(--section-pad-x-mobile);
+            padding: 28px var(--section-pad-x-mobile) 22px;
+        }
+
+        .footer__row--bottom {
+            justify-content: flex-start;
         }
     }
 </style>
