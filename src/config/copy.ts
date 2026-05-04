@@ -222,4 +222,5 @@ export const header = {
 
 export const footer = {
   linkedin: "https://www.linkedin.com/company/intrebit",
+  github: "https://github.com/intrebit",
 };
