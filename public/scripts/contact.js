@@ -1,10 +1,11 @@
 (() => {
     const API_BASE = "https://api.intrebit.com/public";
     const ENDPOINT = "/lead";
+    const MIN_MESSAGE_LEN = 10;
 
     const form = document.getElementById("contact-form");
     const success = document.getElementById("cform-success");
-    if (!form || !success) return;
+    if (!form) return;
 
     const fields = {
         name: form.querySelector("#cf-name"),
@@ -34,29 +35,15 @@
         errs[key].textContent = msg ? `↳ ${msg}` : "";
     };
 
-    const validate = () => {
-        const e = {};
-        const name = fields.name.value.trim();
-        const email = fields.email.value.trim();
-        const message = fields.message.value.trim();
-
-        if (!name) e.name = "Name is required";
-        if (!email) e.email = "Email is required";
-        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "That doesn't look right";
-
-        if (!message) e.message = "Tell us a little about it";
-        else if (message.length < 10) e.message = "A few more words, please";
-
-        Object.keys(errs).forEach((k) => setErr(k, e[k] || ""));
-        return Object.keys(e).length === 0;
-    };
-
-    const setBusy = (busy) => {
-        submitBtn.disabled = busy;
-        if (submitLabel) submitLabel.textContent = busy ? "Sending..." : "Send message";
+    const setBusy = (busy, label) => {
+        if (!submitBtn) return;
+        submitBtn.disabled = !!busy;
+        submitBtn.setAttribute("aria-disabled", busy ? "true" : "false");
+        if (submitLabel && label) submitLabel.textContent = label;
     };
 
     const showSuccess = (data) => {
+        if (!success) return;
         const firstName = (data.name || "").trim().split(/\s+/)[0] || "friend";
         const nameSlot = success.querySelector("[data-success-name]");
         const emailSlot = success.querySelector("[data-success-email]");
@@ -72,26 +59,39 @@
         form.reset();
         Object.keys(errs).forEach((k) => setErr(k, ""));
         updateCount();
-        success.hidden = true;
+        if (success) success.hidden = true;
         form.hidden = false;
     };
 
-    const sendAnotherBtn = success.querySelector("[data-send-another]");
+    const sendAnotherBtn = success?.querySelector("[data-send-another]");
     sendAnotherBtn?.addEventListener("click", reset);
 
     form.addEventListener("submit", async (ev) => {
         ev.preventDefault();
 
         if (fields.honeypot && fields.honeypot.value) return;
-        if (!validate()) return;
+
+        Object.keys(errs).forEach((k) => setErr(k, ""));
+
+        const name = fields.name?.value.trim() || "";
+        const email = fields.email?.value.trim() || "";
+        const message = fields.message?.value.trim() || "";
+
+        if (!email) { setErr("email", "Please enter your email"); return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErr("email", "That doesn't look right"); return; }
+        if (!message) { setErr("message", "Please enter a short message"); return; }
+        if (message.length < MIN_MESSAGE_LEN) { setErr("message", `A few more words, please (min ${MIN_MESSAGE_LEN})`); return; }
 
         const payload = {
-            name: fields.name.value.trim(),
-            email: fields.email.value.trim(),
-            message: fields.message.value.trim(),
+            name: name || "Website form",
+            email,
+            replyTo: email,
+            message,
+            pageUrl: window.location?.href,
+            userAgent: navigator?.userAgent,
         };
 
-        setBusy(true);
+        setBusy(true, "Sending...");
 
         try {
             const res = await fetch(`${API_BASE}${ENDPOINT}`, {
@@ -103,10 +103,10 @@
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
             showSuccess(payload);
+            setBusy(false, "Send message");
         } catch (err) {
             setErr("message", "Something went wrong. Try again or email hello@intrebit.com.");
-        } finally {
-            setBusy(false);
+            setBusy(false, "Send message");
         }
     });
 })();
