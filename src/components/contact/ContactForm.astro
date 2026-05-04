@@ -57,12 +57,7 @@ const f = form.fields;
                     id="cf-message"
                     name="message"
                     placeholder={f.message.placeholder}></textarea>
-                <div class="cform__row cform__row--meta">
-                    <div class="cform__err" data-err-for="message"></div>
-                    <span class="mono cform__count" data-char-count
-                        >0 chars</span
-                    >
-                </div>
+                <div class="cform__err" data-err-for="message"></div>
             </div>
 
             <div class="cform__footer">
@@ -200,13 +195,6 @@ const f = form.fields;
         resize: vertical;
         min-height: 140px;
         line-height: 1.5;
-        border: 1px solid var(--rule-2);
-        padding: 14px 16px;
-    }
-
-    .cform__textarea:focus {
-        border-color: var(--accent);
-        border-bottom-color: var(--accent);
     }
 
     .cform__err {
@@ -258,7 +246,7 @@ const f = form.fields;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-top: 48px;
+        margin-top: 24px;
         gap: 24px;
         flex-wrap: wrap;
     }
