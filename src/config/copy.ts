@@ -107,7 +107,7 @@ export const home = {
   },
 
   studio: {
-    heading: "We build software that actually <em>ships</em>.",
+    heading: "New <em>shop</em> in town.",
     article: {
       lede:
         "ntrebit started in 2025 in Dublin, after a few years inside a " +
@@ -221,16 +221,6 @@ export const header = {
 };
 
 export const footer = {
-  socials: [
-    {
-      label: "Mastodon",
-      href: "https://mastodon.social/@intrebit",
-      rel: "me noopener noreferrer",
-    },
-    {
-      label: "LinkedIn",
-      href: "https://www.linkedin.com/company/intrebit",
-      rel: "noopener noreferrer",
-    },
-  ],
+  linkedin: "https://www.linkedin.com/company/intrebit",
+  github: "https://github.com/intrebit",
 };

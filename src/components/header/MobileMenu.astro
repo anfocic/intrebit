@@ -1,5 +1,6 @@
 ---
 import {navLinks} from "../../config/site.ts";
+import {footer} from "../../config/copy.ts";
 import ThemeToggle from "../shared/ThemeToggle.astro";
 ---
 
@@ -12,8 +13,6 @@ import ThemeToggle from "../shared/ThemeToggle.astro";
     hidden
     inert
 >
-    <p class="mobile-nav__eyebrow mono">— menu</p>
-
     <nav class="mobile-nav__menu" aria-label="Mobile navigation">
         {navLinks.map(({href, label}, i) => (
             <a href={href} class="mobile-nav__link" style={`--i:${i}`}>
@@ -30,14 +29,20 @@ import ThemeToggle from "../shared/ThemeToggle.astro";
         </a>
         <div class="mobile-nav__meta">
             <a href="/contact" data-email-user="hello" data-email-host="intrebit.com" class="mobile-nav__email mono">Email us</a>
-            <ThemeToggle/>
-        </div>
-
-        <div class="mobile-nav__avail-row">
-            <span class="mobile-nav__avail mono">
-                <span class="mobile-nav__dot"></span>
-                2 slots open · Q3
-            </span>
+            <div class="mobile-nav__icons">
+                <a
+                    href={footer.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    class="mobile-nav__icon-link"
+                >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0Z"/>
+                    </svg>
+                </a>
+                <ThemeToggle/>
+            </div>
         </div>
     </div>
 </aside>
@@ -243,6 +248,26 @@ import ThemeToggle from "../shared/ThemeToggle.astro";
         align-items: center;
         gap: 12px;
         flex-wrap: wrap;
+    }
+
+    .mobile-nav__icons {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .mobile-nav__icon-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        color: var(--ink-3);
+        transition: color 0.2s var(--ease);
+    }
+
+    .mobile-nav__icon-link:hover {
+        color: var(--ink);
     }
 
     .mobile-nav__email {
