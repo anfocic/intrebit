@@ -12,8 +12,6 @@ import ThemeToggle from "../shared/ThemeToggle.astro";
     hidden
     inert
 >
-    <p class="mobile-nav__eyebrow mono">— menu</p>
-
     <nav class="mobile-nav__menu" aria-label="Mobile navigation">
         {navLinks.map(({href, label}, i) => (
             <a href={href} class="mobile-nav__link" style={`--i:${i}`}>
@@ -31,13 +29,6 @@ import ThemeToggle from "../shared/ThemeToggle.astro";
         <div class="mobile-nav__meta">
             <a href="/contact" data-email-user="hello" data-email-host="intrebit.com" class="mobile-nav__email mono">Email us</a>
             <ThemeToggle/>
-        </div>
-
-        <div class="mobile-nav__avail-row">
-            <span class="mobile-nav__avail mono">
-                <span class="mobile-nav__dot"></span>
-                2 slots open · Q3
-            </span>
         </div>
     </div>
 </aside>
