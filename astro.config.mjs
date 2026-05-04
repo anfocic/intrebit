@@ -11,10 +11,16 @@ export default defineConfig({
     integrations: [
         sitemap(),
     ],
+    build: {
+        inlineStylesheets: "never",
+    },
     vite: {
         server: {
             hmr: true,
         },
         logLevel: "info",
+        build: {
+            assetsInlineLimit: 0,
+        },
     },
 });
