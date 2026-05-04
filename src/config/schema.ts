@@ -12,8 +12,7 @@ export const organizationSchema = {
     "email": SITE_EMAIL,
     "sameAs": [
         "https://www.linkedin.com/company/intrebit",
-        "https://mastodon.social/@intrebit",
-        "https://codeberg.org/intrebit"
+        "https://mastodon.social/@intrebit"
     ]
 };
 

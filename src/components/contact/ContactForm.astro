@@ -67,8 +67,12 @@ const f = form.fields;
 
             <div class="cform__footer">
                 <div class="cform__contact">
-                    <a class="cform__email mono" href={`mailto:${form.email}`}
-                        >{form.email}</a
+                    <a
+                        class="cform__email mono"
+                        href="/contact"
+                        data-email-user={form.email.split("@")[0]}
+                        data-email-host={form.email.split("@")[1]}
+                        >Email us</a
                     >
                     <span class="cform__reply mono"
                         >We reply within one business day.</span
