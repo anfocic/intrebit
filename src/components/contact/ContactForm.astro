@@ -200,6 +200,13 @@ const f = form.fields;
         resize: vertical;
         min-height: 140px;
         line-height: 1.5;
+        border: 1px solid var(--rule-2);
+        padding: 14px 16px;
+    }
+
+    .cform__textarea:focus {
+        border-color: var(--accent);
+        border-bottom-color: var(--accent);
     }
 
     .cform__err {
@@ -394,6 +401,29 @@ const f = form.fields;
         .cform__field + .cform__row,
         .cform__row + .cform__row {
             margin-top: 24px;
+        }
+
+        .cform__footer {
+            flex-wrap: nowrap;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .cform__contact {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .cform__email {
+            font-size: 13px;
+        }
+
+        .cform__reply {
+            display: none;
+        }
+
+        .cform__submit {
+            flex-shrink: 0;
         }
     }
 </style>
