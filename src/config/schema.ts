@@ -11,8 +11,7 @@ export const organizationSchema = {
     "logo": `${SITE_URL}/favicons/apple-touch-icon.png`,
     "email": SITE_EMAIL,
     "sameAs": [
-        "https://www.linkedin.com/company/intrebit",
-        "https://mastodon.social/@intrebit"
+        "https://www.linkedin.com/company/intrebit"
     ]
 };
 

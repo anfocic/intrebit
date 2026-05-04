@@ -56,7 +56,6 @@ const SITE: SiteSEOConfig = {
         url: "/og/default.png",
         width: 1200,
         height: 630,
-        alt: "intrebit — software, built properly.",
     },
 };
 
@@ -77,6 +76,7 @@ export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
         url: (overrides.image?.url ?? SITE.defaultImage.url).startsWith("http")
             ? overrides.image?.url ?? SITE.defaultImage.url
             : `${SITE.siteUrl}${overrides.image?.url ?? SITE.defaultImage.url}`,
+        alt: overrides.image?.alt ?? SITE.defaultImage.alt ?? title,
     };
 
     const noindex =
