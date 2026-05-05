@@ -13,6 +13,7 @@ export default defineConfig({
     ],
     build: {
         inlineStylesheets: "never",
+        format: "file",
     },
     vite: {
         server: {

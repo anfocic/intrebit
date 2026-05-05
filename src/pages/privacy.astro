@@ -56,25 +56,24 @@ const lastUpdated = "2 May 2026";
         <section class="legal__section">
             <h2>Analytics</h2>
             <p>
-                We use <strong>Plausible Analytics</strong> — a privacy-friendly, EU-hosted analytics service —
-                to understand how the website is used and to improve it. Plausible records aggregate metrics
-                only: <strong>page views</strong>, referrer domain, country, and coarse device/browser info
-                (device type, browser, screen size).
+                We use <strong>pagetally</strong> — a self-hosted, privacy-friendly analytics tool we run on
+                our own infrastructure — to understand how the website is used and to improve it. It records
+                aggregate metrics only: <strong>page views</strong>, referrer domain, country, coarse device
+                info (device type, screen-size bucket), and anonymous performance metrics (Core Web Vitals).
             </p>
             <p>
-                Plausible <strong>does not use cookies</strong>, does not collect personal data, and does not
+                Pagetally <strong>does not use cookies</strong>, does not collect personal data, and does not
                 track visitors across sites. No advertising IDs, no fingerprinting, no cross-site tracking, no
-                user profiles.
+                user profiles. We honour the <strong>Do Not Track</strong> and <strong>Global Privacy Control</strong> signals.
             </p>
             <p>
-                <strong>Identifiers:</strong> we do not store persistent identifiers such as long-lived visitor IDs.
-                Plausible derives a daily, hashed signal from IP + user-agent solely to count unique visits per day,
-                and discards it after 24 hours.
+                <strong>Identifiers:</strong> we do not store persistent visitor IDs. IP addresses are not
+                retained — they are used only in transit to derive country and are then discarded.
             </p>
             <p>
-                More information is available in the{" "}
-                <a class="legal__link" href="https://plausible.io/data-policy" target="_blank" rel="noopener noreferrer">
-                    Plausible data policy
+                Pagetally is open source. Source code:{" "}
+                <a class="legal__link" href="https://github.com/fole/pagetally" target="_blank" rel="noopener noreferrer">
+                    github.com/fole/pagetally
                 </a>.
             </p>
         </section>
@@ -110,7 +109,7 @@ const lastUpdated = "2 May 2026";
             </p>
             <ul>
                 <li><strong>Cloudflare</strong> — CDN, hosting, and security/abuse protection.</li>
-                <li><strong>Plausible Analytics</strong> — privacy-friendly, EU-hosted website analytics.</li>
+                <li><strong>pagetally</strong> — self-hosted analytics running on our own infrastructure (no third-party processor).</li>
             </ul>
             <p>
                 We do not sell or share personal data with advertisers.

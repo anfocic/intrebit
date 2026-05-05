@@ -73,19 +73,19 @@ export const home = {
       {
         n: "01",
         status: "Shipped",
-        client: "news-portal",
-        kind: "Full-stack product",
+        client: "intrebit.com",
+        kind: "Marketing site",
         year: "2026",
         blurb:
-          "Astro 6 SSR, Hono API, Postgres. Deployed on Cloudflare. Open source.",
-        href: "https://github.com/anfocic/news-portal",
+          "Fast, SEO-optimized, GDPR-friendly. Static-first, no cookie banners, sub-second loads.",
+        href: "https://intrebit.com",
         external: true,
       },
       {
         n: "02",
         status: "Ongoing",
         client: "Client work",
-        kind: "Cleaning up old code",
+        kind: "Modernization",
         year: "2025 — now",
         blurb:
           "Untangling years of legacy code piece by piece. Same product, faster and easier to change.",

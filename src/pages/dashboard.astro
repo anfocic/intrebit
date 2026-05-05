@@ -1,0 +1,332 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const siteId = "intrebit";
+---
+
+<Layout title="intrebit — analytics dashboard" seo={{robots: "noindex, nofollow"}}>
+    <section class="dash" data-site={siteId}>
+        <header class="dash__head">
+            <div>
+                <h1 class="dash__title">analytics</h1>
+                <p class="dash__sub">
+                    site: <strong>{siteId}</strong> · powered by
+                    <a href="https://github.com/fole/pagetally" rel="noopener">pagetally</a>
+                </p>
+            </div>
+            <div class="dash__controls">
+                <div class="dash__range" role="tablist" aria-label="Range">
+                    <button data-days="7" type="button">7d</button>
+                    <button data-days="30" type="button" aria-pressed="true">30d</button>
+                    <button data-days="90" type="button">90d</button>
+                </div>
+                <button class="dash__refresh" type="button" aria-label="Refresh" data-action="refresh">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21 12a9 9 0 1 1-3.5-7.1"/>
+                        <path d="M21 4v5h-5"/>
+                    </svg>
+                </button>
+                <span class="dash__updated" data-updated>—</span>
+            </div>
+        </header>
+
+        <div class="dash__kpis">
+            <article class="kpi"><span class="kpi__label">pageviews</span><span class="kpi__val" data-kpi="pageviews">—</span></article>
+            <article class="kpi"><span class="kpi__label">events</span><span class="kpi__val" data-kpi="events">—</span></article>
+            <article class="kpi"><span class="kpi__label">top page</span><span class="kpi__val kpi__val--text" data-kpi="topPath">—</span></article>
+        </div>
+
+        <section class="dash__chart panel-soft">
+            <h2 class="dash__h2">pageviews over time</h2>
+            <svg class="chart" viewBox="0 0 800 220" preserveAspectRatio="xMidYMid meet" aria-label="Pageviews timeseries"></svg>
+        </section>
+
+        <section class="dash__grid">
+            <section class="panel">
+                <h2 class="dash__h2">top pages</h2>
+                <ol class="ranks" data-top="path"></ol>
+            </section>
+            <section class="panel">
+                <h2 class="dash__h2">top referrers</h2>
+                <ol class="ranks" data-top="referrer"></ol>
+            </section>
+            <section class="panel">
+                <h2 class="dash__h2">top countries</h2>
+                <ol class="ranks" data-top="country"></ol>
+            </section>
+            <section class="panel">
+                <h2 class="dash__h2">devices</h2>
+                <ol class="ranks" data-top="device"></ol>
+            </section>
+        </section>
+
+        <section class="dash__vitals">
+            <h2 class="dash__h2">core web vitals (p75)</h2>
+            <div class="vitals">
+                <article class="vital"><span class="vital__label">LCP</span><span class="vital__val" data-vital="lcpP75">—</span><span class="vital__unit">ms</span></article>
+                <article class="vital"><span class="vital__label">FCP</span><span class="vital__val" data-vital="fcpP75">—</span><span class="vital__unit">ms</span></article>
+                <article class="vital"><span class="vital__label">CLS</span><span class="vital__val" data-vital="clsP75">—</span><span class="vital__unit"></span></article>
+                <article class="vital"><span class="vital__label">INP</span><span class="vital__val" data-vital="inpP75">—</span><span class="vital__unit">ms</span></article>
+                <article class="vital"><span class="vital__label">TTFB</span><span class="vital__val" data-vital="ttfbP75">—</span><span class="vital__unit">ms</span></article>
+            </div>
+        </section>
+    </section>
+</Layout>
+
+<style is:global>
+    .dash {
+        max-width: var(--container-width);
+        margin: 0 auto;
+        padding: var(--page-pad-top) var(--page-pad-x) var(--page-pad-bottom);
+        display: grid;
+        gap: var(--stack-gap);
+    }
+
+    .dash__head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        gap: var(--s-6);
+        flex-wrap: wrap;
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: var(--s-5);
+    }
+
+    .dash__title {
+        font-size: var(--text-3xl);
+        margin: 0;
+        letter-spacing: -0.02em;
+    }
+
+    .dash__sub {
+        margin: var(--s-2) 0 0;
+        color: var(--ink-3);
+        font-size: var(--text-sm);
+    }
+    .dash__sub a { color: var(--accent); text-decoration: none; }
+    .dash__sub a:hover { text-decoration: underline; }
+
+    .dash__controls {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-3);
+        flex-wrap: wrap;
+    }
+    .dash__refresh {
+        background: transparent;
+        border: 1px solid var(--rule-2);
+        border-radius: 999px;
+        width: 30px;
+        height: 30px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink-2);
+        cursor: pointer;
+        transition: color 120ms, border-color 120ms, transform 240ms;
+    }
+    .dash__refresh:hover { color: var(--ink); border-color: var(--ink-2); }
+    .dash__refresh.is-loading svg { animation: spin 600ms linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .dash__updated {
+        font-size: var(--text-xs);
+        color: var(--ink-3);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .dash__range {
+        display: inline-flex;
+        gap: var(--s-1);
+        background: var(--bg-2);
+        padding: 3px;
+        border-radius: 999px;
+    }
+    .dash__range button {
+        background: transparent;
+        border: 0;
+        color: var(--ink-2);
+        font: inherit;
+        font-size: var(--text-sm);
+        padding: 0.35rem 0.85rem;
+        cursor: pointer;
+        border-radius: 999px;
+        transition: background 120ms, color 120ms;
+    }
+    .dash__range button:hover { color: var(--ink); }
+    .dash__range button[aria-pressed="true"] {
+        background: var(--bg);
+        color: var(--ink);
+        box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    .dash__h2 {
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--ink-3);
+        margin: 0 0 var(--s-4);
+        font-weight: 600;
+    }
+
+    .dash__kpis {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        background: var(--bg-2);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    @media (max-width: 720px) {
+        .dash__kpis { grid-template-columns: 1fr; }
+    }
+    .kpi {
+        background: var(--bg);
+        padding: var(--s-5) var(--s-6);
+        display: grid;
+        gap: var(--s-2);
+        align-content: start;
+    }
+    .kpi:not(:last-child) { box-shadow: 1px 0 0 var(--bg-2); }
+    @media (max-width: 720px) {
+        .kpi:not(:last-child) { box-shadow: 0 1px 0 var(--bg-2); }
+    }
+    .kpi__label {
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--ink-3);
+        font-weight: 600;
+    }
+    .kpi__val {
+        font-size: var(--text-2xl);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
+        line-height: 1.1;
+    }
+    .kpi__val--text {
+        font-size: var(--text-base);
+        font-weight: 500;
+        font-variant-numeric: normal;
+        word-break: break-all;
+        color: var(--ink-2);
+    }
+
+    .panel-soft {
+        background: var(--bg-2);
+        border-radius: 8px;
+        padding: var(--s-5);
+    }
+    .dash__chart .chart {
+        width: 100%;
+        height: 220px;
+        display: block;
+    }
+    .chart rect.bar { fill: var(--ink); opacity: 0.78; transition: opacity 120ms, fill 120ms; }
+    .chart rect.bar:hover { opacity: 1; fill: var(--accent); }
+    .chart line.axis { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 2 3; }
+    .chart text.tick { fill: var(--ink-3); font-size: 11px; font-family: var(--font-sans); }
+
+    .dash__grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--s-6);
+    }
+    @media (max-width: 720px) {
+        .dash__grid { grid-template-columns: 1fr; }
+    }
+    .panel { padding: 0; }
+    .ranks {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 2px;
+    }
+    .ranks li {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: baseline;
+        gap: var(--s-3);
+        padding: 0.45rem 0.6rem;
+        font-variant-numeric: tabular-nums;
+        font-size: var(--text-sm);
+        border-radius: 4px;
+        overflow: hidden;
+        isolation: isolate;
+    }
+    .ranks li::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: var(--w, 0%);
+        background: var(--bg-2);
+        z-index: -1;
+        transition: width 240ms ease-out;
+    }
+    .ranks .key {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        color: var(--ink);
+        padding-right: var(--s-4);
+    }
+    .ranks .count {
+        color: var(--ink);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        min-width: 2.5ch;
+        text-align: right;
+    }
+
+    .vitals {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: var(--s-3);
+    }
+    @media (max-width: 720px) {
+        .vitals { grid-template-columns: repeat(2, 1fr); }
+    }
+    .vital {
+        padding: var(--s-4);
+        display: grid;
+        gap: var(--s-1);
+        background: var(--bg-2);
+        border-radius: 6px;
+        position: relative;
+    }
+    .vital::before {
+        content: "";
+        position: absolute;
+        top: var(--s-4);
+        right: var(--s-4);
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--ink-3);
+    }
+    .vital__label {
+        font-size: var(--text-xs);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        font-weight: 600;
+    }
+    .vital__val {
+        font-size: var(--text-xl);
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -0.02em;
+    }
+    .vital__unit {
+        font-size: var(--text-xs);
+        color: var(--ink-3);
+    }
+    .vital--good::before { background: #2f9e44; }
+    .vital--needs::before { background: var(--accent); }
+    .vital--poor::before { background: #c92a2a; }
+</style>
+
+<script src="/scripts/dashboard.js" defer></script>

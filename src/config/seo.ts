@@ -60,7 +60,10 @@ const SITE: SiteSEOConfig = {
 };
 
 export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
-    const pathname = url.pathname ?? "/";
+    const rawPath = url.pathname ?? "/";
+    const pathname = rawPath
+        .replace(/\/index\.html$/, "/")
+        .replace(/\.html$/, "");
     const canonical =
         overrides.canonical ??
         `${SITE.siteUrl}${pathname === "/" ? "" : pathname}`.replace(/\/$/, "");
