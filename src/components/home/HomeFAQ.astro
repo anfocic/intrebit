@@ -60,7 +60,7 @@ const items = faq.items;
                       (parseFloat(getComputedStyle(items[openIdx]).borderBottomWidth) || 0) +
                       max
                     : collapsed;
-            list.style.minHeight = `${Math.ceil(baseline)}px`;
+            list.style.minHeight = `${Math.ceil(baseline) + 24}px`;
         };
         if (document.fonts?.ready) document.fonts.ready.then(lock);
         else lock();
@@ -84,7 +84,7 @@ const items = faq.items;
         --faq-rule: var(--rule);
         position: relative;
         overflow: hidden;
-        padding: 80px var(--section-pad-x);
+        padding: 80px var(--section-pad-x) 200px;
         background: var(--faq-bg);
         color: var(--faq-fg);
         border-top: 1px solid var(--rule);
@@ -263,7 +263,7 @@ const items = faq.items;
 
     @media (max-width: 900px) {
         .faq {
-            padding: 56px var(--section-pad-x-mobile);
+            padding: 56px var(--section-pad-x-mobile) 160px;
         }
 
         .faq__glyph {

@@ -9,51 +9,47 @@ const [emailUser, emailHost] = contact.form.email.split("@");
 
 <footer class="footer" aria-label="Site footer">
     <div class="footer__inner">
-        <div class="footer__row footer__row--top">
+        <span class="mono footer__copy">
+            © {year} {header.brand}
+            {legalLinks.map((l) => (
+                <>
+                    <span class="footer__sep" aria-hidden="true">·</span>
+                    <a href={l.href} class="footer__link">{l.label}</a>
+                </>
+            ))}
+        </span>
+
+        <a
+            href="/contact"
+            data-email-user={emailUser}
+            data-email-host={emailHost}
+            class="mono footer__email"
+        > </a>
+
+        <div class="footer__icons">
             <a
-                href="/contact"
-                data-email-user={emailUser}
-                data-email-host={emailHost}
-                class="mono footer__email"
-            > </a>
-
-            <div class="footer__icons">
-                <a
-                    href={footer.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    class="footer__icon-link"
-                >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0Z"/>
-                    </svg>
-                </a>
-                <a
-                    href={footer.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label="GitHub"
-                    class="footer__icon-link"
-                >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                        <path d="M12 .3a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.66-.31-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.13-.31-.54-1.53.11-3.18 0 0 1-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.18.77.84 1.23 1.92 1.23 3.23 0 4.61-2.81 5.61-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .3"/>
-                    </svg>
-                </a>
-                <ThemeToggle/>
-            </div>
-        </div>
-
-        <div class="footer__row footer__row--bottom">
-            <span class="mono footer__copy">© {year} {header.brand}</span>
-            <span class="mono footer__legal">
-                {legalLinks.map((l, i) => (
-                    <>
-                        {i > 0 && <span class="footer__sep" aria-hidden="true">·</span>}
-                        <a href={l.href} class="footer__link">{l.label}</a>
-                    </>
-                ))}
-            </span>
+                href={footer.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+                class="footer__icon-link"
+            >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.28 2.38 4.28 5.47v6.27ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.72v20.55C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.72C24 .77 23.2 0 22.22 0Z"/>
+                </svg>
+            </a>
+            <a
+                href={footer.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="GitHub"
+                class="footer__icon-link"
+            >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 .3a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.04c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.74.08-.73.08-.73 1.21.09 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.66-.31-5.47-1.33-5.47-5.93 0-1.31.47-2.39 1.24-3.23-.13-.31-.54-1.53.11-3.18 0 0 1-.32 3.3 1.23a11.4 11.4 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.65 1.65.24 2.87.12 3.18.77.84 1.23 1.92 1.23 3.23 0 4.61-2.81 5.61-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .3"/>
+                </svg>
+            </a>
+            <ThemeToggle/>
         </div>
     </div>
 </footer>
@@ -67,21 +63,26 @@ const [emailUser, emailHost] = contact.form.email.split("@");
     .footer__inner {
         max-width: var(--container-width);
         margin: 0 auto;
-        padding: 28px var(--section-pad-x) 22px;
+        padding: 24px var(--section-pad-x);
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 24px;
         font-family: var(--font-mono);
         font-size: 11px;
         color: var(--ink-3);
     }
 
-    .footer__row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
+    .footer__copy {
+        justify-self: start;
     }
 
-    .footer__row--bottom {
-        margin-top: 12px;
+    .footer__email {
+        justify-self: center;
+    }
+
+    .footer__icons {
+        justify-self: end;
     }
 
     .footer__email {
@@ -116,15 +117,14 @@ const [emailUser, emailHost] = contact.form.email.split("@");
         display: inline-flex;
         align-items: center;
         gap: 2px;
-        margin-right: -8px;
     }
 
     .footer__icon-link {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        width: 32px;
-        height: 32px;
+        width: 28px;
+        height: 28px;
         color: var(--ink-3);
         transition: color 0.2s var(--ease);
     }
@@ -135,7 +135,17 @@ const [emailUser, emailHost] = contact.form.email.split("@");
 
     @media (max-width: 720px) {
         .footer__inner {
-            padding: 24px var(--section-pad-x-mobile) 20px;
+            padding: 20px var(--section-pad-x-mobile);
+            grid-template-columns: 1fr;
+            justify-items: center;
+            gap: 14px;
+            text-align: center;
+        }
+
+        .footer__copy,
+        .footer__email,
+        .footer__icons {
+            justify-self: center;
         }
     }
 </style>
