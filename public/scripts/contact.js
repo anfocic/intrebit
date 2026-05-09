@@ -1,6 +1,6 @@
 (() => {
-    const API_BASE = "https://api.intrebit.com/public";
-    const ENDPOINT = "/lead";
+    const API_BASE = "https://analytics.intrebit.com";
+    const ENDPOINT = "/contact";
     const MIN_MESSAGE_LEN = 10;
 
     const form = document.getElementById("contact-form");
@@ -85,10 +85,7 @@
         const payload = {
             name: name || "Website form",
             email,
-            replyTo: email,
             message,
-            pageUrl: window.location?.href,
-            userAgent: navigator?.userAgent,
         };
 
         setBusy(true, "Sending...");

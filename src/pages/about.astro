@@ -1,0 +1,129 @@
+---
+import Layout from "../layouts/Layout.astro";
+import {pageSEO} from "../config/seo.ts";
+import {about} from "../config/copy.ts";
+---
+
+<Layout seo={pageSEO.about}>
+    <article class="about">
+        <header class="about__header">
+            <h1 class="about__title" set:html={about.hero.title}/>
+            <p class="about__lead">{about.hero.lead}</p>
+        </header>
+
+        {about.sections.map((section) => (
+            <section class="about__section">
+                <h2 class="about__h2">{section.heading}</h2>
+                {section.body.map((p) => <p class="about__p">{p}</p>)}
+            </section>
+        ))}
+
+        <section class="about__cta">
+            <h2 class="about__cta-h" transition:name="cta-heading" set:html={about.cta.heading}/>
+            <a href={about.cta.button.href} class="about__cta-btn" transition:name="cta-button">
+                <span>{about.cta.button.label}</span>
+                <span class="about__cta-arrow">→</span>
+            </a>
+        </section>
+    </article>
+</Layout>
+
+<style is:global>
+    .about {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: var(--page-pad-top) var(--page-pad-x) var(--page-pad-bottom);
+        display: grid;
+        gap: var(--s-7);
+    }
+
+    .about__header {
+        display: grid;
+        gap: var(--s-4);
+        border-bottom: 1px solid var(--rule);
+        padding-bottom: var(--s-7);
+    }
+
+    .about__title {
+        font-size: var(--text-4xl);
+        line-height: 1.05;
+        letter-spacing: -0.02em;
+        margin: 0;
+    }
+    .about__title em {
+        font-style: normal;
+        color: var(--accent);
+    }
+
+    .about__lead {
+        margin: 0;
+        font-size: var(--text-lg);
+        color: var(--ink-2);
+        max-width: 56ch;
+    }
+
+    .about__section {
+        display: grid;
+        gap: var(--s-3);
+    }
+
+    .about__h2 {
+        font-size: var(--text-xs);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: var(--ink-3);
+        font-weight: 600;
+        margin: 0 0 var(--s-2);
+    }
+
+    .about__p {
+        margin: 0;
+        color: var(--ink);
+        font-size: var(--text-base);
+        line-height: 1.6;
+        max-width: 64ch;
+    }
+
+    .about__cta {
+        margin-top: var(--s-6);
+        padding-top: var(--s-7);
+        border-top: 1px solid var(--rule);
+        display: grid;
+        gap: var(--s-5);
+    }
+
+    .about__cta-h {
+        font-size: var(--text-3xl);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+        margin: 0;
+    }
+    .about__cta-h em {
+        font-style: normal;
+        color: var(--accent);
+    }
+
+    .about__cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--s-2);
+        background: var(--ink);
+        color: var(--bg);
+        padding: 0.7rem 1.1rem;
+        border-radius: 999px;
+        text-decoration: none;
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        width: max-content;
+        transition: transform 0.25s var(--ease);
+    }
+    .about__cta-btn:hover {
+        transform: translateY(-2px);
+    }
+    .about__cta-arrow {
+        transition: transform 0.3s var(--ease);
+    }
+    .about__cta-btn:hover .about__cta-arrow {
+        transform: translateX(4px);
+    }
+</style>
