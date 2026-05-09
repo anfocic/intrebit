@@ -161,18 +161,5 @@
 
     if (refreshBtn) refreshBtn.addEventListener("click", loadAll);
 
-    const logoutBtn = document.querySelector('[data-action="logout"]');
-    if (logoutBtn) {
-        logoutBtn.addEventListener("click", async () => {
-            logoutBtn.disabled = true;
-            try {
-                await fetch("/api/auth/logout", {method: "POST"});
-            } catch {
-                // proceed to redirect even if request failed
-            }
-            window.location.replace("/login");
-        });
-    }
-
     loadAll();
 })();
