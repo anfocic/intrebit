@@ -12,10 +12,6 @@
         url.searchParams.set("days", String(days));
         for (const [k, v] of Object.entries(params || {})) url.searchParams.set(k, v);
         const r = await fetch(url.toString());
-        if (r.status === 401) {
-            window.location.replace("/login?next=/dashboard");
-            throw new Error("unauthorized");
-        }
         if (!r.ok) throw new Error(`${path} ${r.status}`);
         return r.json();
     }
