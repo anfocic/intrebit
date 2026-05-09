@@ -8,11 +8,13 @@
     "build": "node scripts/build-og.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "hash-password": "node scripts/hash-password.mjs",
     "deploy": "set -a && [ -f .env.local ] && . .env.local; set +a && npm run build && : \"${CLOUDFLARE_ACCOUNT_ID:?Set CLOUDFLARE_ACCOUNT_ID}\" && wrangler pages deploy dist --project-name intrebit --branch main --commit-dirty=true"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
-    "astro": "^6.2.1"
+    "astro": "^6.2.1",
+    "hash-wasm": "^4.12.0"
   },
   "devDependencies": {
     "wrangler": "^4.35.0"
