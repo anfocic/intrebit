@@ -127,6 +127,48 @@ export const home = {
   },
 };
 
+export const about = {
+  hero: {
+    title: "About <em>intrebit</em>.",
+    lead:
+      "We build software for small and mid-sized teams who'd rather " +
+      "hire a studio that ships than an agency that PowerPoints.",
+  },
+
+  sections: [
+    {
+      heading: "Background",
+      body: [
+        "Edit this paragraph in src/config/copy.ts. Brief background — " +
+        "where we've worked, what we've built, the kind of problem we " +
+        "keep getting hired to solve.",
+      ],
+    },
+    {
+      heading: "How we work",
+      body: [
+        "Fixed price, signed up front. No hourly meter, no surprise invoices.",
+        "Code, accounts and hosting are in your name from day one — if " +
+        "we stop working together tomorrow, nothing breaks.",
+        "One reply within a day. Usually faster.",
+      ],
+    },
+    {
+      heading: "What we won't do",
+      body: [
+        "Vendor lock-in. Pixel-perfect Figma redraws of bad ideas. " +
+        "Three-month discovery phases. Anything that ends with the word " +
+        "'transformation'.",
+      ],
+    },
+  ],
+
+  cta: {
+    heading: "Got something <em>worth building?</em>",
+    button: { label: "Tell me about it", href: "/contact" },
+  },
+};
+
 export const contact = {
   hero: {
     title: "No sales team.<br/>We don't pitch.<br/><em>We build.</em>",
