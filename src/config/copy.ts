@@ -112,7 +112,7 @@ export const home = {
       lede:
         "ntrebit started in 2025 in Dublin, after a few years inside a " +
         "corporate environment where shipping had quietly become the smallest " +
-        "part of the day. The first client was my mom. The second was a " +
+        "part of the day. The first client was a local dog grooming salon. The second was a " +
         "Dublin company thirty years in business. We're particular about the next.",
       ledeDropcap: "i",
       closing:
