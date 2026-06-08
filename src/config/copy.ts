@@ -9,12 +9,11 @@
 export const home = {
   hero: {
     title: "Software,<br/>built <em>properly</em>.",
-    tagline: "No buzzwords. No nonsense.",
     lead:
-      "We're a small studio handling the technical work small and " +
-      "mid-sized businesses don't have the headcount for.",
-    ctaPrimary: { label: "Tell us what's broken", href: "/contact" },
-    ctaSecondary: { label: "Read the work", href: "/#work" },
+      "We're a small studio handling technical work for small and " +
+      "mid-sized businesses.",
+    ctaPrimary: { label: "Get in touch", href: "/contact" },
+    ctaSecondary: { label: "See what we do", href: "/#services" },
   },
 
   stats: {
@@ -43,67 +42,9 @@ export const home = {
   },
 
   services: {
-    heading: "Three jobs.<br/>Done properly.",
+    heading: "Software that<br/>works for <em>you.</em>",
     intro:
-      "We don't do everything. We do these three, and we do them " +
-      "for teams who'd rather hire a small studio that ships than " +
-      "a big one that PowerPoints.",
-  },
-
-  work: {
-    heading: "Work in <em>motion</em>.",
-    values: {
-      heading: "How we work.",
-      points: [
-        {
-          title: "Direct line.",
-          body: "No PMs, no account managers, no agency layers. You talk to whoever's writing the code.",
-        },
-        {
-          title: "We say no.",
-          body: "If a feature is wrong, we'll tell you. We're building with you, not selling to you.",
-        },
-        {
-          title: "You own it.",
-          body: "Code, infra, accounts, credentials. All yours from day one. No lock-in.",
-        },
-      ],
-    },
-    items: [
-      {
-        n: "01",
-        status: "Shipped",
-        client: "intrebit.com",
-        kind: "Marketing site",
-        year: "2026",
-        blurb:
-          "Fast, SEO-optimized, GDPR-friendly. Static-first, no cookie banners, sub-second loads.",
-        href: "https://intrebit.com",
-        external: true,
-      },
-      {
-        n: "02",
-        status: "Ongoing",
-        client: "Client work",
-        kind: "Modernization",
-        year: "2025 — now",
-        blurb:
-          "Untangling years of legacy code piece by piece. Same product, faster and easier to change.",
-        href: null,
-        external: false,
-      },
-      {
-        n: "03",
-        status: "Building",
-        client: "intrebit",
-        kind: "Multi-agent ops platform",
-        year: "2026",
-        blurb:
-          "Rust backend, TypeScript agents, native iOS. Our own stack, in active development.",
-        href: null,
-        external: false,
-      },
-    ],
+      "Instead of focusing on buzzwords and numbers <br/> you don't care about we just do our job.",
   },
 
   studio: {
@@ -113,17 +54,12 @@ export const home = {
         "ntrebit started in 2025 in Dublin, after a few years inside a " +
         "corporate environment where shipping had quietly become the smallest " +
         "part of the day. The first client was a local dog grooming salon. The second was a " +
-        "Dublin company thirty years in business. We're particular about the next.",
+        "Dublin company thirty years in business.\nWe're particular about the next.",
       ledeDropcap: "i",
       closing:
         "When you email us, the person who reads it is the person who " +
         "writes the code. Sometimes my wife.",
     },
-  },
-
-  cta: {
-    heading: "Got a problem<br/><em>worth solving?</em>",
-    button: { label: "Tell us about it", href: "/contact" },
   },
 };
 
@@ -140,8 +76,8 @@ export const about = {
       heading: "Background",
       body: [
         "Edit this paragraph in src/config/copy.ts. Brief background — " +
-        "where we've worked, what we've built, the kind of problem we " +
-        "keep getting hired to solve.",
+          "where we've worked, what we've built, the kind of problem we " +
+          "keep getting hired to solve.",
       ],
     },
     {
@@ -149,7 +85,7 @@ export const about = {
       body: [
         "Fixed price, signed up front. No hourly meter, no surprise invoices.",
         "Code, accounts and hosting are in your name from day one — if " +
-        "we stop working together tomorrow, nothing breaks.",
+          "we stop working together tomorrow, nothing breaks.",
         "One reply within a day. Usually faster.",
       ],
     },
@@ -157,8 +93,8 @@ export const about = {
       heading: "What we won't do",
       body: [
         "Vendor lock-in. Pixel-perfect Figma redraws of bad ideas. " +
-        "Three-month discovery phases. Anything that ends with the word " +
-        "'transformation'.",
+          "Three-month discovery phases. Anything that ends with the word " +
+          "'transformation'.",
       ],
     },
   ],
@@ -171,7 +107,29 @@ export const about = {
 
 export const contact = {
   hero: {
-    title: "No sales team.<br/>We don't pitch.<br/><em>We build.</em>",
+    title:
+      "If you made it this far,<br/>might as well <em>send us a message.</em>",
+  },
+
+  pageHero: {
+    title: "What do <em>you</em> need?",
+    about:
+      "Based in Dublin, we build simple software that saves local businesses time and headaches.<br/> <em>No sales team. No buzzwords. No nonsense.</em>",
+  },
+
+  serviceVariants: {
+    build: {
+      title: "Build something <em>solid.</em>",
+      about: "Tools, dashboards, and portals that cut manual work. Scoped clearly, priced properly, shipped fast. You own it from day one.",
+    },
+    consult: {
+      title: "Honest advice. No strings <em>attached.</em>",
+      about: "A one-off review of your systems, roadmap, and bottlenecks. We tell you what to build, what to buy, and what to leave alone.",
+    },
+    automate: {
+      title: "Automation that earns its <em>keep.</em>",
+      about: "Practical AI and workflow automation that reduce admin, save time, and don't add more mess.",
+    },
   },
 
   form: {
@@ -182,11 +140,12 @@ export const contact = {
       email: { label: "Email", placeholder: "jane@company.com" },
       message: {
         label: "What's the story?",
-        placeholder: "A few sentences on what you need.",
+        placeholder:
+          "In a few sentences, tell us what's slowing your business down.",
       },
     },
 
-    submit: "Send message",
+    submit: "Send",
 
     success: {
       label: "✓ Message sent",
@@ -196,33 +155,14 @@ export const contact = {
       again: "← Send another",
     },
   },
-
-  faq: {
-    heading: "Things people<br/><em>usually ask.</em>",
-    items: [
-      [
-        "How long does it take to build a product?",
-        "From a week up to a month. Unless it's a huge project.",
-      ],
-      ["What does this cost?", "Depends how much do you want to spend."],
-      [
-        "Who happens when we're done?",
-        "You get the code and we take your money. Jokes aside, we're here for you.",
-      ],
-      ["Where are you based?", "Dublin mostly, Zagreb occassionally."],
-      [
-        "Do you take over existing work?",
-        "Often, yes. Send a description of what's there and we'll see.",
-      ],
-    ],
-  },
 };
 
 export const services = {
   hero: {
     title: "Build it once.",
     titleLine2: "Keep it working.",
-    subtitle: "You run the business. We build the software that keeps up.",
+    subtitle:
+      "Websites, web apps, mobile apps — you name it. We also join existing teams and bring AI where it helps.",
     cta: { label: "Get in touch", href: "/contact" },
   },
 
@@ -231,21 +171,22 @@ export const services = {
     items: [
       {
         title: "Build",
-        description: "Custom software built for how you actually work.",
+        description: "Custom software for the parts of your business that still feel too manual.",
         details:
-          "Websites, internal tools, customer portals, mobile apps. We handle the architecture, the code, and the deployment.",
+          "From landing pages to full platforms. We also rescue inherited messes and make slow, broken things reliable again.",
       },
       {
-        title: "Fix",
-        description: "Broken systems, slow sites, inherited messes.",
+        title: "Consult",
+        description:
+          "One-off honest advice before you spend money on software.",
         details:
-          "Something's not working and nobody knows why? We dig in, find the root cause, and make it reliable.",
+          "Architecture reviews, stack choices, second opinions, roadmaps — straight talk for teams that want to move faster.",
       },
       {
-        title: "Automate",
-        description: "Turn repetitive tasks into background processes.",
+        title: "AI",
+        description: "Integration and education where it actually helps.",
         details:
-          "Data entry, report generation, invoice handling—if you're doing it twice a week, we can probably make it run itself.",
+          "Automating workflows, connecting tools, and teaching your team to use AI day-to-day. No buzzwords, just results.",
       },
     ],
   },

@@ -1,14 +1,27 @@
 ---
 import {contact} from "../../config/copy.ts";
 
-const {hero} = contact;
+const {pageHero, serviceVariants} = contact;
 ---
 
-<section class="chero" aria-label="Contact">
+<section class="chero" aria-label="Contact" id="contact-hero">
     <div class="chero__inner">
-        <h1 class="chero__title" transition:name="cta-heading" set:html={hero.title}/>
+        <h1 class="chero__title" data-default-title={pageHero.title} transition:name="cta-heading" set:html={pageHero.title}/>
+        <p class="chero__about" data-default-about={pageHero.about} set:html={pageHero.about} />
     </div>
 </section>
+
+<script define:vars={{ variants: serviceVariants }}>
+    const service = localStorage.getItem("contact-service");
+    const variant = variants[service];
+    if (variant) {
+        const titleEl = document.querySelector("#contact-hero .chero__title");
+        const aboutEl = document.querySelector("#contact-hero .chero__about");
+        if (titleEl) titleEl.innerHTML = variant.title;
+        if (aboutEl) aboutEl.innerHTML = variant.about;
+        localStorage.removeItem("contact-service");
+    }
+</script>
 
 <style>
     .chero {
@@ -43,11 +56,11 @@ const {hero} = contact;
     .chero__title {
         font-family: var(--font-display);
         font-weight: 400;
-        font-size: clamp(40px, 7vw, 80px);
-        line-height: 1.12;
-        letter-spacing: -0.035em;
+        font-size: clamp(36px, 5vw, 64px);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
         margin: 0;
-        max-width: 900px;
+        max-width: 520px;
         text-wrap: balance;
         color: var(--ink);
     }
@@ -67,6 +80,24 @@ const {hero} = contact;
         text-wrap: pretty;
     }
 
+    .chero__lead em {
+        font-style: italic;
+        color: var(--accent);
+    }
+
+    .chero__about {
+        font-size: 17px;
+        line-height: 1.5;
+        color: var(--ink-2);
+        margin: 24px 0 0;
+        max-width: 480px;
+    }
+
+    .chero__about em {
+        font-style: normal;
+        color: var(--accent);
+    }
+
     @media (max-width: 900px) {
         .chero {
             padding: 32px var(--section-pad-x-mobile) 24px;
@@ -79,13 +110,17 @@ const {hero} = contact;
         }
 
         .chero__title {
-            font-size: 48px;
-            line-height: 1.15;
+            font-size: 40px;
+            line-height: 1.05;
         }
 
         .chero__lead {
             font-size: 15px;
             margin-top: 20px;
+        }
+
+        .chero__about {
+            margin-top: 24px;
         }
     }
 </style>

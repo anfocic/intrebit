@@ -1,7 +1,6 @@
 ---
 import {navLinks} from "../../config/site.ts";
 import {header} from "../../config/copy.ts";
-import MobileMenu from "./MobileMenu.astro";
 ---
 
 <header class="nav" aria-label="Primary navigation">
@@ -19,20 +18,9 @@ import MobileMenu from "./MobileMenu.astro";
         <a href={header.cta.href} class="nav__cta">
             <span>{header.cta.label}</span><span class="nav__cta-arrow">→</span>
         </a>
-
-        <button
-            class="nav__hamburger"
-            data-mobile-open
-            aria-label="Open menu"
-            aria-expanded="false"
-        >
-            <span aria-hidden="true">≡</span>
-        </button>
     </div>
     <span class="nav__progress" data-scroll-progress aria-hidden="true"></span>
 </header>
-
-<MobileMenu/>
 
 <script>
     const SCROLL_THRESHOLD = 8;
@@ -237,24 +225,6 @@ import MobileMenu from "./MobileMenu.astro";
         transform: translateX(4px);
     }
 
-    .nav__hamburger {
-        display: none;
-        width: 44px;
-        height: 44px;
-        border: none;
-        background: transparent;
-        color: var(--accent);
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        font-family: var(--font-mono);
-        font-size: 30px;
-        font-weight: 600;
-        line-height: 1;
-        padding: 0;
-        -webkit-tap-highlight-color: transparent;
-    }
-
     .nav__progress {
         position: absolute;
         left: 0;
@@ -271,13 +241,11 @@ import MobileMenu from "./MobileMenu.astro";
             gap: 16px;
         }
 
-        .nav__links,
-        .nav__cta {
+        .nav__links {
             display: none;
         }
 
-        .nav__hamburger {
-            display: inline-flex;
+        .nav__cta {
             margin-left: auto;
         }
     }

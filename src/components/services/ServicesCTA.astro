@@ -22,7 +22,7 @@ const c = services.cta;
     .container {
         max-width: var(--container-width);
         margin: 0 auto;
-        padding: 0 2rem;
+        padding: 0 var(--section-pad-x);
     }
 
     .cta-card {
@@ -48,6 +48,9 @@ const c = services.cta;
     }
 
     @media (max-width: 520px) {
+        .container {
+            padding: 0 var(--section-pad-x-mobile);
+        }
         .cta-card {
             padding: 1.8rem;
         }

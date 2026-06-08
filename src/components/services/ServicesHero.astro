@@ -22,7 +22,7 @@ const {hero} = services;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 6rem 2rem;
+        padding: 6rem var(--section-pad-x);
     }
 
     .services-hero__container {
@@ -75,7 +75,7 @@ const {hero} = services;
     @media (max-width: 600px) {
         .services-hero {
             min-height: calc(60vh - var(--header-height, 60px));
-            padding: 3rem 1.25rem;
+            padding: 3rem var(--section-pad-x-mobile);
         }
 
         .services-hero__subtitle {

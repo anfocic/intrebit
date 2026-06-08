@@ -12,37 +12,50 @@ const c = home.services;
                 <h2 class="services__heading" set:html={c.heading}/>
             </div>
             <div class="services__intro">
-                <p class="services__intro-body">{c.intro}</p>
+                <p class="services__intro-body" set:html={c.intro}/>
             </div>
         </header>
 
-        <div class="services__grid">
+        <div class="services__grid" data-reveal-stagger>
             {services.map((s, i) => (
-                <article class="service-card" data-service={s.id}>
-                    <span class="mono service-card__num">{String(i + 1).padStart(2, "0")}</span>
+                <a href={s.href} class="service-card" data-service={s.id}>
                     <h3 class="service-card__title">{s.title}.</h3>
                     <p class="service-card__outcome">{s.outcome}</p>
-                </article>
+                    <p class="service-card__more">Find out more <span class="service-card__more-arrow">→</span></p>
+                </a>
             ))}
         </div>
     </div>
 </section>
 
+<script>
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const service = card.getAttribute('data-service');
+            if (service) localStorage.setItem('contact-service', service);
+        });
+    });
+</script>
+
 <style>
     .services {
-        padding: 100px var(--section-pad-x) 80px;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        padding: 80px var(--section-pad-x);
     }
 
     .services__inner {
         max-width: var(--container-width);
         margin: 0 auto;
+        width: 100%;
     }
 
     .services__header {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 64px;
-        margin-bottom: 56px;
+        margin-bottom: 48px;
         align-items: end;
     }
 
@@ -70,7 +83,7 @@ const c = home.services;
     .services__grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 48px;
+        gap: 64px;
     }
 
     .service-card {
@@ -78,23 +91,29 @@ const c = home.services;
         flex-direction: column;
         gap: 14px;
         position: relative;
-        transition: transform 0.3s var(--ease);
-        cursor: default;
+        padding: 24px 24px 24px 0;
+        border-radius: 16px;
+        transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
     }
 
-    .service-card__num {
-        font-size: 11px;
-        color: var(--ink-3);
-        letter-spacing: 0.14em;
-        transition: color 0.25s var(--ease);
-    }
-
-    .service-card:hover .service-card__num {
-        color: var(--accent);
+    .service-card:hover {
+        background: var(--surface);
     }
 
     .service-card:hover .service-card__title {
         color: var(--accent);
+    }
+
+    .service-card:hover .service-card__more {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .service-card:hover .service-card__more-arrow {
+        transform: translateX(4px);
     }
 
     .service-card__title {
@@ -118,15 +137,33 @@ const c = home.services;
         max-width: 320px;
     }
 
+    .service-card__more {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
+        color: var(--ink-3);
+        margin: 8px 0 0;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .service-card__more-arrow {
+        transition: transform 0.3s var(--ease);
+    }
+
     @media (max-width: 900px) {
         .services {
+            min-height: auto;
             padding: 56px var(--section-pad-x-mobile) 40px;
         }
 
         .services__header {
             grid-template-columns: 1fr;
             gap: 24px;
-            margin-bottom: 32px;
+            margin-bottom: 48px;
         }
 
         .services__intro {
@@ -136,6 +173,14 @@ const c = home.services;
         .services__grid {
             grid-template-columns: 1fr;
             gap: 32px;
+        }
+
+        .service-card {
+            padding: 0;
+        }
+
+        .service-card__more {
+            display: none;
         }
     }
 </style>

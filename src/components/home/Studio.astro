@@ -2,6 +2,10 @@
 import {home} from "../../config/copy.ts";
 
 const {studio} = home;
+
+const ledeText = studio.article.lede;
+const ledeDropcap = studio.article.ledeDropcap;
+const words = ledeText.split(/(\s+)/);
 ---
 
 <section id="studio" class="studio" aria-label="The studio" data-reveal>
@@ -12,11 +16,56 @@ const {studio} = home;
 
         <article class="studio__article">
             <p class="studio__lede">
-                <span class="studio__dropcap">{studio.article.ledeDropcap}</span><span set:html={studio.article.lede}/>
+                <span class="studio__dropcap">{ledeDropcap}</span><span class="studio__words" data-word-reveal>{words.map((w, i) => i % 2 === 0 ? <span class="studio__word" style={`--i:${i / 2}`}>{w}</span> : w)}</span>
             </p>
 
             <p class="studio__body studio__body--last">{studio.article.closing}</p>
         </article>
+
+        <script>
+            function setupWordReveal() {
+                const el = document.querySelector<HTMLElement>("[data-word-reveal]");
+                if (!el) return () => {};
+
+                const article = el.closest<HTMLElement>(".studio__article");
+                const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+                if (prefersReduced) {
+                    el.classList.add("is-visible");
+                    article?.setAttribute("data-typewriter-done", "");
+                    return () => {};
+                }
+
+                let triggered = false;
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((e) => {
+                            if (e.isIntersecting && !triggered) {
+                                triggered = true;
+                                el.classList.add("is-visible");
+                                const wordCount = el.querySelectorAll(".studio__word").length;
+                                setTimeout(() => {
+                                    article?.setAttribute("data-typewriter-done", "");
+                                }, wordCount * 60 + 400);
+                            }
+                        });
+                    },
+                    { threshold: 0.2 }
+                );
+
+                observer.observe(el);
+
+                return () => {
+                    observer?.disconnect();
+                };
+            }
+
+            let teardown = setupWordReveal();
+            document.addEventListener("astro:before-swap", () => teardown?.());
+            document.addEventListener("astro:page-load", () => {
+                teardown = setupWordReveal();
+            });
+        </script>
 
     </div>
 </section>
@@ -27,7 +76,6 @@ const {studio} = home;
         overflow: hidden;
         padding: 120px var(--section-pad-x) 100px;
         background: var(--bg);
-        border-top: 1px solid var(--rule);
     }
 
     .studio__glyph {
@@ -98,7 +146,44 @@ const {studio} = home;
         margin: 0 0 32px;
         text-align: justify;
         text-align-last: left;
-        hyphens: auto;
+    }
+
+    .studio__words {
+        display: inline;
+    }
+
+    .studio__word {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+        transition-delay: calc(var(--i) * 60ms);
+    }
+
+    .studio__words.is-visible .studio__word {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .studio__body--last {
+        opacity: 0;
+        transition: opacity 0.6s var(--ease);
+    }
+
+    .studio__article[data-typewriter-done] .studio__body--last {
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .studio__word {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+        .studio__body--last {
+            opacity: 1;
+            transition: none;
+        }
     }
 
     .studio__dropcap {
