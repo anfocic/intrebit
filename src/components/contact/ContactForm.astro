@@ -29,6 +29,7 @@ const f = form.fields;
                         name="name"
                         placeholder={f.name.placeholder}
                         autocomplete="name"
+                        required
                     />
                     <div class="cform__err" data-err-for="name"></div>
                 </div>
@@ -70,13 +71,12 @@ const f = form.fields;
                         >Email us</a
                     >
                     <span class="cform__reply mono"
-                        >We reply within one business day.</span
+                        >We reply the same day.</span
                     >
                 </div>
                 <button
                     type="submit"
                     class="cform__submit"
-                    transition:name="cta-button"
                 >
                     <span data-submit-label>{form.submit}</span>
                     <span class="cform__submit-arrow">→</span>
@@ -84,8 +84,7 @@ const f = form.fields;
             </div>
         </form>
 
-        <div class="cform__success" id="cform-success" hidden>
-            <p class="label cform__success-label">{form.success.label}</p>
+        <div class="cform__success is-hidden" id="cform-success">
             <h2 class="cform__success-title">
                 {form.success.titleStart}
                 <span data-success-name>friend</span>.<br />
@@ -115,6 +114,21 @@ const f = form.fields;
         max-width: 760px;
         margin: 0 auto;
         position: relative;
+        display: grid;
+        grid-template-areas: "stack";
+    }
+
+    .cform__form,
+    .cform__success {
+        grid-area: stack;
+        transition: opacity 0.6s var(--ease), transform 0.7s var(--ease);
+    }
+
+    .cform__form.is-hidden,
+    .cform__success.is-hidden {
+        opacity: 0;
+        transform: translateY(12px);
+        pointer-events: none;
     }
 
     .cform__avail-dot {
@@ -183,6 +197,20 @@ const f = form.fields;
 
     .cform__field:focus-within .cform__label {
         color: var(--accent);
+    }
+
+    .cform__field.is-shake {
+        animation: cform-shake 0.5s var(--ease);
+    }
+
+    @keyframes cform-shake {
+        0%, 100% { transform: translateX(0); }
+        15% { transform: translateX(-8px); }
+        30% { transform: translateX(6px); }
+        45% { transform: translateX(-5px); }
+        60% { transform: translateX(4px); }
+        75% { transform: translateX(-2px); }
+        90% { transform: translateX(1px); }
     }
 
     .cform__select {
@@ -261,9 +289,20 @@ const f = form.fields;
         font-size: 14px;
         color: var(--ink);
         text-decoration: none;
-        border-bottom: 1px solid var(--ink);
+        border-bottom: 1px solid transparent;
         padding-bottom: 1px;
         align-self: flex-start;
+        transition: color 0.2s var(--ease);
+        background-image: linear-gradient(var(--accent), var(--accent));
+        background-size: 0% 1px;
+        background-position: 0 100%;
+        background-repeat: no-repeat;
+        transition: color 0.2s var(--ease), background-size 0.3s var(--ease);
+    }
+
+    .cform__email:hover {
+        color: var(--accent);
+        background-size: 100% 1px;
     }
 
     .cform__reply {
@@ -306,27 +345,13 @@ const f = form.fields;
         transform: translateX(6px);
     }
 
-    /* success state */
+/* success state */
     .cform__success {
         grid-column: 1 / -1;
         position: relative;
         padding: 0;
         max-width: 720px;
-    }
-
-    .cform__success-glyph {
-        position: absolute;
-        left: -40px;
-        top: -20px;
-        color: var(--ink);
-        opacity: 0.6;
-        pointer-events: none;
-    }
-
-    .cform__success-label {
-        position: relative;
-        color: var(--accent);
-        margin: 0 0 24px;
+        text-align: center;
     }
 
     .cform__success-title {
@@ -336,7 +361,16 @@ const f = form.fields;
         font-size: clamp(48px, 6vw, 80px);
         line-height: 0.95;
         letter-spacing: -0.035em;
-        margin: 0;
+        margin: 0 auto;
+    }
+
+    .cform__success-glyph {
+        position: absolute;
+        left: -40px;
+        top: -20px;
+        color: var(--ink);
+        opacity: 0.6;
+        pointer-events: none;
     }
 
     .cform__success-title em {
@@ -349,7 +383,7 @@ const f = form.fields;
         font-size: 18px;
         line-height: 1.5;
         color: var(--ink-2);
-        margin: 28px 0 0;
+        margin: 28px auto 0;
         max-width: 540px;
     }
 
@@ -359,7 +393,7 @@ const f = form.fields;
     }
 
     .cform__again {
-        margin-top: 32px;
+        margin: 32px auto 0;
         background: transparent;
         border: 1px solid var(--rule-2);
         color: var(--ink);
@@ -368,6 +402,7 @@ const f = form.fields;
         font-family: var(--font-mono);
         font-size: 13px;
         transition: background 0.2s var(--ease);
+        display: block;
     }
 
     .cform__again:hover {

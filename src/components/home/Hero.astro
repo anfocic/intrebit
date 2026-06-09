@@ -6,8 +6,6 @@ const {hero} = home;
 
 <section class="hero" aria-label="Hero">
     <div class="hero__inner">
-        <p class="hero__eyebrow hero__anim" style="--d: 0ms">{hero.tagline}</p>
-
         <h1 class="hero__title hero__anim" style="--d: 120ms" set:html={hero.title}/>
 
         <div class="hero__grid">
@@ -65,15 +63,25 @@ const {hero} = home;
         color: var(--accent);
         display: inline-block;
         animation: hero-em-pop 1s var(--ease) 700ms both;
+        position: relative;
     }
 
-    .hero__eyebrow {
-        margin: 0 0 24px;
-        font-family: var(--font-mono);
-        font-size: 13px;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        color: var(--accent);
+    .hero__title em::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 140%;
+        height: 180%;
+        background: radial-gradient(
+            ellipse 50% 55% at center,
+            rgba(226, 88, 34, 0.55) 0%,
+            rgba(226, 88, 34, 0.22) 45%,
+            transparent 72%
+        );
+        z-index: -1;
+        pointer-events: none;
     }
 
     .hero__anim {
@@ -109,8 +117,8 @@ const {hero} = home;
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 64px;
-        margin-top: 64px;
-        align-items: center;
+        margin-top: 96px;
+        align-items: start;
     }
 
     .hero__lead {
@@ -194,14 +202,6 @@ const {hero} = home;
             gap: 28px;
             margin-top: 48px;
             align-items: stretch;
-        }
-
-        .hero__lead {
-            order: 1;
-        }
-
-        .hero__ctas {
-            order: 2;
         }
 
         .hero__cta {
