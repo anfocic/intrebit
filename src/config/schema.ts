@@ -85,15 +85,3 @@ export const contactSchemas = [
         }
     }
 ];
-
-// Services page schema (if you have a dedicated services page)
-export const servicesSchemas = [
-    organizationSchema,
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Services - intrebit",
-        "description": "Development, consulting, and automation services",
-        "url": `${SITE_URL}/services`
-    }
-];

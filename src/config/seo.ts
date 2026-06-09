@@ -7,17 +7,6 @@ export const pageSEO: Record<string, SEOOverrides> = {
             "Software that works. We build digital infrastructure, interfaces, and systems without corporate BS.",
     },
 
-    about: {
-        title: title("About"),
-        description:
-            "Solo studio building software for small and mid-sized teams. " +
-            "Fixed price, fast replies, code in your name.",
-    },
-    services: {
-        title: title("Services"),
-        description:
-            "Custom software development, outsourcing, infrastructure, and consulting — built right, not rushed.",
-    },
     contact: {
         title: title("Contact"),
         description:

@@ -16,31 +16,6 @@ export const home = {
     ctaSecondary: { label: "See what we do", href: "/#services" },
   },
 
-  stats: {
-    items: [
-      {
-        stat: "1 day",
-        label: "to first reply",
-        sub: "Real answer — not an auto-responder.",
-      },
-      {
-        stat: "4 weeks",
-        label: "average to ship",
-        sub: "From signed scope to live in production.",
-      },
-      {
-        stat: "Fixed",
-        label: "price, signed up front",
-        sub: "No hourly meter. No surprise invoices.",
-      },
-      {
-        stat: "100%",
-        label: "yours from day one",
-        sub: "Code, accounts, hosting — all in your name.",
-      },
-    ],
-  },
-
   services: {
     heading: "Software that<br/>works for <em>you.</em>",
     intro:
@@ -154,47 +129,6 @@ export const contact = {
       body: "We'll reply to {email} within a day. Usually faster.",
       again: "← Send another",
     },
-  },
-};
-
-export const services = {
-  hero: {
-    title: "Build it once.",
-    titleLine2: "Keep it working.",
-    subtitle:
-      "Websites, web apps, mobile apps — you name it. We also join existing teams and bring AI where it helps.",
-    cta: { label: "Get in touch", href: "/contact" },
-  },
-
-  grid: {
-    title: "What we do",
-    items: [
-      {
-        title: "Build",
-        description: "Custom software for the parts of your business that still feel too manual.",
-        details:
-          "From landing pages to full platforms. We also rescue inherited messes and make slow, broken things reliable again.",
-      },
-      {
-        title: "Consult",
-        description:
-          "One-off honest advice before you spend money on software.",
-        details:
-          "Architecture reviews, stack choices, second opinions, roadmaps — straight talk for teams that want to move faster.",
-      },
-      {
-        title: "AI",
-        description: "Integration and education where it actually helps.",
-        details:
-          "Automating workflows, connecting tools, and teaching your team to use AI day-to-day. No buzzwords, just results.",
-      },
-    ],
-  },
-
-  cta: {
-    heading: "Let's figure out what you need.",
-    body: "We'll get back to you within a day.",
-    button: { label: "Talk to us", href: "/contact" },
   },
 };
 
