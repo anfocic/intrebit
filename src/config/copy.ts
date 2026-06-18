@@ -22,6 +22,47 @@ export const home = {
       "Instead of focusing on buzzwords and numbers <br/> you don't care about we just do our job.",
   },
 
+  // PLACEHOLDER PROOF — replace every client, problem and number below with
+  // real, anonymized facts before this ships. Inventing results contradicts
+  // the whole "no nonsense" pitch; only keep what's actually true.
+  proof: {
+    heading: "What we've <em>shipped.</em>",
+    intro:
+      "Most of our work is internal — software you'd never spot from the outside. Names withheld, the results are real.",
+    cases: [
+      {
+        client: "30-year Dublin distributor",
+        problem:
+          "Orders, stock and pricing lived across a dozen spreadsheets and an inbox. Reconciling them ate hours every morning, and the mistakes shipped with the goods.",
+        built:
+          "One internal dashboard that ties it together — orders in, stock down, prices right, updated as it happens.",
+        metric: "3 hrs",
+        metricUnit: "/day back",
+        outcome: "Daily reconciliation went from half a morning to a coffee break.",
+      },
+      {
+        client: "Local service business",
+        problem:
+          "Every booking came in by phone. The owner was tied to the desk, and no-shows quietly burned paid slots.",
+        built:
+          "A self-serve booking flow with automatic reminders, built around how they already run the day.",
+        metric: "70%",
+        metricUnit: "fewer calls",
+        outcome: "Most bookings now happen without anyone picking up the phone.",
+      },
+      {
+        client: "Small operations team",
+        problem:
+          "They'd inherited a tool nobody on the team understood, and paid for four others that refused to talk to each other.",
+        built:
+          "Rebuilt the core, wired the rest together, and handed over the code and accounts in their name.",
+        metric: "5→1",
+        metricUnit: "systems",
+        outcome: "One place to look instead of five tabs that disagreed.",
+      },
+    ],
+  },
+
   studio: {
     heading: "New <em>shop</em> in town.",
     article: {

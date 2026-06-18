@@ -1,0 +1,191 @@
+---
+import {home} from "../../config/copy.ts";
+
+const c = home.proof;
+---
+
+<section id="work" class="proof" aria-label="Selected work" data-reveal>
+    <div class="proof__inner">
+        <header class="proof__header">
+            <div>
+                <h2 class="proof__heading" set:html={c.heading}/>
+            </div>
+            <div class="proof__intro">
+                <p class="proof__intro-body" set:html={c.intro}/>
+            </div>
+        </header>
+
+        <ol class="proof__list" data-reveal-stagger>
+            {c.cases.map((cs, i) => (
+                <li class="case" style={`--i:${i}`}>
+                    <div class="case__metric">
+                        <span class="case__n">
+                            {cs.metric}<span class="case__unit">{cs.metricUnit}</span>
+                        </span>
+                        <p class="case__outcome">{cs.outcome}</p>
+                    </div>
+                    <div class="case__story">
+                        <p class="case__client mono">{cs.client}</p>
+                        <p class="case__problem">{cs.problem}</p>
+                        <p class="case__built">{cs.built}</p>
+                    </div>
+                </li>
+            ))}
+        </ol>
+    </div>
+</section>
+
+<style>
+    .proof {
+        padding: 100px var(--section-pad-x);
+        background: var(--bg);
+    }
+
+    .proof__inner {
+        max-width: var(--container-width);
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .proof__header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 64px;
+        margin-bottom: 56px;
+        align-items: end;
+    }
+
+    .proof__heading {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(36px, 4.6vw, 56px);
+        line-height: 0.98;
+        margin: 12px 0 0;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+    }
+
+    .proof__heading :global(em) {
+        font-style: italic;
+        color: var(--accent);
+    }
+
+    .proof__intro {
+        padding-bottom: 8px;
+    }
+
+    .proof__intro-body {
+        font-size: 17px;
+        line-height: 1.55;
+        color: var(--ink-2);
+        margin: 0;
+        max-width: 460px;
+    }
+
+    .proof__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .case {
+        display: grid;
+        grid-template-columns: 0.85fr 1.15fr;
+        gap: 64px;
+        align-items: start;
+        padding: 48px 0;
+        border-top: 1px solid var(--rule);
+    }
+
+    .case:last-child {
+        border-bottom: 1px solid var(--rule);
+    }
+
+    .case__metric {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .case__n {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(48px, 5.5vw, 80px);
+        line-height: 0.85;
+        letter-spacing: -0.04em;
+        color: var(--ink);
+        display: inline-flex;
+        align-items: baseline;
+        flex-wrap: wrap;
+    }
+
+    .case__unit {
+        font-size: 0.32em;
+        color: var(--ink-3);
+        letter-spacing: 0;
+        margin-left: 6px;
+    }
+
+    .case__outcome {
+        font-family: var(--font-display);
+        font-size: clamp(18px, 1.9vw, 22px);
+        line-height: 1.3;
+        letter-spacing: -0.012em;
+        color: var(--ink);
+        margin: 0;
+        max-width: 360px;
+        text-wrap: pretty;
+    }
+
+    .case__story {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        max-width: 480px;
+    }
+
+    .case__client {
+        font-size: var(--text-sm);
+        color: var(--ink-3);
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+    }
+
+    .case__problem {
+        font-size: 17px;
+        line-height: 1.55;
+        color: var(--ink-2);
+        margin: 0;
+    }
+
+    .case__built {
+        font-size: 17px;
+        line-height: 1.55;
+        color: var(--ink);
+        margin: 0;
+        font-weight: 500;
+    }
+
+    @media (max-width: 900px) {
+        .proof {
+            padding: 56px var(--section-pad-x-mobile);
+        }
+
+        .proof__header {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .proof__intro {
+            padding-bottom: 0;
+        }
+
+        .case {
+            grid-template-columns: 1fr;
+            gap: 24px;
+            padding: 36px 0;
+        }
+    }
+</style>

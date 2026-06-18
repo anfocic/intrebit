@@ -5,6 +5,7 @@ import {homeSchemas} from "../config/schema.ts";
 
 import Hero from "../components/home/Hero.astro";
 import HomeServices from "../components/home/HomeServices.astro";
+import Proof from "../components/home/Proof.astro";
 import Studio from "../components/home/Studio.astro";
 import ContactForm from "../components/contact/ContactForm.astro";
 import { contact } from "../config/copy.ts";
@@ -15,6 +16,7 @@ const { hero: contactHero } = contact;
 <Layout seo={pageSEO.home} schemas={homeSchemas}>
     <Hero/>
     <HomeServices/>
+    <Proof/>
     <Studio/>
     <div class="home-contact-section">
         <div class="home-contact-split">
