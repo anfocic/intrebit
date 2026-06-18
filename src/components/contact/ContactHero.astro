@@ -1,19 +1,28 @@
 ---
 import {contact} from "../../config/copy.ts";
 
-const {pageHero, serviceVariants} = contact;
+const {pageHero, serviceVariants, assurances} = contact;
 ---
 
 <section class="chero" aria-label="Contact" id="contact-hero">
     <div class="chero__inner">
-        <h1 class="chero__title" data-default-title={pageHero.title} transition:name="cta-heading" set:html={pageHero.title}/>
-        <p class="chero__about" data-default-about={pageHero.about} set:html={pageHero.about} />
+        <h1 class="chero__title" set:html={pageHero.title}/>
+        <p class="chero__about" set:html={pageHero.about} />
+
+        <div class="chero__assurances">
+            <span class="chero__assurances-label">{assurances.label}</span>
+            <ul class="chero__assurances-list">
+                {assurances.items.map((item) => (
+                    <li class="chero__assurances-item">{item}</li>
+                ))}
+            </ul>
+        </div>
     </div>
 </section>
 
 <script define:vars={{ variants: serviceVariants }}>
     const service = localStorage.getItem("contact-service");
-    const variant = variants[service];
+    const variant = service && variants[service];
     if (variant) {
         const titleEl = document.querySelector("#contact-hero .chero__title");
         const aboutEl = document.querySelector("#contact-hero .chero__about");
@@ -26,7 +35,6 @@ const {pageHero, serviceVariants} = contact;
 <style>
     .chero {
         position: relative;
-        overflow: hidden;
         padding: 56px var(--section-pad-x) 32px;
     }
 
@@ -93,9 +101,34 @@ const {pageHero, serviceVariants} = contact;
         max-width: 480px;
     }
 
-    .chero__about em {
-        font-style: normal;
-        color: var(--accent);
+    .chero__assurances {
+        margin-top: 44px;
+        max-width: 480px;
+    }
+
+    .chero__assurances-label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        margin-bottom: 16px;
+    }
+
+    .chero__assurances-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .chero__assurances-item {
+        font-size: 16px;
+        line-height: 1.45;
+        color: var(--ink);
     }
 
     @media (max-width: 900px) {

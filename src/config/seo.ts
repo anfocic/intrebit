@@ -8,7 +8,7 @@ export const pageSEO: Record<string, SEOOverrides> = {
     },
 
     contact: {
-        title: title("Contact"),
+        title: title("let's talk"),
         description:
             "Got a project? A wild idea? Or just want to complain about corporate life? Let’s talk.",
     },

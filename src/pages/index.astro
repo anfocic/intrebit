@@ -5,7 +5,7 @@ import {homeSchemas} from "../config/schema.ts";
 
 import Hero from "../components/home/Hero.astro";
 import HomeServices from "../components/home/HomeServices.astro";
-import Proof from "../components/home/Proof.astro";
+// import Proof from "../components/home/Proof.astro"; // hidden: work/case studies not finished
 import Studio from "../components/home/Studio.astro";
 import ContactForm from "../components/contact/ContactForm.astro";
 import { contact } from "../config/copy.ts";
@@ -16,7 +16,7 @@ const { hero: contactHero } = contact;
 <Layout seo={pageSEO.home} schemas={homeSchemas}>
     <Hero/>
     <HomeServices/>
-    <Proof/>
+    {/* <Proof/> hidden until the work / case studies are finished */}
     <Studio/>
     <div class="home-contact-section">
         <div class="home-contact-split">
@@ -35,9 +35,9 @@ const { hero: contactHero } = contact;
     }
 
     .home-contact-split {
-        max-width: var(--container-width);
-        margin: 0 auto;
-        padding: 80px var(--section-pad-x);
+        width: min(100% - 2 * var(--section-pad-x), var(--container-width));
+        margin-inline: auto;
+        padding-block: 80px;
     }
 
     .home-contact-left {
@@ -85,7 +85,7 @@ const { hero: contactHero } = contact;
 
     @media (max-width: 900px) {
         .home-contact-split {
-            padding: 56px var(--section-pad-x-mobile);
+            padding-block: 56px;
         }
 
         .home-contact-heading {

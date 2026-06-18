@@ -27,38 +27,69 @@ export const home = {
   // the whole "no nonsense" pitch; only keep what's actually true.
   proof: {
     heading: "What we've <em>shipped.</em>",
-    intro:
-      "Most of our work is internal — software you'd never spot from the outside. Names withheld, the results are real.",
-    cases: [
+    // One slider: left = the story + number (changes per item), right = one
+    // visual card at a time, advanced with the chevrons. items stay paired 1:1.
+    items: [
       {
-        client: "30-year Dublin distributor",
-        problem:
-          "Orders, stock and pricing lived across a dozen spreadsheets and an inbox. Reconciling them ate hours every morning, and the mistakes shipped with the goods.",
-        built:
-          "One internal dashboard that ties it together — orders in, stock down, prices right, updated as it happens.",
-        metric: "3 hrs",
-        metricUnit: "/day back",
-        outcome: "Daily reconciliation went from half a morning to a coffee break.",
+        client: "Legal & accounting",
+        blurb:
+          "A private AI “associate” for small law and accounting firms — it reads every document in a matter, then answers with citations and flags the risks. Runs entirely on the firm's own machine.",
+        features: [
+          {label: "Runs locally", desc: "Every model runs on the firm's own machine — no cloud, nothing leaves."},
+          {label: "Cited answers", desc: "Every answer links back to the exact passage it came from."},
+          {label: "Summaries", desc: "A one-page brief per document: parties, terms, dates, obligations."},
+          {label: "Risk flags", desc: "Unusual clauses and deadlines graded high/medium/low, with the excerpt."},
+        ],
+        card: {
+          // TODO(fole): MatterRoom MVP hero screenshot
+          tag: "",
+          title: "MatterRoom",
+          href: "#",
+          cta: "",
+          image: "/demos/matterroom.png",
+          imageAlt: "MatterRoom — private AI matter intelligence for small firms",
+          ready: false,
+        },
       },
       {
         client: "Local service business",
-        problem:
-          "Every booking came in by phone. The owner was tied to the desk, and no-shows quietly burned paid slots.",
-        built:
-          "A self-serve booking flow with automatic reminders, built around how they already run the day.",
-        metric: "70%",
-        metricUnit: "fewer calls",
-        outcome: "Most bookings now happen without anyone picking up the phone.",
+        blurb:
+          "Built for a restaurant here — but the same booking site fits any service business: salons, clinics, studios, trades.",
+        features: [
+          {label: "Online booking", desc: "Customers book themselves in, any hour — no phone tag."},
+          {label: "Reminders", desc: "Automatic email and text reminders that cut no-shows."},
+          {label: "SEO", desc: "Built to rank, so people actually find you on Google."},
+          {label: "Analytics", desc: "Private, cookie-free insight into what's working."},
+          {label: "GDPR-friendly", desc: "Privacy-first: no cookie banner, the data stays yours."},
+        ],
+        card: {
+          // href filled in after the demo is deployed to *.pages.dev
+          tag: "",
+          title: "A booking site, end to end",
+          href: "#",
+          cta: "Open the demo",
+          image: "/demos/restaurant.png",
+          imageAlt: "Restaurant booking demo — menu and reservation flow",
+          ready: true,
+        },
       },
       {
         client: "Small operations team",
-        problem:
-          "They'd inherited a tool nobody on the team understood, and paid for four others that refused to talk to each other.",
-        built:
-          "Rebuilt the core, wired the rest together, and handed over the code and accounts in their name.",
+        blurb:
+          "An inherited tool nobody understood, rebuilt — four disconnected apps wired into one.",
         metric: "5→1",
         metricUnit: "systems",
         outcome: "One place to look instead of five tabs that disagreed.",
+        card: {
+          // TODO(fole): real screenshot / decide if this internal tool is shown
+          tag: "",
+          title: "One system, not five",
+          href: "#",
+          cta: "",
+          image: "/demos/ops.png",
+          imageAlt: "Rebuilt internal operations tool",
+          ready: false,
+        },
       },
     ],
   },
@@ -70,11 +101,11 @@ export const home = {
         "ntrebit started in 2025 in Dublin, after a few years inside a " +
         "corporate environment where shipping had quietly become the smallest " +
         "part of the day. The first client was a local dog grooming salon. The second was a " +
-        "Dublin company thirty years in business.\nWe're particular about the next.",
+        "Dublin company thirty years in business.\nWe're careful about the next.",
       ledeDropcap: "i",
       closing:
-        "When you email us, the person who reads it is the person who " +
-        "writes the code. Sometimes my wife.",
+        "When you email us, the person who reads it is usually the person who " +
+        "writes the code.",
     },
   },
 };
@@ -128,23 +159,32 @@ export const contact = {
   },
 
   pageHero: {
-    title: "What do <em>you</em> need?",
+    title: "What's the <em>story?</em>",
     about:
-      "Based in Dublin, we build simple software that saves local businesses time and headaches.<br/> <em>No sales team. No buzzwords. No nonsense.</em>",
+      "Based in Dublin, we build simple software that saves local businesses time and headaches.",
+  },
+
+  assurances: {
+    label: "How we work",
+    items: [
+      "Fixed price, agreed before we start.",
+      "You own everything from day one.",
+      "One reply within a day. Usually faster.",
+    ],
   },
 
   serviceVariants: {
     build: {
       title: "Build something <em>solid.</em>",
-      about: "Tools, dashboards, and portals that cut manual work. Scoped clearly, priced properly, shipped fast. You own it from day one.",
+      about: "Custom software for the manual, repetitive corners of your business. Fixed price up front, shipped fast, and yours to keep from day one.",
     },
     consult: {
       title: "Honest advice. No strings <em>attached.</em>",
-      about: "A one-off review of your systems, roadmap, and bottlenecks. We tell you what to build, what to buy, and what to leave alone.",
+      about: "Before you spend a cent, a straight look at what you've got — what to build, what to buy, and what to skip entirely.",
     },
     automate: {
       title: "Automation that earns its <em>keep.</em>",
-      about: "Practical AI and workflow automation that reduce admin, save time, and don't add more mess.",
+      about: "Data entry, reports, the endless follow-ups — the busywork handed to software, so your team can stop doing it by hand.",
     },
   },
 
@@ -155,7 +195,7 @@ export const contact = {
       name: { label: "Name", placeholder: "Jane Doe" },
       email: { label: "Email", placeholder: "jane@company.com" },
       message: {
-        label: "What's the story?",
+        label: "Message",
         placeholder:
           "In a few sentences, tell us what's slowing your business down.",
       },

@@ -2,19 +2,19 @@ export const services = [
   {
     id: "build",
     title: "Build",
-    outcome: "Custom software for the parts of your business that still feel too manual.",
+    outcome: "Custom software for work that still feels too manual.",
     href: "/contact",
   },
   {
     id: "consult",
     title: "Consult",
-    outcome: "One-off honest advice before you spend money on software.",
+    outcome: "Honest advice before you spend a cent on software.",
     href: "/contact",
   },
   {
     id: "automate",
     title: "Automate",
-    outcome: "Integration and education where it actually helps.",
+    outcome: "Automation for the dirty work nobody likes to do.",
     href: "/contact",
   },
 ];
@@ -27,7 +27,7 @@ type FooterLink = {
 
 export const navLinks = [
   { href: "/#services", label: "Services" },
-
+  // { href: "/#work", label: "Work" }, // hidden until the work section is finished
   { href: "/#studio", label: "Studio" },
   { href: "/contact", label: "Contact" },
 ];
