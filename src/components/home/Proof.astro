@@ -1,0 +1,524 @@
+---
+import {home} from "../../config/copy.ts";
+
+const c = home.proof;
+const items = c.items;
+---
+
+<section id="work" class="work" aria-label="Selected work" data-reveal>
+    <div class="work__inner">
+        <div class="slider" data-slider>
+            <!-- small-caps label, centered above the card (swaps per item) -->
+            <div class="stage__labels">
+                {items.map((it, i) => (
+                    <span class="stage__label mono" data-label aria-hidden={i !== 0 ? "true" : "false"}>{it.client}</span>
+                ))}
+            </div>
+
+            <!-- section title (right) -->
+            <h2 class="work__heading" set:html={c.heading}/>
+
+            <!-- card with chevrons flanking its sides -->
+            <div class="stage__row">
+                <button class="chev chev--prev" data-prev type="button" aria-label="Previous">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+
+                <div class="stage__cards">
+                    {items.map((it, i) => {
+                        const d = it.card;
+                        return (
+                            <div class="shot" data-card aria-hidden={i !== 0 ? "true" : "false"} inert={i !== 0 ? true : undefined}>
+                                {d.ready
+                                    ? <img class="shot__img" src={d.image} alt={d.imageAlt} loading="lazy"/>
+                                    : (
+                                        <div class="shot__placeholder">
+                                            <span class="shot__title">{d.title}</span>
+                                            <span class="shot__note mono">screenshot pending</span>
+                                        </div>
+                                    )}
+                                {d.tag && <span class="shot__tag mono">{d.tag}</span>}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                <button class="chev chev--next" data-next type="button" aria-label="Next">
+                    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+
+            <!-- description (right), centered against the card -->
+            <div class="slider__panels">
+                {items.map((it, i) => {
+                    const live = it.card.href && it.card.href !== "#";
+                    return (
+                        <div class="panel" data-panel aria-hidden={i !== 0 ? "true" : "false"} inert={i !== 0 ? true : undefined}>
+                            <p class:list={["panel__blurb", {"panel__blurb--ruled": it.features}]}>{it.blurb}</p>
+                            {it.metric && <span class="panel__n">{it.metric}<span class="panel__unit">{it.metricUnit}</span></span>}
+                            {it.outcome && <p class="panel__outcome">{it.outcome}</p>}
+                            {it.features && (
+                                <ul class="feats">
+                                    {it.features.map((f) => (
+                                        <li class="feat" data-desc={f.desc} tabindex="0">{f.label}</li>
+                                    ))}
+                                </ul>
+                            )}
+                            {live && (
+                                <a class="panel__cta mono" href={it.card.href} target="_blank" rel="noopener">
+                                    {it.card.cta} <span class="panel__cta-arrow">→</span>
+                                </a>
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+
+            <!-- dots, centered below the card -->
+            <div class="dots" role="tablist" aria-label="Choose work">
+                {items.map((it, i) => (
+                    <button class="dot" data-dot type="button" role="tab" aria-label={it.client} aria-selected={i === 0 ? "true" : "false"}/>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function initSliders() {
+        document.querySelectorAll("[data-slider]").forEach((root) => {
+            const labels = Array.from(root.querySelectorAll("[data-label]"));
+            const panels = Array.from(root.querySelectorAll("[data-panel]"));
+            const cards = Array.from(root.querySelectorAll("[data-card]"));
+            const dots = Array.from(root.querySelectorAll("[data-dot]"));
+            const prev = root.querySelector("[data-prev]");
+            const next = root.querySelector("[data-next]");
+            const count = Math.max(panels.length, cards.length);
+            if (count < 2) return;
+
+            let idx = 0;
+
+            const setGroup = (els) => {
+                els.forEach((el, i) => {
+                    const on = i === idx;
+                    el.classList.toggle("is-active", on);
+                    el.setAttribute("aria-hidden", on ? "false" : "true");
+                    el.inert = !on;
+                });
+            };
+
+            const go = (n) => {
+                idx = (n + count) % count;
+                setGroup(labels);
+                setGroup(panels);
+                setGroup(cards);
+                dots.forEach((d, i) => d.setAttribute("aria-selected", i === idx ? "true" : "false"));
+            };
+
+            prev && prev.addEventListener("click", () => go(idx - 1));
+            next && next.addEventListener("click", () => go(idx + 1));
+            dots.forEach((d, i) => d.addEventListener("click", () => go(i)));
+            root.addEventListener("keydown", (e) => {
+                if (e.key === "ArrowLeft") { e.preventDefault(); go(idx - 1); }
+                else if (e.key === "ArrowRight") { e.preventDefault(); go(idx + 1); }
+            });
+
+            root.classList.add("is-ready");
+            go(0);
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initSliders);
+    } else {
+        initSliders();
+    }
+</script>
+
+<style>
+    .work {
+        padding: 100px var(--section-pad-x);
+        background: var(--bg);
+    }
+
+    .work__inner {
+        max-width: var(--container-width);
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    /* ---- grid: label/title on top, card/description below, dots under card ---- */
+    .slider {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas:
+            "label title"
+            "card  copy"
+            "dots  .";
+        column-gap: 72px;
+        row-gap: 14px;
+        align-items: start;
+    }
+
+    /* ---- label above card ---- */
+    .stage__labels {
+        grid-area: label;
+        align-self: end;
+        display: grid;
+        justify-items: center;
+    }
+
+    .stage__label {
+        grid-area: 1 / 1;
+        text-align: center;
+        font-size: 15px;
+        font-variant: all-small-caps;
+        text-transform: lowercase;
+        letter-spacing: 0.12em;
+        color: var(--ink-2);
+        opacity: 0;
+        transition: opacity 0.5s var(--ease);
+    }
+
+    .stage__label:first-child { opacity: 1; }
+    .slider.is-ready .stage__label { opacity: 0; }
+    .slider.is-ready .stage__label.is-active { opacity: 1; }
+
+    /* ---- title ---- */
+    .work__heading {
+        grid-area: title;
+        align-self: end;
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(34px, 3.6vw, 48px);
+        line-height: 0.98;
+        margin: 0 0 6px;
+        letter-spacing: -0.03em;
+        color: var(--ink);
+    }
+
+    .work__heading :global(em) {
+        font-style: italic;
+        color: var(--accent);
+    }
+
+    /* ---- card row + flanking chevrons ---- */
+    .stage__row {
+        grid-area: card;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .stage__cards {
+        flex: 1;
+        position: relative;
+        display: grid;
+    }
+
+    .shot {
+        grid-area: 1 / 1;
+        position: relative;
+        aspect-ratio: 16 / 10;
+        border: 1px solid var(--rule);
+        border-radius: 16px;
+        overflow: hidden;
+        background: var(--bg-2);
+        opacity: 0;
+        transition: opacity 0.5s var(--ease);
+    }
+
+    .shot:first-of-type { opacity: 1; }
+    .slider.is-ready .shot { opacity: 0; }
+    .slider.is-ready .shot.is-active { opacity: 1; }
+
+    .shot__img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: top center;
+        display: block;
+    }
+
+    .shot__placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        text-align: center;
+        padding: 24px;
+        background:
+            repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 12px,
+                color-mix(in srgb, var(--ink) 4%, transparent) 12px,
+                color-mix(in srgb, var(--ink) 4%, transparent) 24px
+            );
+    }
+
+    .shot__title {
+        font-family: var(--font-display);
+        font-size: clamp(22px, 2.4vw, 28px);
+        letter-spacing: -0.02em;
+        color: var(--ink-2);
+        line-height: 1.1;
+        max-width: 80%;
+    }
+
+    .shot__note {
+        font-size: 11px;
+        color: var(--ink-3);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    .shot__tag {
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--accent);
+        background: var(--bg);
+        border: 1px solid color-mix(in srgb, var(--accent) 40%, transparent);
+        border-radius: 999px;
+        padding: 4px 10px;
+    }
+
+    .chev {
+        flex: none;
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        border: 0;
+        background: transparent;
+        color: var(--ink);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: color 0.25s var(--ease);
+    }
+
+    .chev svg { width: 22px; height: 22px; }
+    .chev:hover { color: var(--accent); }
+
+    .chev:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+        border-radius: 999px;
+    }
+
+    /* ---- dots below card ---- */
+    .dots {
+        grid-area: dots;
+        justify-self: center;
+        display: flex;
+        gap: 8px;
+        margin-top: 16px;
+    }
+
+    .dot {
+        width: 8px;
+        height: 8px;
+        padding: 0;
+        border-radius: 999px;
+        border: 0;
+        background: color-mix(in srgb, var(--ink) 20%, transparent);
+        cursor: pointer;
+        transition: background 0.3s var(--ease), width 0.3s var(--ease);
+    }
+
+    .dot[aria-selected="true"] {
+        width: 22px;
+        background: var(--accent);
+    }
+
+    .dot:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+    }
+
+    /* ---- description, centered against the card ---- */
+    .slider__panels {
+        grid-area: copy;
+        align-self: center;
+        display: grid;
+    }
+
+    .panel {
+        grid-area: 1 / 1;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        opacity: 0;
+        transition: opacity 0.5s var(--ease);
+    }
+
+    .panel:first-child { opacity: 1; }
+    .slider.is-ready .panel { opacity: 0; }
+    .slider.is-ready .panel.is-active { opacity: 1; }
+
+    .panel__blurb {
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--ink-2);
+        margin: 0;
+        max-width: 360px;
+        text-wrap: pretty;
+    }
+
+    .panel__n {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(48px, 5.2vw, 72px);
+        line-height: 0.82;
+        letter-spacing: -0.04em;
+        color: var(--ink);
+        display: inline-flex;
+        align-items: baseline;
+        white-space: nowrap;
+        margin: 2px 0;
+    }
+
+    .panel__unit {
+        font-size: 0.26em;
+        color: var(--ink-3);
+        letter-spacing: 0;
+        margin-left: 8px;
+    }
+
+    .panel__outcome {
+        font-size: 15px;
+        line-height: 1.55;
+        color: var(--ink);
+        margin: 0;
+        max-width: 360px;
+        text-wrap: pretty;
+    }
+
+    .panel__blurb--ruled {
+        padding-bottom: 18px;
+        border-bottom: 1px solid color-mix(in srgb, var(--accent) 55%, transparent);
+    }
+
+    .feats {
+        list-style: none;
+        margin: 2px 0 0;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        max-width: 380px;
+    }
+
+    .feat {
+        position: relative;
+        font-size: 12px;
+        color: var(--ink-2);
+        background: transparent;
+        border: 1px solid var(--rule-2);
+        border-radius: 999px;
+        padding: 5px 12px;
+        white-space: nowrap;
+        cursor: default;
+        transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+    }
+
+    .feat:hover,
+    .feat:focus-visible {
+        outline: none;
+        color: var(--ink);
+        border-color: var(--ink);
+    }
+
+    /* hover/focus tooltip with the feature description */
+    .feat[data-desc]::after {
+        content: attr(data-desc);
+        position: absolute;
+        bottom: calc(100% + 10px);
+        left: 50%;
+        transform: translateX(-50%) translateY(4px);
+        width: max-content;
+        max-width: 220px;
+        white-space: normal;
+        text-align: center;
+        font-size: 12px;
+        line-height: 1.4;
+        color: var(--bg);
+        background: var(--ink);
+        padding: 8px 11px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(7, 24, 38, 0.22);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
+        z-index: 5;
+    }
+
+    .feat[data-desc]::before {
+        content: "";
+        position: absolute;
+        bottom: calc(100% + 4px);
+        left: 50%;
+        transform: translateX(-50%) translateY(4px);
+        border: 6px solid transparent;
+        border-top-color: var(--ink);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.18s var(--ease), transform 0.18s var(--ease);
+        z-index: 5;
+    }
+
+    .feat[data-desc]:hover::after,
+    .feat[data-desc]:focus-visible::after,
+    .feat[data-desc]:hover::before,
+    .feat[data-desc]:focus-visible::before {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    .panel__cta {
+        align-self: flex-start;
+        margin-top: 10px;
+        font-size: var(--text-sm);
+        color: var(--ink);
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .panel__cta:hover { color: var(--accent); }
+    .panel__cta-arrow { transition: transform 0.3s var(--ease); }
+    .panel__cta:hover .panel__cta-arrow { transform: translateX(4px); }
+
+    @media (max-width: 900px) {
+        .work {
+            padding: 56px var(--section-pad-x-mobile);
+        }
+
+        .slider {
+            grid-template-columns: 1fr;
+            grid-template-areas:
+                "title"
+                "label"
+                "card"
+                "dots"
+                "copy";
+            row-gap: 14px;
+            margin-top: 8px;
+        }
+
+        .work__heading { margin-bottom: 18px; }
+
+        .slider__panels { align-self: start; margin-top: 8px; }
+
+        .panel { gap: 12px; }
+    }
+</style>

@@ -1,23 +1,9 @@
 ---
-const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+const enabled = import.meta.env.PUBLIC_ANALYTICS_ENABLED !== "false";
 ---
 
 {
-    plausibleDomain && (
-        <>
-            <script is:inline>
-                window.plausible =
-                    window.plausible ||
-                    function () {
-                        (window.plausible.q = window.plausible.q || []).push(arguments);
-                    };
-            </script>
-            <script
-                defer
-                data-domain={plausibleDomain}
-                data-api="/api/event"
-                src="/js/pl.js"
-            />
-        </>
+    enabled && (
+        <script type="module" src="/scripts/analytics-init.js" is:inline />
     )
 }

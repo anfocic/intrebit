@@ -7,13 +7,8 @@ export const pageSEO: Record<string, SEOOverrides> = {
             "Software that works. We build digital infrastructure, interfaces, and systems without corporate BS.",
     },
 
-    services: {
-        title: title("Services"),
-        description:
-            "Custom software development, outsourcing, infrastructure, and consulting — built right, not rushed.",
-    },
     contact: {
-        title: title("Contact"),
+        title: title("let's talk"),
         description:
             "Got a project? A wild idea? Or just want to complain about corporate life? Let’s talk.",
     },
@@ -53,15 +48,17 @@ const SITE: SiteSEOConfig = {
     defaultDescription:
         "Software development, outsourcing, infrastructure, and consulting — without the corporate BS.",
     defaultImage: {
-        url: "",
+        url: "/og/default.png",
         width: 1200,
         height: 630,
-        alt: "Intrebit",
     },
 };
 
 export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
-    const pathname = url.pathname ?? "/";
+    const rawPath = url.pathname ?? "/";
+    const pathname = rawPath
+        .replace(/\/index\.html$/, "/")
+        .replace(/\.html$/, "");
     const canonical =
         overrides.canonical ??
         `${SITE.siteUrl}${pathname === "/" ? "" : pathname}`.replace(/\/$/, "");
@@ -77,6 +74,7 @@ export function buildSEO(url: URL, overrides: SEOOverrides = {}) {
         url: (overrides.image?.url ?? SITE.defaultImage.url).startsWith("http")
             ? overrides.image?.url ?? SITE.defaultImage.url
             : `${SITE.siteUrl}${overrides.image?.url ?? SITE.defaultImage.url}`,
+        alt: overrides.image?.alt ?? SITE.defaultImage.alt ?? title,
     };
 
     const noindex =

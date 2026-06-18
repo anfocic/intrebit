@@ -5,15 +5,148 @@ import {homeSchemas} from "../config/schema.ts";
 
 import Hero from "../components/home/Hero.astro";
 import HomeServices from "../components/home/HomeServices.astro";
-import RecentWork from "../components/home/RecentWork.astro";
+// import Proof from "../components/home/Proof.astro"; // hidden: work/case studies not finished
 import Studio from "../components/home/Studio.astro";
-import HomeCTA from "../components/home/HomeCTA.astro";
+import ContactForm from "../components/contact/ContactForm.astro";
+import { contact } from "../config/copy.ts";
+
+const { hero: contactHero } = contact;
 ---
 
 <Layout seo={pageSEO.home} schemas={homeSchemas}>
     <Hero/>
     <HomeServices/>
-    <RecentWork/>
+    {/* <Proof/> hidden until the work / case studies are finished */}
     <Studio/>
-    <HomeCTA/>
+    <div class="home-contact-section">
+        <div class="home-contact-split">
+            <div class="home-contact-left">
+                <h2 class="home-contact-heading" data-contact-heading set:html={contactHero.title}/>
+            </div>
+            <ContactForm/>
+        </div>
+    </div>
 </Layout>
+
+<style is:global>
+    .home-contact-section {
+        background: var(--bg);
+        color: var(--ink);
+    }
+
+    .home-contact-split {
+        width: min(100% - 2 * var(--section-pad-x), var(--container-width));
+        margin-inline: auto;
+        padding-block: 80px;
+    }
+
+    .home-contact-left {
+        margin-bottom: 48px;
+    }
+
+    .home-contact-heading {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(36px, 5vw, 64px);
+        line-height: 1.05;
+        letter-spacing: -0.03em;
+        margin: 0;
+        max-width: 520px;
+        text-wrap: balance;
+        color: var(--ink);
+    }
+
+    .home-contact-heading em {
+        font-style: italic;
+        color: var(--accent);
+    }
+
+    @media (min-width: 901px) {
+        .home-contact-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .home-contact-left {
+            margin-bottom: 0;
+        }
+
+        .home-contact-split .cform {
+            padding: 0;
+        }
+
+        .home-contact-split .cform__inner {
+            max-width: none;
+        }
+
+    }
+
+    @media (max-width: 900px) {
+        .home-contact-split {
+            padding-block: 56px;
+        }
+
+        .home-contact-heading {
+            font-size: 40px;
+            line-height: 1.05;
+        }
+    }
+
+    [data-theme="dark"] .home-contact-section {
+        --bg: #f6f4ef;
+        --bg-2: #ece8e1;
+        --bg-3: #e0dbd2;
+        --ink: #0e2a47;
+        --ink-2: #34527a;
+        --ink-3: #6b80a0;
+        --rule: rgba(14, 42, 71, 0.10);
+        --rule-2: rgba(14, 42, 71, 0.22);
+        --accent: #c2410c;
+        --accent-ink: #ffffff;
+    }
+
+    [data-theme="light"] .home-contact-section {
+        --bg: #071826;
+        --bg-2: #0e2a47;
+        --bg-3: #16365b;
+        --ink: #f6f4ef;
+        --ink-2: rgba(246, 244, 239, 0.86);
+        --ink-3: rgba(246, 244, 239, 0.55);
+        --rule: rgba(246, 244, 239, 0.10);
+        --rule-2: rgba(246, 244, 239, 0.22);
+        --accent: #e85d2a;
+        --accent-ink: #071826;
+    }
+
+    @media (prefers-color-scheme: dark) {
+        :root:not([data-theme]) .home-contact-section {
+            --bg: #f6f4ef;
+            --bg-2: #ece8e1;
+            --bg-3: #e0dbd2;
+            --ink: #0e2a47;
+            --ink-2: #34527a;
+            --ink-3: #6b80a0;
+            --rule: rgba(14, 42, 71, 0.10);
+            --rule-2: rgba(14, 42, 71, 0.22);
+            --accent: #c2410c;
+            --accent-ink: #ffffff;
+        }
+    }
+
+    @media (prefers-color-scheme: light) {
+        :root:not([data-theme]) .home-contact-section {
+            --bg: #071826;
+            --bg-2: #0e2a47;
+            --bg-3: #16365b;
+            --ink: #f6f4ef;
+            --ink-2: rgba(246, 244, 239, 0.86);
+            --ink-3: rgba(246, 244, 239, 0.55);
+            --rule: rgba(246, 244, 239, 0.10);
+            --rule-2: rgba(246, 244, 239, 0.22);
+            --accent: #e85d2a;
+            --accent-ink: #071826;
+        }
+    }
+</style>

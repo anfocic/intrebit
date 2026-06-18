@@ -14,13 +14,6 @@ document.documentElement.classList.add("js");
 
     const apply = (theme) => {
         doc.dataset.theme = theme;
-        document.querySelectorAll("[data-theme-toggle]").forEach((root) => {
-            root.querySelectorAll("[data-theme-option]").forEach((btn) => {
-                const active = btn.dataset.themeOption === theme;
-                btn.classList.toggle("is-active", active);
-                btn.setAttribute("aria-checked", active ? "true" : "false");
-            });
-        });
     };
 
     const set = (theme) => {
@@ -28,16 +21,15 @@ document.documentElement.classList.add("js");
         apply(theme);
     };
 
-    /* run before paint */
     apply(getInitial());
 
     document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll("[data-theme-toggle]").forEach((root) => {
-            root.querySelectorAll("[data-theme-option]").forEach((btn) => {
-                btn.addEventListener("click", () => set(btn.dataset.themeOption));
+        document.querySelectorAll("[data-theme-toggle]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const next = doc.dataset.theme === "dark" ? "light" : "dark";
+                set(next);
             });
         });
-        apply(doc.dataset.theme);
     });
 
     window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {

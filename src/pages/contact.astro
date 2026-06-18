@@ -4,14 +4,36 @@ import {pageSEO} from "../config/seo.ts";
 import {contactSchemas} from "../config/schema.ts";
 
 import ContactHero from "../components/contact/ContactHero.astro";
-import WhatToInclude from "../components/contact/WhatToInclude.astro";
 import ContactForm from "../components/contact/ContactForm.astro";
-import ContactFAQ from "../components/contact/ContactFAQ.astro";
 ---
 
 <Layout seo={pageSEO.contact} schemas={contactSchemas}>
-    <ContactHero/>
-    <WhatToInclude/>
-    <ContactForm/>
-    <ContactFAQ/>
+    <div class="contact-split">
+        <ContactHero/>
+        <ContactForm/>
+    </div>
 </Layout>
+
+<style is:global>
+    @media (min-width: 901px) {
+        .contact-split {
+            width: min(100% - 2 * var(--section-pad-x), var(--container-width));
+            margin-inline: auto;
+            padding-block: 64px 80px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: start;
+        }
+
+        .contact-split .chero,
+        .contact-split .cform {
+            padding: 0;
+        }
+
+        .contact-split .chero__inner,
+        .contact-split .cform__inner {
+            max-width: none;
+        }
+    }
+</style>

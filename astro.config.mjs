@@ -1,4 +1,3 @@
-import {fileURLToPath} from "node:url";
 import {defineConfig} from "astro/config";
 import sitemap from "@astrojs/sitemap";
 
@@ -9,12 +8,21 @@ export default defineConfig({
     output: "static",
     trailingSlash: "never",
     integrations: [
-        sitemap(),
+        sitemap({
+            filter: (page) => !page.includes("/dashboard"),
+        }),
     ],
+    build: {
+        inlineStylesheets: "never",
+        format: "file",
+    },
     vite: {
         server: {
             hmr: true,
         },
         logLevel: "info",
+        build: {
+            assetsInlineLimit: 0,
+        },
     },
 });

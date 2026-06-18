@@ -1,10 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
 
-const lastUpdated = "13 Feb 2026";
+const lastUpdated = "2 May 2026";
 ---
 
-<Layout title={`Privacy | intrebit`}>
+<Layout title={`intrebit — Privacy`}>
     <div class="legal">
         <header class="legal__header">
             <h1>Privacy Policy</h1>
@@ -56,17 +56,25 @@ const lastUpdated = "13 Feb 2026";
         <section class="legal__section">
             <h2>Analytics</h2>
             <p>
-                We use simple, first-party analytics to understand how the website is used and to improve it.
-                Our analytics records <strong>page views</strong> and <strong>basic engagement</strong> (time on page and scroll depth)
-                along with coarse device information (device type, browser, screen size), referrer domain, and country.
+                We use <strong>pagetally</strong> — a self-hosted, privacy-friendly analytics tool we run on
+                our own infrastructure — to understand how the website is used and to improve it. It records
+                aggregate metrics only: <strong>page views</strong>, referrer domain, country, coarse device
+                info (device type, screen-size bucket), and anonymous performance metrics (Core Web Vitals).
             </p>
             <p>
-                We <strong>do not</strong> use cross-site tracking, advertising IDs, fingerprinting, or third-party analytics scripts.
-                We do not build user profiles.
+                Pagetally <strong>does not use cookies</strong>, does not collect personal data, and does not
+                track visitors across sites. No advertising IDs, no fingerprinting, no cross-site tracking, no
+                user profiles. We honour the <strong>Do Not Track</strong> and <strong>Global Privacy Control</strong> signals.
             </p>
             <p>
-                <strong>Identifiers:</strong> we do not store persistent identifiers such as a long-lived visitor ID.
-                Event IDs are generated per request for de-duplication/debugging and are not used to track you across visits.
+                <strong>Identifiers:</strong> we do not store persistent visitor IDs. IP addresses are not
+                retained — they are used only in transit to derive country and are then discarded.
+            </p>
+            <p>
+                Pagetally is open source.{" "}
+                <a class="legal__link" href="https://github.com/anfocic/pagetally" target="_blank" rel="noopener noreferrer">
+                    Source code
+                </a>.
             </p>
         </section>
 
@@ -96,8 +104,15 @@ const lastUpdated = "13 Feb 2026";
         <section class="legal__section">
             <h2>Sharing and processors</h2>
             <p>
-                We use service providers to run the site (for example, Cloudflare for CDN and security). They process
-                data on our behalf under appropriate safeguards.
+                We use a small number of service providers to run the site. They process data on our behalf
+                under appropriate safeguards:
+            </p>
+            <ul>
+                <li><strong>Cloudflare</strong> — CDN, hosting, and security/abuse protection.</li>
+                <li><strong>pagetally</strong> — self-hosted analytics running on our own infrastructure (no third-party processor).</li>
+            </ul>
+            <p>
+                We do not sell or share personal data with advertisers.
             </p>
         </section>
 
@@ -121,7 +136,7 @@ const lastUpdated = "13 Feb 2026";
                 <li>We keep contact messages only as long as needed to respond and for a short period afterward for follow-up.</li>
             </ul>
             <p>
-                <a class="legal__link" href="mailto:hello@intrebit.com">hello@intrebit.com</a>
+                <a class="legal__link" href="/contact" data-email-user="hello" data-email-host="intrebit.com">Email us</a>
             </p>
         </section>
     </div>

@@ -1,38 +1,111 @@
 ---
 import {navLinks} from "../../config/site.ts";
-import MobileMenu from "./MobileMenu.astro";
+import {header} from "../../config/copy.ts";
 ---
 
 <header class="nav" aria-label="Primary navigation">
     <div class="nav__inner">
-        <a href="/" class="nav__brand" aria-label="intrebit home">
-            <span class="nav__brand-mark" aria-hidden="true"></span>
-            <span class="nav__brand-text">intrebit</span>
+        <a href="/" class="nav__brand" aria-label={`${header.brand} home`}>
+            <span class="nav__brand-text">{header.brand}</span>
         </a>
 
         <nav class="nav__links" aria-label="Primary">
             {navLinks.map(({href, label}) => (
-                <a href={href} class="nav__link">{label}</a>
+                <a href={href} class="nav__link" data-nav-link={href}>{label}</a>
             ))}
         </nav>
 
-        <a href="/contact" class="nav__cta">
-            <span>Start a project</span><span class="nav__cta-arrow">→</span>
+        <a href={header.cta.href} class="nav__cta">
+            <span>{header.cta.label}</span><span class="nav__cta-arrow">→</span>
         </a>
-
-        <button
-            class="nav__hamburger"
-            data-mobile-open
-            aria-label="Open menu"
-            aria-expanded="false"
-        >
-            <span aria-hidden="true">≡</span>
-        </button>
     </div>
     <span class="nav__progress" data-scroll-progress aria-hidden="true"></span>
 </header>
 
-<MobileMenu/>
+<script>
+    const SCROLL_THRESHOLD = 8;
+
+    function setupHeader() {
+        const nav = document.querySelector<HTMLElement>(".nav");
+        if (!nav) return () => {};
+
+        const links = Array.from(
+            document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]")
+        );
+
+        const updateScrolled = () => {
+            nav.classList.toggle("is-scrolled", window.scrollY > SCROLL_THRESHOLD);
+        };
+        updateScrolled();
+        window.addEventListener("scroll", updateScrolled, {passive: true});
+
+        const path = window.location.pathname.replace(/\/$/, "") || "/";
+        const sectionLinks = new Map<string, HTMLAnchorElement>();
+        const routeLinks: HTMLAnchorElement[] = [];
+
+        links.forEach((link) => {
+            const href = link.getAttribute("data-nav-link") || "";
+            link.classList.remove("is-active");
+            const hashMatch = href.match(/^\/?#(.+)$/) || href.match(/^\/#(.+)$/);
+            if (hashMatch && (path === "/" || path === "")) {
+                sectionLinks.set(hashMatch[1], link);
+            } else {
+                const linkPath = href.split("#")[0].replace(/\/$/, "") || "/";
+                if (linkPath === path) link.classList.add("is-active");
+                routeLinks.push(link);
+            }
+        });
+
+        let observer: IntersectionObserver | null = null;
+        if (sectionLinks.size) {
+            const sections = Array.from(sectionLinks.keys())
+                .map((id) => document.getElementById(id))
+                .filter((el): el is HTMLElement => el !== null);
+
+            const visible = new Map<string, number>();
+            const setActive = (id: string | null) => {
+                sectionLinks.forEach((link, key) => {
+                    link.classList.toggle("is-active", key === id);
+                });
+            };
+
+            observer = new IntersectionObserver(
+                (entries) => {
+                    entries.forEach((e) => {
+                        if (e.isIntersecting) visible.set(e.target.id, e.intersectionRatio);
+                        else visible.delete(e.target.id);
+                    });
+                    if (visible.size === 0) {
+                        setActive(null);
+                        return;
+                    }
+                    let topId: string | null = null;
+                    let topY = Infinity;
+                    visible.forEach((_, id) => {
+                        const el = document.getElementById(id);
+                        if (!el) return;
+                        const y = el.getBoundingClientRect().top;
+                        if (y < topY) {
+                            topY = y;
+                            topId = id;
+                        }
+                    });
+                    setActive(topId);
+                },
+                {rootMargin: "-40% 0px -55% 0px", threshold: [0, 0.1, 0.5, 1]}
+            );
+
+            sections.forEach((s) => observer!.observe(s));
+        }
+
+        return () => {
+            window.removeEventListener("scroll", updateScrolled);
+            observer?.disconnect();
+        };
+    }
+
+    setupHeader();
+</script>
 
 <style>
     .nav {
@@ -40,13 +113,27 @@ import MobileMenu from "./MobileMenu.astro";
         top: 0;
         z-index: 50;
         background: var(--bg);
-        border-bottom: 1px solid var(--rule);
+        border-bottom: 1px solid transparent;
+        transition: background 0.25s var(--ease), border-color 0.25s var(--ease), backdrop-filter 0.25s var(--ease);
+    }
+
+    .nav.is-scrolled {
+        background: color-mix(in srgb, var(--bg) 72%, transparent);
+        border-bottom-color: var(--rule);
+        backdrop-filter: saturate(140%) blur(10px);
+        -webkit-backdrop-filter: saturate(140%) blur(10px);
+    }
+
+    @supports not (backdrop-filter: blur(1px)) {
+        .nav.is-scrolled {
+            background: var(--bg);
+        }
     }
 
     .nav__inner {
-        max-width: var(--container-width);
-        margin: 0 auto;
-        padding: 20px var(--section-pad-x);
+        width: min(100% - 2 * var(--section-pad-x), var(--container-width));
+        margin-inline: auto;
+        padding-block: 20px;
         display: flex;
         align-items: center;
         gap: 28px;
@@ -60,19 +147,11 @@ import MobileMenu from "./MobileMenu.astro";
         color: var(--ink);
     }
 
-    .nav__brand-mark {
-        width: 8px;
-        height: 8px;
-        background: var(--accent);
-        border-radius: 2px;
-        display: inline-block;
-    }
-
     .nav__brand-text {
         font-family: var(--font-mono);
-        font-size: 13px;
-        letter-spacing: 0.02em;
-        font-weight: 500;
+        font-size: 16px;
+        letter-spacing: 0.01em;
+        font-weight: 600;
     }
 
     .nav__links {
@@ -82,6 +161,7 @@ import MobileMenu from "./MobileMenu.astro";
     }
 
     .nav__link {
+        position: relative;
         font-family: var(--font-mono);
         font-size: 12px;
         color: var(--ink-2);
@@ -89,8 +169,29 @@ import MobileMenu from "./MobileMenu.astro";
         transition: color 0.2s var(--ease);
     }
 
+    .nav__link::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -6px;
+        height: 2px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left center;
+        transition: transform 0.25s var(--ease);
+    }
+
     .nav__link:hover {
         color: var(--ink);
+    }
+
+    .nav__link.is-active {
+        color: var(--ink);
+    }
+
+    .nav__link.is-active::after {
+        transform: scaleX(1);
     }
 
     .nav__cta {
@@ -120,22 +221,6 @@ import MobileMenu from "./MobileMenu.astro";
         transform: translateX(4px);
     }
 
-    .nav__hamburger {
-        display: none;
-        width: 36px;
-        height: 36px;
-        border: 1px solid var(--rule-2);
-        background: transparent;
-        color: var(--ink);
-        cursor: pointer;
-        align-items: center;
-        justify-content: center;
-        font-family: var(--font-mono);
-        font-size: 18px;
-        line-height: 1;
-        -webkit-tap-highlight-color: transparent;
-    }
-
     .nav__progress {
         position: absolute;
         left: 0;
@@ -148,17 +233,15 @@ import MobileMenu from "./MobileMenu.astro";
 
     @media (max-width: 768px) {
         .nav__inner {
-            padding: 14px var(--section-pad-x-mobile);
+            padding-block: 14px;
             gap: 16px;
         }
 
-        .nav__links,
-        .nav__cta {
+        .nav__links {
             display: none;
         }
 
-        .nav__hamburger {
-            display: inline-flex;
+        .nav__cta {
             margin-left: auto;
         }
     }

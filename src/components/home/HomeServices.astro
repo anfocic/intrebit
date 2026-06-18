@@ -1,93 +1,68 @@
 ---
 import {services} from "../../config/site.ts";
+import {home} from "../../config/copy.ts";
+
+const c = home.services;
 ---
 
 <section id="services" class="services" aria-label="Services" data-reveal>
     <div class="services__inner">
         <header class="services__header">
             <div>
-                <p class="label">— Services</p>
-                <h2 class="services__heading">Three jobs.<br/>Done properly.</h2>
+                <h2 class="services__heading" set:html={c.heading}/>
             </div>
             <div class="services__intro">
-                <p class="services__intro-body">
-                    We don't do everything. We do these three, and we do them
-                    for teams who'd rather hire a small studio that ships than
-                    a big one that PowerPoints.
-                </p>
-
+                <p class="services__intro-body" set:html={c.intro}/>
             </div>
         </header>
 
-        <div class="services__grid">
-            {services.map((s) => (
-                <article class="service-card" data-service={s.id}>
+        <div class="services__grid" data-reveal-stagger>
+            {services.map((s, i) => (
+                <a href={s.href} class="service-card" data-service={s.id}>
                     <h3 class="service-card__title">{s.title}.</h3>
-
                     <p class="service-card__outcome">{s.outcome}</p>
-
-                    <div class="service-card__block">
-                        <p class="mono service-card__block-label">Right fit if you're</p>
-                        <p class="service-card__block-body">{s.forWho}</p>
-                    </div>
-
-                    <div class="service-card__block">
-                        <p class="mono service-card__block-label">What that looks like</p>
-                        <ul class="service-card__list">
-                            {s.examples.map((b) => (
-                                <li>
-                                    <span class="mono service-card__arrow" aria-hidden="true">→</span>
-                                    <span>{b}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                </article>
+                    <p class="service-card__more">Find out more <span class="service-card__more-arrow">→</span></p>
+                </a>
             ))}
-        </div>
-
-        <div class="services__under">
-            <div class="services__notfit">
-                <p class="mono services__notfit-label">Probably not us</p>
-                <p class="services__notfit-body">
-                    Pure design without build. Mobile-only native apps. Anything we'd
-                    need to fake expertise in. We'll tell you straight and point you somewhere better.
-                </p>
-            </div>
-            <a class="services__bar" href="/contact">
-                <span class="services__bar-text">Not sure which one fits?</span>
-                <span class="mono services__bar-cta">Tell us &rarr;</span>
-            </a>
         </div>
     </div>
 </section>
 
+<script>
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const service = card.getAttribute('data-service');
+            if (service) localStorage.setItem('contact-service', service);
+        });
+    });
+</script>
+
 <style>
     .services {
-        padding: 100px var(--section-pad-x) 80px;
+        padding: 100px var(--section-pad-x);
     }
 
     .services__inner {
         max-width: var(--container-width);
         margin: 0 auto;
+        width: 100%;
     }
 
     .services__header {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 64px;
-        margin-bottom: 56px;
+        margin-bottom: 48px;
         align-items: end;
     }
 
     .services__heading {
         font-family: var(--font-display);
         font-weight: 400;
-        font-size: clamp(44px, 6vw, 72px);
-        line-height: 0.95;
+        font-size: clamp(36px, 4.6vw, 56px);
+        line-height: 0.98;
         margin: 12px 0 0;
-        letter-spacing: -0.035em;
+        letter-spacing: -0.03em;
     }
 
     .services__intro {
@@ -105,31 +80,48 @@ import {services} from "../../config/site.ts";
     .services__grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        border-top: 1px solid var(--ink);
-        border-bottom: 1px solid var(--rule);
+        gap: 64px;
     }
 
     .service-card {
-        padding: 32px 32px 28px;
-        border-right: 1px solid var(--rule);
         display: flex;
         flex-direction: column;
-        gap: 22px;
+        gap: 14px;
         position: relative;
+        padding: 24px 24px 24px 0;
+        border-radius: 16px;
+        transition: transform 0.3s var(--ease), background 0.3s var(--ease);
+        cursor: pointer;
+        text-decoration: none;
+        color: inherit;
     }
 
-    .service-card:last-child {
-        border-right: none;
+    .service-card:hover {
+        background: var(--surface);
+    }
+
+    .service-card:hover .service-card__title {
+        color: var(--accent);
+    }
+
+    .service-card:hover .service-card__more {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .service-card:hover .service-card__more-arrow {
+        transform: translateX(4px);
     }
 
     .service-card__title {
         font-family: var(--font-display);
         font-weight: 400;
-        font-size: clamp(40px, 4.5vw, 56px);
+        font-size: clamp(32px, 3.6vw, 44px);
         margin: 0;
         letter-spacing: -0.025em;
         line-height: 1;
         color: var(--ink);
+        transition: color 0.25s var(--ease);
     }
 
     .service-card__outcome {
@@ -140,111 +132,35 @@ import {services} from "../../config/site.ts";
         font-weight: 500;
         letter-spacing: -0.005em;
         max-width: 320px;
-        min-height: 2.8em;
     }
 
-    .service-card__block {
-        border-top: 1px solid var(--rule);
-        padding-top: 16px;
-        min-height: 120px;
-    }
-
-    .service-card__block-label {
-        font-size: 10px;
+    .service-card__more {
+        font-family: var(--font-mono);
+        font-size: var(--text-sm);
         color: var(--ink-3);
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        margin: 0 0 8px;
-    }
-
-    .service-card__block-body {
-        font-size: 13px;
-        line-height: 1.55;
-        color: var(--ink-2);
-        margin: 0;
-    }
-
-    .service-card__list {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-        font-size: 13px;
-        color: var(--ink);
-        line-height: 1.7;
-    }
-
-    .service-card__list li {
+        margin: 8px 0 0;
+        opacity: 0;
+        transform: translateY(4px);
+        transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
         display: flex;
-        gap: 10px;
-    }
-
-    .service-card__arrow {
-        color: var(--accent);
-        font-size: 11px;
-        margin-top: 2px;
-    }
-
-    .services__under {
-        display: grid;
-        grid-template-columns: 1.4fr 1fr;
-        border-bottom: 1px solid var(--rule);
-    }
-
-    .services__notfit {
-        padding: 24px 32px;
-        border-right: 1px solid var(--rule);
-    }
-
-    .services__notfit-label {
-        font-size: 10px;
-        color: var(--ink-3);
-        text-transform: uppercase;
-        letter-spacing: 0.12em;
-        margin: 0 0 8px;
-    }
-
-    .services__notfit-body {
-        font-size: 14px;
-        color: var(--ink-2);
-        margin: 0;
-        line-height: 1.55;
-    }
-
-    .services__bar {
-        padding: 24px 32px;
-        display: flex;
-        justify-content: space-between;
         align-items: center;
-        text-decoration: none;
-        background: var(--ink);
-        color: var(--bg);
-        gap: 24px;
-        transition: background 0.25s var(--ease);
+        gap: 6px;
     }
 
-    .services__bar:hover {
-        background: color-mix(in srgb, var(--ink) 85%, var(--accent) 15%);
-    }
-
-    .services__bar-text {
-        font-family: var(--font-display);
-        font-size: 22px;
-        letter-spacing: -0.01em;
-    }
-
-    .services__bar-cta {
-        font-size: 12px;
+    .service-card__more-arrow {
+        transition: transform 0.3s var(--ease);
     }
 
     @media (max-width: 900px) {
         .services {
+            min-height: auto;
             padding: 56px var(--section-pad-x-mobile) 40px;
         }
 
         .services__header {
             grid-template-columns: 1fr;
             gap: 24px;
-            margin-bottom: 32px;
+            margin-bottom: 48px;
         }
 
         .services__intro {
@@ -253,30 +169,15 @@ import {services} from "../../config/site.ts";
 
         .services__grid {
             grid-template-columns: 1fr;
+            gap: 32px;
         }
 
         .service-card {
-            border-right: none;
-            border-bottom: 1px solid var(--rule);
-            padding: 28px 22px;
+            padding: 0;
         }
 
-        .service-card:last-child {
-            border-bottom: none;
-        }
-
-        .services__under {
-            grid-template-columns: 1fr;
-        }
-
-        .services__notfit {
-            padding: 20px 22px;
-            border-right: none;
-            border-bottom: 1px solid var(--rule);
-        }
-
-        .services__bar {
-            padding: 20px 22px;
+        .service-card__more {
+            display: none;
         }
     }
 </style>

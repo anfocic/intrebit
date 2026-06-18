@@ -30,7 +30,7 @@ const seo = buildSEO(Astro.url, {
 <!doctype html>
 <html lang="en">
 <head>
-    <script is:inline src="/scripts/theme.js"></script>
+    <script is:inline src="/scripts/theme.js?v=2"></script>
     <!-- Favicons -->
     <link rel="icon" href="/favicons/favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png">
@@ -67,6 +67,13 @@ const seo = buildSEO(Astro.url, {
     {seo.image.height && <meta property="og:image:height" content={seo.image.height.toString()}/>}
     {seo.image.alt && <meta property="og:image:alt" content={seo.image.alt}/>}
 
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:title" content={seo.title}/>
+    <meta name="twitter:description" content={seo.description}/>
+    <meta name="twitter:image" content={seo.image.url}/>
+    {seo.image.alt && <meta name="twitter:image:alt" content={seo.image.alt}/>}
+
     <!-- Structured Data -->
     {schemas.map((schema) => (
         <script type="application/ld+json" set:html={JSON.stringify(schema)}/>
@@ -85,7 +92,7 @@ const seo = buildSEO(Astro.url, {
 
 <Footer/>
 
-<script src="/scripts/mobile-nav.js" defer></script>
 <script src="/scripts/reveal.js" defer></script>
+<script src="/scripts/email.js?v=1" defer></script>
 </body>
 </html>

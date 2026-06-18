@@ -11,9 +11,7 @@ export const organizationSchema = {
     "logo": `${SITE_URL}/favicons/apple-touch-icon.png`,
     "email": SITE_EMAIL,
     "sameAs": [
-        "https://www.linkedin.com/company/intrebit",
-        "https://mastodon.social/@intrebit",
-        "https://codeberg.org/intrebit"
+        "https://www.linkedin.com/company/intrebit"
     ]
 };
 
@@ -85,17 +83,5 @@ export const contactSchemas = [
             "email": SITE_EMAIL,
             "url": SITE_URL
         }
-    }
-];
-
-// Services page schema (if you have a dedicated services page)
-export const servicesSchemas = [
-    organizationSchema,
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "Services - intrebit",
-        "description": "Development, consulting, and automation services",
-        "url": `${SITE_URL}/services`
     }
 ];

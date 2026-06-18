@@ -1,73 +1,67 @@
 ---
-import OrbGlyph from "../shared/glyphs/OrbGlyph.astro";
-import GridGlyph from "../shared/glyphs/GridGlyph.astro";
+import {home} from "../../config/copy.ts";
 
-const steps = [
-    {step: "01", title: "Talk", time: "30 min", body: "You explain the problem. We ask questions until we actually get it. No NDAs, no slide decks."},
-    {step: "02", title: "Scope", time: "1–3 days", body: "A clear scope, fixed price, fixed date. You see it before you sign anything."},
-    {step: "03", title: "Ship", time: "2–10 weeks", body: "We build, deploy, and stay around to fix anything that breaks. Weekly updates, no surprises."},
-];
+const {studio} = home;
 
-
+const ledeText = studio.article.lede;
+const ledeDropcap = studio.article.ledeDropcap;
+const words = ledeText.split(/(\s+)/);
 ---
 
 <section id="studio" class="studio" aria-label="The studio" data-reveal>
-    <div class="studio__glyph studio__glyph--orb" aria-hidden="true">
-        <OrbGlyph size={280}/>
-    </div>
-    <div class="studio__glyph studio__glyph--grid" aria-hidden="true">
-        <GridGlyph size={80}/>
-    </div>
-
     <div class="studio__inner">
-        <!-- 1. who we are -->
-        <header class="studio__header">
-            <div>
-                <p class="label">— The studio</p>
-                <h2 class="studio__heading">
-                    Small team.<br/>
-                    <em>Few clients.</em><br/>
-                    Direct work.
-                </h2>
-            </div>
-            <div class="studio__intro">
-                <p class="studio__intro-body">
-                    intrebit is a small studio. No project managers, no account execs,
-                    no &ldquo;we'll get back to you.&rdquo; You talk to the people writing the
-                    code &mdash; from the first call through to the thing going live.
-                </p>
-                <p class="mono studio__intro-meta">
-                    <span>Europe-based</span>
-                    <span aria-hidden="true">·</span>
-                    <span>2&ndash;4 active clients at a time</span>
-                    <span aria-hidden="true">·</span>
-                    <span>Founded 2021</span>
-                </p>
-            </div>
+        <header class="studio__opener">
+            <h2 class="studio__heading" set:html={studio.heading}/>
         </header>
 
-        <!-- 2. how we work -->
-        <div class="studio__steps">
-            <div class="studio__steps-head">
-                <span class="mono studio__steps-label">— How we work</span>
-                <span class="mono studio__steps-meta">3 steps · ~4 weeks typical</span>
-            </div>
-            <div class="studio__steps-grid">
-                {steps.map((s, i, arr) => (
-                    <div class="studio__step">
-                        <div class="studio__step-head">
-                            <span class="mono studio__step-n">{s.step}</span>
-                            <span class="mono studio__step-time">{s.time}</span>
-                        </div>
-                        <h3 class="studio__step-title">{s.title}.</h3>
-                        <p class="studio__step-body">{s.body}</p>
-                        {i < arr.length - 1 && (
-                            <span class="mono studio__step-arrow" aria-hidden="true">→</span>
-                        )}
-                    </div>
-                ))}
-            </div>
-        </div>
+        <article class="studio__article">
+            <p class="studio__lede">
+                <span class="studio__dropcap">{ledeDropcap}</span><span class="studio__words" data-word-reveal>{words.map((w, i) => i % 2 === 0 ? <span class="studio__word" style={`--i:${i / 2}`}>{w}</span> : w)}</span>
+            </p>
+
+            <p class="studio__body studio__body--last">{studio.article.closing}</p>
+        </article>
+
+        <script>
+            function setupWordReveal() {
+                const el = document.querySelector<HTMLElement>("[data-word-reveal]");
+                if (!el) return () => {};
+
+                const article = el.closest<HTMLElement>(".studio__article");
+                const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+                if (prefersReduced) {
+                    el.classList.add("is-visible");
+                    article?.setAttribute("data-typewriter-done", "");
+                    return () => {};
+                }
+
+                let triggered = false;
+                const observer = new IntersectionObserver(
+                    (entries) => {
+                        entries.forEach((e) => {
+                            if (e.isIntersecting && !triggered) {
+                                triggered = true;
+                                el.classList.add("is-visible");
+                                const wordCount = el.querySelectorAll(".studio__word").length;
+                                setTimeout(() => {
+                                    article?.setAttribute("data-typewriter-done", "");
+                                }, wordCount * 60 + 400);
+                            }
+                        });
+                    },
+                    { threshold: 0.2 }
+                );
+
+                observer.observe(el);
+
+                return () => {
+                    observer?.disconnect();
+                };
+            }
+
+            setupWordReveal();
+        </script>
 
     </div>
 </section>
@@ -77,8 +71,7 @@ const steps = [
         position: relative;
         overflow: hidden;
         padding: 120px var(--section-pad-x) 100px;
-        background: var(--bg-2);
-        border-top: 1px solid var(--rule);
+        background: var(--bg);
     }
 
     .studio__glyph {
@@ -105,22 +98,18 @@ const steps = [
         position: relative;
     }
 
-    /* ---- 1. header ---- */
-    .studio__header {
-        display: grid;
-        grid-template-columns: 1.1fr 1fr;
-        gap: 80px;
-        align-items: end;
-        margin-bottom: 72px;
+    .studio__opener {
+        max-width: 660px;
+        margin: 0 auto 56px;
     }
 
     .studio__heading {
         font-family: var(--font-display);
         font-weight: 400;
-        font-size: clamp(48px, 7vw, 88px);
-        line-height: 0.92;
+        font-size: clamp(40px, 5vw, 64px);
+        line-height: 0.95;
         margin: 12px 0 0;
-        letter-spacing: -0.04em;
+        letter-spacing: -0.035em;
         color: var(--ink);
     }
 
@@ -129,115 +118,200 @@ const steps = [
         color: var(--accent);
     }
 
-    .studio__intro {
-        padding-bottom: 12px;
-    }
-
-    .studio__intro-body {
-        font-size: 18px;
-        line-height: 1.5;
-        color: var(--ink-2);
-        margin: 0;
-        max-width: 460px;
-        text-wrap: pretty;
-    }
-
     .studio__intro-meta {
         font-size: 11px;
         color: var(--ink-3);
-        margin: 24px 0 0;
+        margin: 0;
         display: flex;
         gap: 20px;
         flex-wrap: wrap;
-        padding-top: 16px;
-        border-top: 1px dashed var(--rule-2);
     }
 
-    /* ---- 2. steps ---- */
-    .studio__steps {
-        border: 1px solid var(--ink);
-        background: var(--bg);
+    .studio__article {
+        max-width: 660px;
+        margin: 0 auto;
         position: relative;
     }
 
-    .studio__steps-head {
-        padding: 16px 24px;
-        border-bottom: 1px solid var(--rule);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .studio__lede {
+        font-family: var(--font-display);
+        font-size: clamp(22px, 2.4vw, 28px);
+        line-height: 1.35;
+        letter-spacing: -0.012em;
+        color: var(--ink);
+        margin: 0 0 32px;
+        text-align: justify;
+        text-align-last: left;
     }
 
-    .studio__steps-label {
-        font-size: 10px;
-        color: var(--ink-3);
-        text-transform: uppercase;
-        letter-spacing: 0.14em;
+    .studio__words {
+        display: inline;
     }
 
-    .studio__steps-meta {
-        font-size: 10px;
-        color: var(--ink-3);
+    .studio__word {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(8px);
+        transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+        transition-delay: calc(var(--i) * 60ms);
     }
 
-    .studio__steps-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+    .studio__words.is-visible .studio__word {
+        opacity: 1;
+        transform: translateY(0);
     }
 
-    .studio__step {
-        padding: 36px 32px;
-        border-right: 1px solid var(--rule);
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-        min-height: 220px;
+    .studio__body--last {
+        opacity: 0;
+        transition: opacity 0.6s var(--ease);
+    }
+
+    .studio__article[data-typewriter-done] .studio__body--last {
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .studio__word {
+            opacity: 1;
+            transform: none;
+            transition: none;
+        }
+        .studio__body--last {
+            opacity: 1;
+            transition: none;
+        }
+    }
+
+    .studio__dropcap {
+        float: left;
+        font-family: var(--font-display);
+        font-size: 96px;
+        line-height: 0.85;
+        letter-spacing: -0.04em;
+        color: var(--accent);
+        padding: 6px 14px 0 0;
+        margin: 0;
+        font-weight: 400;
+    }
+
+    .studio__pullquote {
         position: relative;
+        margin: 56px 0 56px -120px;
+        padding: 8px 0 8px 32px;
+        max-width: 460px;
+        border-left: 2px solid var(--accent);
     }
 
-    .studio__step:last-child {
-        border-right: none;
+    .studio__pullquote-mark {
+        position: absolute;
+        left: 0;
+        top: -20px;
+        font-family: var(--font-display);
+        font-size: 80px;
+        line-height: 1;
+        color: var(--accent);
+        letter-spacing: -0.04em;
     }
 
-    .studio__step-head {
+    .studio__pullquote-body {
+        font-family: var(--font-display);
+        font-style: italic;
+        font-size: clamp(26px, 3vw, 36px);
+        line-height: 1.2;
+        letter-spacing: -0.02em;
+        color: var(--ink);
+        margin: 0;
+        text-wrap: balance;
+    }
+
+    .studio__pullquote-body em {
+        color: var(--accent);
+    }
+
+    .studio__body {
+        font-size: 17px;
+        line-height: 1.6;
+        color: var(--ink-2);
+        margin: 0 0 24px;
+        text-wrap: pretty;
+        max-width: 580px;
+    }
+
+    .studio__body--last {
+        font-family: var(--font-display);
+        font-size: 22px;
+        line-height: 1.4;
+        letter-spacing: -0.012em;
+        color: var(--ink);
+        margin-top: 32px;
+        padding-top: 32px;
+        border-top: 1px solid var(--rule);
+    }
+
+    .studio__ledger {
+        margin-top: 80px;
+        padding-top: 24px;
+        border-top: 1px solid var(--rule);
+    }
+
+    .studio__ledger-meta {
         display: flex;
         justify-content: space-between;
         align-items: baseline;
+        gap: 24px;
+        flex-wrap: wrap;
+        margin: 0 0 32px;
     }
 
-    .studio__step-n,
-    .studio__step-time {
-        font-size: 11px;
+    .studio__ledger-label {
         color: var(--ink-3);
+        margin: 0;
     }
 
-    .studio__step-title {
+    .studio__ledger-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 32px;
+    }
+
+    .studio__ledger-item {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-right: 20px;
+        border-right: 1px solid var(--rule);
+    }
+
+    .studio__ledger-item:last-child {
+        border-right: none;
+    }
+
+    .studio__ledger-n {
         font-family: var(--font-display);
         font-weight: 400;
-        font-size: clamp(36px, 4vw, 48px);
-        margin: 0;
-        letter-spacing: -0.025em;
-        line-height: 1;
+        font-size: clamp(48px, 5vw, 72px);
+        line-height: 0.85;
+        letter-spacing: -0.04em;
         color: var(--ink);
+        display: inline-flex;
+        align-items: baseline;
     }
 
-    .studio__step-body {
-        font-size: 14px;
-        line-height: 1.55;
+    .studio__ledger-unit {
+        font-size: 0.4em;
+        color: var(--ink-3);
+        letter-spacing: 0;
+        margin-left: 2px;
+    }
+
+    .studio__ledger-body {
+        font-size: 13px;
+        line-height: 1.5;
         color: var(--ink-2);
-        margin: auto 0 0;
-        padding-top: 10px;
-    }
-
-    .studio__step-arrow {
-        position: absolute;
-        right: -7px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: var(--bg);
-        padding: 2px 0;
-        font-size: 14px;
-        color: var(--accent);
+        font-family: var(--font-mono);
     }
 
     @media (max-width: 900px) {
@@ -254,37 +328,70 @@ const steps = [
             display: none;
         }
 
-        .studio__header {
-            grid-template-columns: 1fr;
-            gap: 24px;
-            margin-bottom: 40px;
-        }
-
-        .studio__intro {
-            padding-bottom: 0;
+        .studio__opener {
+            margin-bottom: 32px;
         }
 
         .studio__intro-meta {
             gap: 12px;
         }
 
-        .studio__steps-grid {
-            grid-template-columns: 1fr;
+        .studio__article {
+            margin-left: 0;
+            max-width: 100%;
         }
 
-        .studio__step {
+        .studio__lede {
+            font-size: 20px;
+        }
+
+        .studio__dropcap {
+            font-size: 72px;
+            padding: 4px 10px 0 0;
+        }
+
+        .studio__pullquote {
+            margin: 32px 0;
+            padding-left: 20px;
+            max-width: 100%;
+        }
+
+        .studio__pullquote-mark {
+            font-size: 56px;
+            top: -12px;
+        }
+
+        .studio__pullquote-body {
+            font-size: 22px;
+        }
+
+        .studio__body {
+            font-size: 16px;
+        }
+
+        .studio__body--last {
+            font-size: 18px;
+        }
+
+        .studio__ledger {
+            margin-top: 48px;
+        }
+
+        .studio__ledger-list {
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .studio__ledger-item {
+            padding-right: 0;
+            padding-bottom: 16px;
             border-right: none;
             border-bottom: 1px solid var(--rule);
-            padding: 24px 22px;
-            min-height: 0;
         }
 
-        .studio__step:last-child {
+        .studio__ledger-item:nth-last-child(-n+2) {
             border-bottom: none;
-        }
-
-        .studio__step-arrow {
-            display: none;
+            padding-bottom: 0;
         }
     }
 </style>
