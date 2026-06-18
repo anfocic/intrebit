@@ -58,11 +58,14 @@ const items = c.items;
                             {it.metric && <span class="panel__n">{it.metric}<span class="panel__unit">{it.metricUnit}</span></span>}
                             {it.outcome && <p class="panel__outcome">{it.outcome}</p>}
                             {it.features && (
-                                <ul class="feats">
-                                    {it.features.map((f) => (
-                                        <li class="feat" data-desc={f.desc} tabindex="0">{f.label}</li>
-                                    ))}
-                                </ul>
+                                <Fragment>
+                                    <ul class="feats">
+                                        {it.features.map((f) => (
+                                            <li class="feat" data-desc={f.desc} tabindex="0">{f.label}</li>
+                                        ))}
+                                    </ul>
+                                    <p class="feats__desc" data-feat-desc aria-live="polite"></p>
+                                </Fragment>
                             )}
                             {live && (
                                 <a class="panel__cta mono" href={it.card.href} target="_blank" rel="noopener">
@@ -128,10 +131,48 @@ const items = c.items;
         });
     }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initSliders);
-    } else {
+    // Feature chips: on tap, reveal the description below the chips
+    // (used on mobile instead of the hover tooltip; harmless on desktop).
+    function initFeatureChips() {
+        document.querySelectorAll(".panel").forEach((panel) => {
+            const feats = Array.from(panel.querySelectorAll(".feat"));
+            const out = panel.querySelector("[data-feat-desc]");
+            if (!feats.length || !out) return;
+
+            const select = (feat) => {
+                const wasOn = feat.classList.contains("is-selected");
+                feats.forEach((f) => f.classList.remove("is-selected"));
+                if (wasOn) {
+                    out.textContent = "";
+                    out.classList.remove("is-shown");
+                    return;
+                }
+                feat.classList.add("is-selected");
+                out.textContent = feat.getAttribute("data-desc") || "";
+                out.classList.add("is-shown");
+            };
+
+            feats.forEach((feat) => {
+                feat.addEventListener("click", () => select(feat));
+                feat.addEventListener("keydown", (e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        select(feat);
+                    }
+                });
+            });
+        });
+    }
+
+    function init() {
         initSliders();
+        initFeatureChips();
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", init);
+    } else {
+        init();
     }
 </script>
 
@@ -437,6 +478,22 @@ const items = c.items;
         border-color: var(--ink);
     }
 
+    .feat.is-selected {
+        color: var(--ink);
+        border-color: var(--accent);
+    }
+
+    /* description shown below the chips when one is tapped (mobile only) */
+    .feats__desc {
+        display: none;
+        font-size: 13px;
+        line-height: 1.5;
+        color: var(--ink-2);
+        margin: 4px 0 0;
+        max-width: 380px;
+        text-wrap: pretty;
+    }
+
     /* hover/focus tooltip with the feature description */
     .feat[data-desc]::after {
         content: attr(data-desc);
@@ -515,10 +572,25 @@ const items = c.items;
             margin-top: 8px;
         }
 
-        .work__heading { margin-bottom: 18px; }
+        .work__heading {
+            margin-bottom: 18px;
+            font-size: clamp(20px, 6.4vw, 34px);
+            white-space: nowrap;
+        }
 
         .slider__panels { align-self: start; margin-top: 8px; }
 
         .panel { gap: 12px; }
+
+        /* drop the overlay tooltip; show the description below the chips */
+        .feat[data-desc]::after,
+        .feat[data-desc]::before {
+            content: none;
+            display: none;
+        }
+
+        .feats__desc.is-shown {
+            display: block;
+        }
     }
 </style>
