@@ -53,6 +53,7 @@
     };
 
     const cform = form.closest(".cform");
+    let successTimer;
 
     const showSuccess = (data) => {
         if (!success) return;
@@ -76,10 +77,12 @@
             form.classList.add("is-hidden");
             success.classList.remove("is-hidden");
             success.scrollIntoView({behavior: "smooth", block: "start"});
+            successTimer = setTimeout(reset, 2000);
         }
     };
 
     const reset = () => {
+        clearTimeout(successTimer);
         form.reset();
         Object.keys(errs).forEach((k) => setErr(k, ""));
         updateCount();
