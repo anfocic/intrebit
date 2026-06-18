@@ -17,5 +17,4 @@
     } else {
         decode();
     }
-    document.addEventListener("astro:page-load", decode);
 })();

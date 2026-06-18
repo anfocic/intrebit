@@ -60,11 +60,7 @@ const words = ledeText.split(/(\s+)/);
                 };
             }
 
-            let teardown = setupWordReveal();
-            document.addEventListener("astro:before-swap", () => teardown?.());
-            document.addEventListener("astro:page-load", () => {
-                teardown = setupWordReveal();
-            });
+            setupWordReveal();
         </script>
 
     </div>

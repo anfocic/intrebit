@@ -4,7 +4,6 @@ import "../styles/tokens.css";
 import "../styles/theme.css";
 import "../styles/base.css";
 
-import {ClientRouter} from "astro:transitions";
 import Analytics from "../components/shared/Analytics.astro";
 import Footer from "../components/footer/Footer.astro";
 import Header from "../components/header/Header.astro";
@@ -81,7 +80,6 @@ const seo = buildSEO(Astro.url, {
     ))}
 
     <Analytics/>
-    <ClientRouter/>
 </head>
 
 <body>
