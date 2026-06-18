@@ -104,11 +104,7 @@ import {header} from "../../config/copy.ts";
         };
     }
 
-    let teardown = setupHeader();
-    document.addEventListener("astro:before-swap", () => teardown?.());
-    document.addEventListener("astro:page-load", () => {
-        teardown = setupHeader();
-    });
+    setupHeader();
 </script>
 
 <style>
@@ -135,9 +131,9 @@ import {header} from "../../config/copy.ts";
     }
 
     .nav__inner {
-        max-width: var(--container-width);
-        margin: 0 auto;
-        padding: 20px var(--section-pad-x);
+        width: min(100% - 2 * var(--section-pad-x), var(--container-width));
+        margin-inline: auto;
+        padding-block: 20px;
         display: flex;
         align-items: center;
         gap: 28px;
@@ -237,7 +233,7 @@ import {header} from "../../config/copy.ts";
 
     @media (max-width: 768px) {
         .nav__inner {
-            padding: 14px var(--section-pad-x-mobile);
+            padding-block: 14px;
             gap: 16px;
         }
 

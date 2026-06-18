@@ -1,8 +1,8 @@
 :root {
     /* ---------- layout ---------- */
-    --container-width: 1280px;
-    --section-pad-x: 80px;
-    --section-pad-x-mobile: 48px;
+    --container-width: 1120px;
+    --section-pad-x: clamp(40px, 5vw, 96px);
+    --section-pad-x-mobile: var(--section-pad-x);
 
     --radius-soft: 0;
     --radius-round: 999px;

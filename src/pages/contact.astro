@@ -17,9 +17,9 @@ import ContactForm from "../components/contact/ContactForm.astro";
 <style is:global>
     @media (min-width: 901px) {
         .contact-split {
-            max-width: var(--container-width);
-            margin: 0 auto;
-            padding: 64px var(--section-pad-x) 80px;
+            width: min(100% - 2 * var(--section-pad-x), var(--container-width));
+            margin-inline: auto;
+            padding-block: 64px 80px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 80px;
